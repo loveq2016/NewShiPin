@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+def AAVersion = '3.2+'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "24.0.0"
+
+    defaultConfig {
+        applicationId "com.xue.liang.app"
+        minSdkVersion 18
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+
+    apt "org.androidannotations:androidannotations:$AAVersion"
+
+
+
+    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:design:22.2.1'
+
+}
+
+apt {
+
+    arguments {
+
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+
+        resourcePackageName 'com.xue.liang.app'
+
+    }
+
+}

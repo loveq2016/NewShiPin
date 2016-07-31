@@ -1,0 +1,54 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* proguard-project.txt
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => vcpSdk\src\main\AndroidManifest.xml
+* assets\ => vcpSdk\src\main\assets
+* libs\armeabi\libaudiotalktransfer.so => vcpSdk\src\main\jniLibs\armeabi\libaudiotalktransfer.so
+* libs\armeabi\libBufferPlugin.so => vcpSdk\src\main\jniLibs\armeabi\libBufferPlugin.so
+* libs\armeabi\librecord.so => vcpSdk\src\main\jniLibs\armeabi\librecord.so
+* libs\armeabi\libRecordDownLoad.so => vcpSdk\src\main\jniLibs\armeabi\libRecordDownLoad.so
+* libs\armeabi\librmAACEnc.so => vcpSdk\src\main\jniLibs\armeabi\librmAACEnc.so
+* libs\armeabi\librmh265dec.so => vcpSdk\src\main\jniLibs\armeabi\librmh265dec.so
+* libs\armeabi\librmtAMRNBCodec.so => vcpSdk\src\main\jniLibs\armeabi\librmtAMRNBCodec.so
+* libs\armeabi\libtmpc.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc.so
+* libs\armeabi\libtmpc_color.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_color.so
+* libs\armeabi\libtmpc_color_neon.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_color_neon.so
+* libs\armeabi\libtmpc_hd.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_hd.so
+* libs\armeabi\libtmpc_hd_40.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_hd_40.so
+* libs\armeabi\libtmpc_hd_41.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_hd_41.so
+* libs\armeabi\libtmpc_hd_42.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_hd_42.so
+* libs\armeabi\libTMPC_jni.so => vcpSdk\src\main\jniLibs\armeabi\libTMPC_jni.so
+* libs\armeabi\libtmpc_source.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_source.so
+* libs\armeabi\libtmpc_source_neon.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_source_neon.so
+* libs\armeabi\libtmpc_surface.so => vcpSdk\src\main\jniLibs\armeabi\libtmpc_surface.so
+* libs\armeabi\libttalk.so => vcpSdk\src\main\jniLibs\armeabi\libttalk.so
+* res\ => vcpSdk\src\main\res
+* src\ => vcpSdk\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

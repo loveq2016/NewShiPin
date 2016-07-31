@@ -1,8 +1,6 @@
 package com.xue.liang.app.login;
 
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
@@ -17,9 +15,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends FragmentActivity {
 
@@ -31,12 +26,12 @@ public class LoginActivity extends FragmentActivity {
     }
 
     @Click(R.id.login_btn)
-    private void doLogin() {
-        Test test=new Test();
+    public void doLogin() {
+        Test test = new Test();
         String url = Config.getRegisterUrl();
 
 
-        HttpListenter httpListenter=new HttpListenter() {
+        HttpListenter httpListenter = new HttpListenter() {
             @Override
             public void onFailed(HttpRequest httpRequest) {
 
@@ -47,18 +42,22 @@ public class LoginActivity extends FragmentActivity {
 
             }
         };
-        HttpManager<RegisterRq, RegisterRp> httpManager = new HttpManager.HttpBuilder().buildUrl(url).buildRequestClazz(RegisterRq.class).buildResponseClazz(RegisterRp.class).buildHttpListenter(new HttpListenter<RegisterRq,RegisterRp>() {
-                                                                                                                                                                                                      @Override
-                                                                                                                                                                                                      public void onFailed(HttpRequest<RegisterRq> httpRequest) {
+        HttpManager<RegisterRq, RegisterRp> httpManager = new HttpManager.HttpBuilder().
+                buildUrl(url).buildRequestClazz(RegisterRq.class).
+                buildResponseClazz(RegisterRp.class).
+                buildHttpListenter
+                        (new HttpListenter<RegisterRq, RegisterRp>() {
+                             @Override
+                             public void onFailed(HttpRequest<RegisterRq> httpRequest) {
 
-                                                                                                                                                                                                      }
+                             }
 
-                                                                                                                                                                                                      @Override
-                                                                                                                                                                                                      public void onSuccess(HttpReponse<RegisterRp> httpReponse) {
+                             @Override
+                             public void onSuccess(HttpReponse<RegisterRp> httpReponse) {
 
-                                                                                                                                                                                                      }
-                                                                                                                                                                                                  }
-        ).build();
+                             }
+                         }
+                        ).build();
         RegisterRq registerRq = new RegisterRq();
         httpManager.dopost(registerRq);
 

@@ -3,7 +3,7 @@ package com.xue.liang.app.data.request;
 /**
  * Created by Administrator on 2016/7/31.
  */
-public class RegisterRq {
+public class RegisterReq {
     public String terminal_type;
     public String reg_tel;
     public String reg_id;
@@ -29,6 +29,12 @@ public class RegisterRq {
     }
 
     public void setReg_id(String reg_id) {
+        this.reg_id = reg_id;
+    }
+
+    public RegisterReq(String terminal_type, String reg_tel, String reg_id) {
+        this.terminal_type = terminal_type;
+        this.reg_tel = reg_tel;
         this.reg_id = reg_id;
     }
 }

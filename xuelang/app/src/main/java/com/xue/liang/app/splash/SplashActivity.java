@@ -4,14 +4,11 @@ import java.lang.ref.WeakReference;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 
-import com.xue.liang.app.MainActivity;
 import com.xue.liang.app.R;
-import com.xue.liang.app.login.LoginActivity;
 import com.xue.liang.app.login.LoginActivity_;
 import com.xue.liang.app.utils.DeviceUtil;
 

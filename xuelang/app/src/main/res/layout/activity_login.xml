@@ -6,68 +6,70 @@
     android:orientation="vertical"
     tools:context="com.xue.liang.app.login.LoginActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@mipmap/login_title_background">
+        android:background="@mipmap/login_title_background"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/login_titile"
-            android:textSize="48sp" />
+            android:textSize="26sp" />
 
-        <TextView
-            android:id="@+id/title_adress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/title_tv"
-            android:layout_marginLeft="12dp"
-            android:layout_toRightOf="@id/title_tv"
-            android:text="(宜宾市)"
-            android:textSize="36sp" />
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_below="@+id/title_tv"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
             android:background="@mipmap/login_logo" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:background="@android:color/white"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/login_edittext"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:hint="请输入手机号码" />
 
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_below="@+id/login_edittext"
-            android:layout_marginBottom="20dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="160dp"
             android:layout_marginRight="160dp"
-            android:layout_marginTop="20dp" />
-
-    </RelativeLayout>
+            android:layout_marginTop="12dp"
+            android:text="登   录"
+            android:textSize="26sp"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </LinearLayout>

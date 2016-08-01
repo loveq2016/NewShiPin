@@ -3,7 +3,7 @@ package com.xue.liang.app.data.reponse;
 /**
  * Created by Administrator on 2016/7/31.
  */
-public class RegisterRp {
+public class RegisterResp {
     private Integer ret_code;
     private String ret_string;
 

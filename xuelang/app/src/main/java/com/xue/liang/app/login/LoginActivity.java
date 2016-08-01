@@ -18,42 +18,29 @@ import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends FragmentActivity {
-
-
     @AfterViews
     protected void initView() {
-
-
     }
+
     @Click(R.id.login_btn)
-    public void toMainAcitivty(){
-        Intent intent=new Intent();
+    public void toMainAcitivty() {
+        Intent intent = new Intent();
         intent.setClass(this, MainActivity_.class);
         startActivity(intent);
+    } /*@Click(R.id.login_btn)*/
 
-    }
-    //@Click(R.id.login_btn)
     public void doLogin() {
-
         String url = Config.getRegisterUrl();
-        RegisterReq registerReq=new RegisterReq("","","");
-
+        RegisterReq registerReq = new RegisterReq("", "", "");
         HttpManager.HttpBuilder<RegisterReq, RegisterResp> httpBuilder = new HttpManager.HttpBuilder<>();
-        httpBuilder.buildRequestValue(registerReq).buildResponseClass(RegisterResp.class)
-                .buildUrl(url)
-                .buildHttpListenter(new HttpListenter<RegisterResp>() {
-                    @Override
-                    public void onFailed(String msg) {
+        httpBuilder.buildRequestValue(registerReq).buildResponseClass(RegisterResp.class).buildUrl(url).buildHttpListenter(new HttpListenter<RegisterResp>() {
+            @Override
+            public void onFailed(String msg) {
+            }
 
-                    }
-
-                    @Override
-                    public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
-
-                    }
-                });
-
+            @Override
+            public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
+            }
+        });
     }
-
-
 }

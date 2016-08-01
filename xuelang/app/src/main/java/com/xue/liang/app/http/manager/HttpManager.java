@@ -1,11 +1,16 @@
 package com.xue.liang.app.http.manager;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.google.gson.Gson;
+import com.xue.liang.app.data.request.RegisterReq;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.data.HttpRequest;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,6 +37,9 @@ public class HttpManager<Q, R> {
     public HttpRequest<Q> httpRequest;
     public HttpReponse<R> httpReponse;
     public HttpListenter<R> httpListenter;
+
+    private Handler uiHandler = new Handler(Looper.getMainLooper());
+    ;
 
 
     public void ecUrl(String url) {
@@ -60,16 +68,27 @@ public class HttpManager<Q, R> {
         this.httpListenter = httpListenter;
     }
 
-    public void dopost() {
+    public void dopost(String tag) {
 
         String json = gson.toJson(httpRequest.getData());
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE_JSON, json);
-        Request request = new Request.Builder().url(url).post(requestBody).build();
-        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder().tag(tag).url(url).post(requestBody).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(50, TimeUnit.SECONDS)
+                .build();
+       // OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                httpListenter.onFailed(e.toString());
+            public void onFailure(Call call, final IOException e) {
+                final String msg = e.toString();
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        httpListenter.onFailed(msg);
+                    }
+                });
+
             }
 
             @Override
@@ -77,9 +96,26 @@ public class HttpManager<Q, R> {
 
                 String json = response.body().toString();
                 httpReponse = new HttpReponse();
-                R r = gson.fromJson(json, mRClass);
-                httpReponse.setData(r);
-                httpListenter.onSuccess(httpReponse);
+                try{
+                    R r = gson.fromJson(json, mRClass);
+                    httpReponse.setData(r);
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            httpListenter.onSuccess(httpReponse);
+                        }
+                    });
+                }catch (final Exception e){
+                    final String msg=e.toString();
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            httpListenter.onFailed(msg);
+                        }
+                    });
+                }
+
+
 
             }
         });
@@ -143,5 +179,6 @@ public class HttpManager<Q, R> {
 
 
     }
+
 
 }

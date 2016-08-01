@@ -2,6 +2,7 @@ package com.xue.liang.app.login;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
@@ -22,25 +23,29 @@ public class LoginActivity extends FragmentActivity {
     protected void initView() {
     }
 
-    @Click(R.id.login_btn)
+    //@Click(R.id.login_btn)
     public void toMainAcitivty() {
         Intent intent = new Intent();
         intent.setClass(this, MainActivity_.class);
         startActivity(intent);
     } /*@Click(R.id.login_btn)*/
 
+    @Click(R.id.login_btn)
     public void doLogin() {
         String url = Config.getRegisterUrl();
-        RegisterReq registerReq = new RegisterReq("", "", "");
+        RegisterReq registerReq = new RegisterReq("1", "13808102118", "38:BC:1A:C5:DA:4F");
         HttpManager.HttpBuilder<RegisterReq, RegisterResp> httpBuilder = new HttpManager.HttpBuilder<>();
         httpBuilder.buildRequestValue(registerReq).buildResponseClass(RegisterResp.class).buildUrl(url).buildHttpListenter(new HttpListenter<RegisterResp>() {
             @Override
             public void onFailed(String msg) {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                toMainAcitivty();
             }
 
             @Override
             public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
+                toMainAcitivty();
             }
-        });
+        }).build().dopost("Login");
     }
 }

@@ -2,17 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
+
         android:background="#303132">
 
         <ImageView
             android:id="@+id/title_logo"
             android:layout_width="100dp"
             android:layout_height="44dp"
+            android:layout_margin="12dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:src="@mipmap/login_logo" />
@@ -22,8 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
+
+            android:layout_margin="12dp"
+
             android:layout_toLeftOf="@+id/btn_alarmwarning"
             android:layout_toRightOf="@id/title_logo"
             android:src="@mipmap/main_title_info" />
@@ -34,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
+            android:layout_margin="12dp"
             android:background="@mipmap/warning_btn" />
 
 

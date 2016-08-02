@@ -2,6 +2,7 @@ package com.xue.liang.app.dialog;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Window;
 
 import com.xue.liang.app.R;
 
@@ -16,6 +17,8 @@ public class LoadingDialogFragment extends DialogFragment {
 
     @AfterViews
     public  void init(){
+        setCancelable(false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
     }
 

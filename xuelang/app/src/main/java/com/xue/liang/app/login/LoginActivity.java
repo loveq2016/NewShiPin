@@ -11,7 +11,9 @@ import com.xue.liang.app.data.request.RegisterReq;
 import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
+import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.main.MainActivity_;
+import com.xue.liang.app.utils.Utils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -30,12 +32,15 @@ public class LoginActivity extends FragmentActivity {
         startActivity(intent);
     } /*@Click(R.id.login_btn)*/
 
+
+//    public  void test(){
+//        Utils utils=new Utils();
+//        utils.getNoticeList();
+//    }
     @Click(R.id.login_btn)
     public void doLogin() {
-        String url = Config.getRegisterUrl();
-        RegisterReq registerReq = new RegisterReq("1", "13808102118", "38:BC:1A:C5:DA:4F");
-        HttpManager.HttpBuilder<RegisterReq, RegisterResp> httpBuilder = new HttpManager.HttpBuilder<>();
-        httpBuilder.buildRequestValue(registerReq).buildResponseClass(RegisterResp.class).buildUrl(url).buildHttpListenter(new HttpListenter<RegisterResp>() {
+
+        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<RegisterResp>() {
             @Override
             public void onFailed(String msg) {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -46,6 +51,15 @@ public class LoginActivity extends FragmentActivity {
             public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
                 toMainAcitivty();
             }
-        }).build().dopost("Login");
+        }, getSupportFragmentManager());
+
+        String url = Config.getRegisterUrl();
+        RegisterReq registerReq = new RegisterReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
+        HttpManager.HttpBuilder<RegisterReq, RegisterResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        httpBuilder.buildRequestValue(registerReq).buildResponseClass(RegisterResp.class).
+                buildUrl(url).
+                buildHttpListenter(httpListenter).
+                build().
+                dopost("Login");
     }
 }

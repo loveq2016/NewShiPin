@@ -75,5 +75,23 @@ public class NoticeResp {
         public void setTime(String time) {
             this.time = time;
         }
+
+        @Override
+        public String toString() {
+            return "NoticeItem{" +
+                    "guid='" + guid + '\'' +
+                    ", title='" + title + '\'' +
+                    ", time='" + time + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "NoticeResp{" +
+                "ret_code=" + ret_code +
+                ", ret_string='" + ret_string + '\'' +
+                ", response=" + response +
+                '}';
     }
 }

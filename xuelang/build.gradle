@@ -21,3 +21,7 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+    VERSION_NAME = "2.3.4-SNAPSHOT"
+    VERSION_CODE = 14
+}

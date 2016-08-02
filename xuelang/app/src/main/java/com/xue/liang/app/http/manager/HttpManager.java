@@ -2,12 +2,14 @@ package com.xue.liang.app.http.manager;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.xue.liang.app.data.request.RegisterReq;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.data.HttpRequest;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
+import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -69,6 +71,10 @@ public class HttpManager<Q, R> {
     }
 
     public void dopost(String tag) {
+        LoadingHttpListener loadingHttpListener=null;
+        if(httpListenter!=null&&httpListenter instanceof LoadingHttpListener){
+            loadingHttpListener= (LoadingHttpListener) httpListenter;
+        }
 
         String json = gson.toJson(httpRequest.getData());
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE_JSON, json);
@@ -78,6 +84,18 @@ public class HttpManager<Q, R> {
                 .readTimeout(50, TimeUnit.SECONDS)
                 .build();
        // OkHttpClient okHttpClient = new OkHttpClient();
+        if(loadingHttpListener!=null){
+            loadingHttpListener.showDialog();
+        }
+
+//        try {
+//            Response response= okHttpClient.newCall(request).execute();
+//            Log.d("测试代码","测试代码--------"+response.body().string());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -94,7 +112,7 @@ public class HttpManager<Q, R> {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                String json = response.body().toString();
+                String json = response.body().string();
                 httpReponse = new HttpReponse();
                 try{
                     R r = gson.fromJson(json, mRClass);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/info_notice_btn" android:state_focused="false" android:state_pressed="false">
+
+    </item>
+
+    <item android:drawable="@mipmap/info_notice_btn_forced" android:state_focused="true" android:state_pressed="false">
+
+    </item>
+
+
+    <item android:drawable="@mipmap/info_notice_btn_forced" android:state_focused="false" android:state_pressed="true">
+
+    </item>
+
+</selector>

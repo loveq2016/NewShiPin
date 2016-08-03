@@ -39,7 +39,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="12dp"
-            android:background="@mipmap/warning_btn" />
+            android:background="@drawable/warning_btn_selector" />
 
 
     </RelativeLayout>

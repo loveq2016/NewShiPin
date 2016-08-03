@@ -52,7 +52,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:layout_toLeftOf="@+id/btn_info_notice"
                         android:text="当前滚动消息" />
+                    <Button
+                        android:id="@+id/btn_info_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_toLeftOf="@+id/btn_people_info"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="24dp"
+                        android:background="@drawable/btn_info_notice_selector"
+                        android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/btn_people_info"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/btn_people_info_selector"
+                        android:layout_height="wrap_content" />
 
 
                 </RelativeLayout>
@@ -81,29 +97,37 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
 
+                                android:layout_marginBottom="12dp"
+                                android:layout_marginTop="12dp"
                                 android:layout_weight="1"
-                                android:background="@mipmap/btn_fire_warning" />
+                                android:background="@drawable/btn_fire_warning_selector" />
 
                             <Button
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
                                 android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
                                 android:layout_weight="1"
-                                android:background="@mipmap/btn_theft" />
+                                android:background="@drawable/btn_theft_selector" />
 
                             <Button
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
                                 android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
                                 android:layout_weight="1"
-                                android:background="@mipmap/btn_hurt" />
+                                android:background="@drawable/btn_hurt_selector" />
 
                             <Button
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
                                 android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
                                 android:layout_weight="1"
-                                android:background="@mipmap/btn_other" />
+                                android:background="@drawable/btn_other_selector" />
                         </LinearLayout>
 
                         <Button
@@ -125,7 +149,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
-                        android:background="@mipmap/full_screen" />
+                        android:background="@drawable/full_screen_selector" />
 
                 </RelativeLayout>
             </RelativeLayout>

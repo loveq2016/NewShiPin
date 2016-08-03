@@ -1,6 +1,7 @@
 package com.xue.liang.app.main;
 
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,10 +20,12 @@ import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
+import com.xue.liang.app.info.InfoListActivity_;
 import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -108,5 +111,12 @@ public class MainActivity extends FragmentActivity {
                 .buildHttpListenter(httpListenter)
                 .build()
                 .dopost("DeviceList");
+    }
+
+    @Click(R.id.btn_info_notice)
+    public void toInfoListActivity() {
+        Intent intent = new Intent();
+        intent.setClass(this, InfoListActivity_.class);
+        startActivity(intent);
     }
 }

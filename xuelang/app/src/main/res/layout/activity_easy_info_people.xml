@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.xue.liang.app.info.InfoListActivity">
+
+    tools:context=".info.EasyInfoPeopleActivity">
 
     <RelativeLayout
 
@@ -26,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="left"
             android:text="通知公告"
             android:textColor="@android:color/white"
             android:textSize="32sp" />
@@ -48,9 +50,8 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listview"
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#050d12"></ListView>
+        android:layout_height="match_parent"></WebView>
 </LinearLayout>

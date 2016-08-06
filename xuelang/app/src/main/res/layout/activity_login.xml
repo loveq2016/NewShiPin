@@ -77,6 +77,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
+                    android:inputType="phone"
+                    android:maxLength="11"
                     android:gravity="center"
                     android:hint="请输入手机号码" />
                 <View

@@ -5,9 +5,11 @@ package com.xue.liang.app.common;
  */
 public class Config {
 
-    public static final String TEST_PHONE_NUMBER="18000000000";
-    public static final String TEST_MAC="38:BC:1A:C5:DA:4F";
-    public static final String TEST_TYPE="1";
+    public static  String TEST_PHONE_NUMBER="";//18000000000
+    public static  String TEST_MAC="";//38:BC:1A:C5:DA:4F
+    public static  String TEST_TYPE="";//
+
+
     public static final String HTPP = "http://";
     //121.41.32.246:9004
     public static final String IP = "121.41.32.246";

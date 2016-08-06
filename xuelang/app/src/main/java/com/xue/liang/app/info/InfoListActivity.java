@@ -1,7 +1,11 @@
 package com.xue.liang.app.info;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.xue.liang.app.R;
@@ -55,6 +59,23 @@ public class InfoListActivity extends FragmentActivity {
     private void initaAdapter() {
         infoAdapter = new InfoAdapter(this, noticeItemList);
         listView.setAdapter(infoAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String guid = noticeItemList.get(position).getGuid();
+                toDeatilActivity(guid);
+            }
+        });
+    }
+
+    public void toDeatilActivity(String guid) {
+        Bundle bundle = new Bundle();
+        bundle.putString("guid", guid);
+        Intent intent = new Intent();
+        intent.setClass(this, InfoDetailActivity_.class);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
     }
 
 

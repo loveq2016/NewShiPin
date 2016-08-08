@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.DeviceListResp;
 import com.xue.liang.app.data.reponse.DeviceListResp.DeviceItem;
@@ -254,5 +255,13 @@ public class MainActivity extends FragmentActivity {
                 .build()
                 .dopost("SendAlarm");
 
+    }
+    @Click(R.id.btn_alarmwarning)
+    public void toAlarmActivity(){
+        Intent intent = new Intent();
+        intent.setClass(this, AlarmActivity_.class);
+
+
+        startActivity(intent);
     }
 }

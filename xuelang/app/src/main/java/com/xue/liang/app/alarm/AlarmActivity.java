@@ -1,24 +1,36 @@
 package com.xue.liang.app.alarm;
 
-import android.content.ContentResolver;
+import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.xue.liang.app.R;
+import com.xue.liang.app.common.Config;
+import com.xue.liang.app.data.reponse.UpdateResp;
+import com.xue.liang.app.update.PostFile;
+import com.xue.liang.app.utils.Pathutil;
+import com.xue.liang.app.utils.ToastUtil;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by Administrator on 2016/8/8.
@@ -26,12 +38,14 @@ import java.io.IOException;
 @EActivity(R.layout.activity_alarm)
 public class AlarmActivity extends FragmentActivity {
 
-
+    private ProgressDialog pd;
     @ViewById(R.id.bt_image)
     public Button bt_image;
     private final String IMAGE_TYPE = "image/*";
 
-    private final int IMAGE_CODE = 0;   //这里的IMAGE_CODE是自己任意定义的
+
+    private static int SELECT_PIC_KITKAT = 5;
+    private static int SELECT_PIC = 2;
 
 
     @Click(R.id.bt_image)
@@ -40,85 +54,100 @@ public class AlarmActivity extends FragmentActivity {
         //使用intent调用系统提供的相册功能，使用startActivityForResult是为了获取用户选择的图片
 
 
-        Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
-        getAlbum.setType(IMAGE_TYPE);
-
-        startActivityForResult(getAlbum, IMAGE_CODE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            startActivityForResult(intent, SELECT_PIC_KITKAT);//4.4版本
+        } else {
+            startActivityForResult(intent, SELECT_PIC);//4.4以下版本，先不处理
+        }
 
 
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String picturePath = "";
+        if (resultCode == RESULT_OK
+                && null != data) {
+            if (requestCode == SELECT_PIC_KITKAT) {
+                Uri selectedImage = data.getData();
+                picturePath = Pathutil.getPath(getApplicationContext(), selectedImage);
 
-        if (resultCode != RESULT_OK) {        //此处的 RESULT_OK 是系统自定义得一个常量
+            } else {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Log.e("TAG->onresult", "ActivityResult resultCode error");
-
-            return;
-
-        }
-
-
-        Bitmap bm = null;
-
-
-        //外界的程序访问ContentProvider所提供数据 可以通过ContentResolver接口
-
-        ContentResolver resolver = getContentResolver();
-
-
-        //此处的用于判断接收的Activity是不是你想要的那个
-
-        if (requestCode == IMAGE_CODE) {
-
-            try {
-
-                Uri originalUri = data.getData();        //获得图片的uri
-
-
-                bm = MediaStore.Images.Media.getBitmap(resolver, originalUri);
-                //显得到bitmap图片
-                //imgShow.setImageBitmap(bm);
-                Drawable drawable = new BitmapDrawable(bm);
-                //设置EditText中文字左边的显示图标，上面 、右边 、下面 没有则置空null
-                bt_image.setCompoundDrawables(null, null, null, drawable);
-
-
-//    这里开始的第二部分，获取图片的路径：
-
-
-                String[] proj = {MediaStore.Images.Media.DATA};
-
-
-                //好像是android多媒体数据库的封装接口，具体的看Android文档
-
-                Cursor cursor = managedQuery(originalUri, proj, null, null, null);
-
-                //按我个人理解 这个是获得用户选择的图片的索引值
-
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-                //将光标移至开头 ，这个很重要，不小心很容易引起越界
-
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
                 cursor.moveToFirst();
-
-                //最后根据索引值获取图片路径
-
-                String path = cursor.getString(column_index);
-                // imgPath.setText(path);
-            } catch (IOException e) {
-
-                Log.e("TAG-->Error", e.toString());
-
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
             }
-
         }
-
+        ToastUtil.showToast(getApplicationContext(), picturePath,
+                Toast.LENGTH_SHORT);
+        if (new File(picturePath).exists()) {
+            Log.d("测试代码", "测试代码文件存在");
+        } else {
+            Log.d("测试代码", "测试代码文件不存在");
+        }
+        updateFile(picturePath);
 
     }
+
+
+    Map<String, String> params;
+    Map<String, File> files;
+    String result;
+
+    private void updateFile(String path) {
+        pd = new ProgressDialog(this);
+        pd.setMessage("正在上传...");
+        pd.show();
+        params = new HashMap<String, String>();
+        params.put("pictureName", "aaaa.jpg");
+        files = new HashMap<String, File>();
+        files.put("picturePath", new File(path));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    result = PostFile.post(Config.getUpdateFile(), params, files);
+                } catch (IOException e) {
+                    pd.dismiss();
+                    e.printStackTrace();
+                }
+                Message msg = handler.obtainMessage();
+                msg.what = 1;
+                msg.obj = result;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+
     @Click(R.id.bt_back)
     public void close() {
         finish();
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Log.d("测试代码", "测试代码+Json" + msg.obj);
+            pd.dismiss();
+            UpdateResp updateResp= new Gson().fromJson(msg.obj.toString(),UpdateResp.class);
+            if(updateResp.getRet_code()==0){
+               ToastUtil.showToast(getApplicationContext(),"上传文件接口返回成功",Toast.LENGTH_SHORT);
+            }else{
+                ToastUtil.showToast(getApplicationContext(),updateResp.getRet_string(),Toast.LENGTH_SHORT);
+            }
+
+            super.handleMessage(msg);
+        }
+    };
 }

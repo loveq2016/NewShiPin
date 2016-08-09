@@ -78,4 +78,12 @@ public class Config {
         stringBuilder.append("/mobileservice/sendalarm.ashx");
         return stringBuilder.toString();
     }
+
+
+    public static String getUpdateFile(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getStartUrl());
+        stringBuilder.append("/mobileservice/uploadfiles.ashx");
+        return stringBuilder.toString();
+    }
 }

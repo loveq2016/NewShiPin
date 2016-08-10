@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,7 +18,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
+import com.xue.liang.app.data.reponse.UpdateAlarmResp;
 import com.xue.liang.app.data.reponse.UpdateResp;
+import com.xue.liang.app.data.request.UpdateAlarmReq;
+import com.xue.liang.app.http.manager.HttpManager;
+import com.xue.liang.app.http.manager.data.HttpReponse;
+import com.xue.liang.app.http.manager.listenter.HttpListenter;
+import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.update.PostFile;
 import com.xue.liang.app.utils.Pathutil;
 import com.xue.liang.app.utils.ToastUtil;
@@ -140,14 +147,47 @@ public class AlarmActivity extends FragmentActivity {
         public void handleMessage(Message msg) {
             Log.d("测试代码", "测试代码+Json" + msg.obj);
             pd.dismiss();
-            UpdateResp updateResp= new Gson().fromJson(msg.obj.toString(),UpdateResp.class);
-            if(updateResp.getRet_code()==0){
-               ToastUtil.showToast(getApplicationContext(),"上传文件接口返回成功",Toast.LENGTH_SHORT);
-            }else{
-                ToastUtil.showToast(getApplicationContext(),updateResp.getRet_string(),Toast.LENGTH_SHORT);
+            UpdateResp updateResp = new Gson().fromJson(msg.obj.toString(), UpdateResp.class);
+            if (updateResp.getRet_code() == 0) {
+                for (UpdateResp.UpdateFile updateFile : updateResp.getResponse()) {
+
+                }
+                updateAlermHelp(getSupportFragmentManager(), "", "fileid");
+
+            } else {
+                ToastUtil.showToast(getApplicationContext(), updateResp.getRet_string(), Toast.LENGTH_SHORT);
             }
 
             super.handleMessage(msg);
         }
     };
+
+    private void updateAlermHelp(FragmentManager fragmentManager, String content, String fileid) {
+
+
+        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<UpdateAlarmReq>() {
+            @Override
+            public void onFailed(String msg) {
+                ToastUtil.showToast(getApplicationContext(), "上传文件失败", Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onSuccess(HttpReponse<UpdateAlarmReq> httpReponse) {
+                ToastUtil.showToast(getApplicationContext(), "上传文件接口返回成功", Toast.LENGTH_SHORT);
+
+            }
+        }, fragmentManager);
+
+        String url = Config.getUpdateAlarmUrl();
+
+        UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, content, fileid);
+        //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
+        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        httpBuilder.buildRequestValue(updateAlarmReq)
+                .buildResponseClass(UpdateAlarmResp.class)
+                .buildUrl(url)
+                .buildHttpListenter(httpListenter)
+                .build()
+                .dopost("UpdateAlarm");
+    }
 }

@@ -11,11 +11,13 @@ import com.xue.liang.app.data.reponse.NoticeDetailResp;
 import com.xue.liang.app.data.reponse.NoticeResp;
 import com.xue.liang.app.data.reponse.RegisterResp;
 import com.xue.liang.app.data.reponse.SendAlarmResp;
+import com.xue.liang.app.data.reponse.UpdateAlarmResp;
 import com.xue.liang.app.data.request.DeviceListReq;
 import com.xue.liang.app.data.request.NoticeDetailReq;
 import com.xue.liang.app.data.request.NoticeReq;
 import com.xue.liang.app.data.request.RegisterReq;
 import com.xue.liang.app.data.request.SendAlarmReq;
+import com.xue.liang.app.data.request.UpdateAlarmReq;
 import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
@@ -138,5 +140,35 @@ public class Utils {
                 .build()
                 .dopost("SendAlarm");
 
+    }
+
+    public void updateAlermHelp(FragmentManager fragmentManager,String content,String fileid){
+
+
+
+        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<UpdateAlarmReq>() {
+            @Override
+            public void onFailed(String msg) {
+
+            }
+
+            @Override
+            public void onSuccess(HttpReponse<UpdateAlarmReq> httpReponse) {
+
+
+            }
+        }, fragmentManager);
+
+        String url = Config.getUpdateAlarmUrl();
+
+        UpdateAlarmReq updateAlarmReq=new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,content,fileid);
+        //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
+        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        httpBuilder.buildRequestValue(updateAlarmReq)
+                .buildResponseClass(UpdateAlarmResp.class)
+                .buildUrl(url)
+                .buildHttpListenter(httpListenter)
+                .build()
+                .dopost("UpdateAlarm");
     }
 }

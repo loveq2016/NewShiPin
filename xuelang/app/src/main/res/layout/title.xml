@@ -15,22 +15,48 @@
             android:id="@+id/title_logo"
             android:layout_width="100dp"
             android:layout_height="44dp"
-            android:layout_margin="12dp"
             android:layout_centerVertical="true"
+            android:layout_margin="12dp"
             android:layout_marginLeft="12dp"
             android:src="@mipmap/login_logo" />
 
-        <ImageView
-            android:id="@+id/title_info"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-
-            android:layout_margin="12dp"
-
+            android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/btn_alarmwarning"
-            android:layout_toRightOf="@id/title_logo"
-            android:src="@mipmap/main_title_info" />
+            android:layout_toRightOf="@id/title_logo">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/middle_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="雪亮工程监控报警平台"
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:id="@+id/little_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
         <ImageButton
             android:id="@+id/btn_alarmwarning"

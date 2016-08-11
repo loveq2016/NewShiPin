@@ -9,6 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.alarm.AlarmActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -52,5 +53,14 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
     @Click(R.id.bt_back)
     public void close() {
         finish();
+    }
+
+    @Click(R.id.btn_alarmwarning)
+    public void toAlarmActivity() {
+        Intent intent = new Intent();
+        intent.setClass(this, AlarmActivity_.class);
+
+
+        startActivity(intent);
     }
 }

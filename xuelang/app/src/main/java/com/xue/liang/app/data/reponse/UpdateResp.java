@@ -43,8 +43,8 @@ public class UpdateResp {
 
     public static class UpdateFile {
         private int nState;
-        private String filename;
-        private String fileID;
+        private String file_name;
+        private String file_id;
 
         public int getNState() {
             return nState;
@@ -54,20 +54,28 @@ public class UpdateResp {
             this.nState = nState;
         }
 
-        public String getFilename() {
-            return filename;
+        public String getFile_id() {
+            return file_id;
         }
 
-        public void setFilename(String filename) {
-            this.filename = filename;
+        public void setFile_id(String file_id) {
+            this.file_id = file_id;
         }
 
-        public String getFileID() {
-            return fileID;
+        public String getFile_name() {
+            return file_name;
         }
 
-        public void setFileID(String fileID) {
-            this.fileID = fileID;
+        public void setFile_name(String file_name) {
+            this.file_name = file_name;
+        }
+
+        public int getnState() {
+            return nState;
+        }
+
+        public void setnState(int nState) {
+            this.nState = nState;
         }
     }
 

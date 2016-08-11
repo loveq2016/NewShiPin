@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.NoticeDetailResp;
 import com.xue.liang.app.data.request.NoticeDetailReq;
@@ -80,4 +81,13 @@ public class InfoDetailActivity extends FragmentActivity {
         finish();
     }
 
+
+    @Click(R.id.btn_alarmwarning)
+    public void toAlarmActivity() {
+        Intent intent = new Intent();
+        intent.setClass(this, AlarmActivity_.class);
+
+
+        startActivity(intent);
+    }
 }

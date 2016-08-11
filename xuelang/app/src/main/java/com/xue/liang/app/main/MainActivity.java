@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
@@ -23,8 +24,10 @@ import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.DeviceListResp;
 import com.xue.liang.app.data.reponse.DeviceListResp.DeviceItem;
+import com.xue.liang.app.data.reponse.NoticeResp;
 import com.xue.liang.app.data.reponse.SendAlarmResp;
 import com.xue.liang.app.data.request.DeviceListReq;
+import com.xue.liang.app.data.request.NoticeReq;
 import com.xue.liang.app.data.request.SendAlarmReq;
 import com.xue.liang.app.event.UrlEvent;
 import com.xue.liang.app.http.manager.HttpManager;
@@ -53,7 +56,7 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends FragmentActivity {
 
     @ViewById(R.id.title_main)
-    protected  View title_main;
+    protected View title_main;
 
 
     @ViewById(R.id.listview)
@@ -69,6 +72,14 @@ public class MainActivity extends FragmentActivity {
     @ViewById(R.id.btn_full_sceen_other)
     Button btn_full_sceen_other;
 
+
+    @ViewById(R.id.little_title_tv)
+    TextView little_title_tv;
+
+
+    @ViewById(R.id.tv_gundong_info)
+    TextView tv_gundong_info;
+
     private PlayerAdapter playerAdapter;
 
     private List<DeviceItem> deviceItemList = new ArrayList<>();
@@ -77,18 +88,19 @@ public class MainActivity extends FragmentActivity {
     public void initView() {
         initFragment();
         initAdapter();
+        getNoticeList();
     }
 
-    @Click({R.id.btn_full_sceen,R.id.btn_full_sceen_other})
-    public void setFullScreen(){
-        boolean isfull=title_main.getVisibility()==View.VISIBLE?true:false;
-        if(isfull){
+    @Click({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
+    public void setFullScreen() {
+        boolean isfull = title_main.getVisibility() == View.VISIBLE ? true : false;
+        if (isfull) {
             btn_full_sceen_other.setVisibility(View.VISIBLE);
             title_main.setVisibility(View.GONE);
             listview.setVisibility(View.GONE);
             bottom_rl.setVisibility(View.GONE);
             ll_btn.setVisibility(View.GONE);
-        }else{
+        } else {
             btn_full_sceen_other.setVisibility(View.GONE);
             title_main.setVisibility(View.VISIBLE);
             listview.setVisibility(View.VISIBLE);
@@ -135,7 +147,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onFailed(String msg) {
                 Toast.makeText(getApplicationContext(), "请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
-                ;
+
             }
 
             @Override
@@ -143,6 +155,8 @@ public class MainActivity extends FragmentActivity {
 
                 deviceItemList = httpReponse.getData().getResponse();
                 playerAdapter.reshData(deviceItemList);
+                if (deviceItemList!=null&&!deviceItemList.isEmpty() && !TextUtils.isEmpty(deviceItemList.get(0).getDev_name()))
+                    little_title_tv.setText(deviceItemList.get(0).getDev_name());
             }
         }, fragmentManager);
 
@@ -167,10 +181,10 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Click(R.id.btn_people_info)
-    public void toEasyInfoPeopleActivity(){
+    public void toEasyInfoPeopleActivity() {
 
-        Bundle bundle=new Bundle();
-        bundle.putString("url","http://baidu.com");
+        Bundle bundle = new Bundle();
+        bundle.putString("url", "http://baidu.com");
         Intent intent = new Intent();
         intent.setClass(this, EasyInfoPeopleActivity_.class);
         intent.putExtras(bundle);
@@ -229,16 +243,16 @@ public class MainActivity extends FragmentActivity {
         HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<SendAlarmResp>() {
             @Override
             public void onFailed(String msg) {
-                if(TextUtils.isEmpty(msg)){
-                    msg="null";
+                if (TextUtils.isEmpty(msg)) {
+                    msg = "null";
                 }
 
-                Toast.makeText(getApplicationContext(),"报警失败--"+msg,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "报警失败--" + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(HttpReponse<SendAlarmResp> httpReponse) {
-                 Toast.makeText(getApplicationContext(),"报警成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "报警成功", Toast.LENGTH_SHORT).show();
 
             }
         }, fragmentManager);
@@ -256,12 +270,47 @@ public class MainActivity extends FragmentActivity {
                 .dopost("SendAlarm");
 
     }
+
     @Click(R.id.btn_alarmwarning)
-    public void toAlarmActivity(){
+    public void toAlarmActivity() {
         Intent intent = new Intent();
         intent.setClass(this, AlarmActivity_.class);
 
 
         startActivity(intent);
+    }
+
+    public void getNoticeList() {
+        HttpListenter httpListenter = new HttpListenter<NoticeResp>() {
+            @Override
+            public void onFailed(String msg) {
+
+            }
+
+            @Override
+            public void onSuccess(HttpReponse<NoticeResp> httpReponse) {
+                if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && !httpReponse.getData().getResponse().isEmpty()) {
+                    List<NoticeResp.NoticeItem> noticeItems = httpReponse.getData().getResponse();
+                    if (noticeItems!=null&&!noticeItems.isEmpty()) {
+                        if (!TextUtils.isEmpty(noticeItems.get(0).getTitle())) {
+                            tv_gundong_info.setText(noticeItems.get(0).getTitle());
+                        }
+
+                    }
+                }
+
+
+            }
+        };
+
+        String url = Config.getNoticeUrl();
+        NoticeReq noticeReq = new NoticeReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
+        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        httpBuilder.buildRequestValue(noticeReq)
+                .buildResponseClass(NoticeResp.class)
+                .buildUrl(url)
+                .buildHttpListenter(httpListenter)
+                .build()
+                .dopost("Notice");
     }
 }

@@ -73,7 +73,7 @@
                         android:layout_height="match_parent"
                         android:layout_toLeftOf="@+id/btn_info_notice"
                         android:gravity="center"
-                        android:text="当前滚动消息" />
+                        android:text="" />
 
                     <Button
                         android:id="@+id/btn_info_notice"

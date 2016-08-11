@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.NoticeResp;
 import com.xue.liang.app.data.request.NoticeReq;
@@ -45,10 +46,7 @@ public class InfoListActivity extends FragmentActivity {
 
     }
 
-    @Click(R.id.btn_alarmwarning)
-    public void toAlermActivity() {
 
-    }
 
     @AfterViews
     public void initView() {
@@ -103,6 +101,16 @@ public class InfoListActivity extends FragmentActivity {
                 .buildHttpListenter(httpListenter)
                 .build()
                 .dopost("Notice");
+    }
+
+
+    @Click(R.id.btn_alarmwarning)
+    public void toAlarmActivity() {
+        Intent intent = new Intent();
+        intent.setClass(this, AlarmActivity_.class);
+
+
+        startActivity(intent);
     }
 
 

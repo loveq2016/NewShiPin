@@ -23,6 +23,8 @@ import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/8/1.
  */
@@ -142,7 +144,7 @@ public class Utils {
 
     }
 
-    public void updateAlermHelp(FragmentManager fragmentManager,String content,String fileid){
+    public void updateAlermHelp(FragmentManager fragmentManager,String content,List<String> fileid){
 
 
 

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.temobi.cache.memory.MD5;
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.UpdateAlarmResp;
@@ -35,7 +36,9 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -115,8 +118,11 @@ public class AlarmActivity extends FragmentActivity {
         pd = new ProgressDialog(this);
         pd.setMessage("正在上传...");
         pd.show();
+       String t= MD5.toMD5(System.currentTimeMillis()+"");
+        File file=new File(path);
+       String filename= file.getName();
         params = new HashMap<String, String>();
-        params.put("pictureName", "aaaa.jpg");
+        params.put(t, filename);  //params.put(t, "aaaa.jpg");
         files = new HashMap<String, File>();
         files.put("picturePath", new File(path));
         new Thread(new Runnable() {
@@ -165,14 +171,14 @@ public class AlarmActivity extends FragmentActivity {
     private void updateAlermHelp(FragmentManager fragmentManager, String content, String fileid) {
 
 
-        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<UpdateAlarmReq>() {
+        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<UpdateAlarmResp>() {
             @Override
             public void onFailed(String msg) {
                 ToastUtil.showToast(getApplicationContext(), "上传文件失败", Toast.LENGTH_SHORT);
             }
 
             @Override
-            public void onSuccess(HttpReponse<UpdateAlarmReq> httpReponse) {
+            public void onSuccess(HttpReponse<UpdateAlarmResp> httpReponse) {
                 ToastUtil.showToast(getApplicationContext(), "上传文件接口返回成功", Toast.LENGTH_SHORT);
 
             }
@@ -180,7 +186,10 @@ public class AlarmActivity extends FragmentActivity {
 
         String url = Config.getUpdateAlarmUrl();
 
-        UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, content, fileid);
+        List<String> fileidList=new ArrayList<>();
+        fileidList.add(fileid);
+
+        UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, content, fileidList);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
         HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
         httpBuilder.buildRequestValue(updateAlarmReq)

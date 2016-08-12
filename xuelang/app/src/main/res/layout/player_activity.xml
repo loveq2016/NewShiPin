@@ -66,31 +66,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_above="@+id/bottom_rl_all">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_toLeftOf="@+id/ll_info"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_gundong_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="" />
+</RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tv_gundong_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toLeftOf="@+id/btn_info_notice"
-                        android:gravity="center"
-                        android:text="" />
+<LinearLayout
+    android:id="@+id/ll_info"
+    android:layout_width="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_info_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/btn_people_info"
+        android:background="@drawable/btn_info_notice_selector" />
 
-                    <Button
-                        android:id="@+id/btn_info_notice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="24dp"
-                        android:layout_toLeftOf="@+id/btn_people_info"
-                        android:background="@drawable/btn_info_notice_selector" />
+    <Button
+        android:id="@+id/btn_people_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_people_info_selector" />
 
-                    <Button
-                        android:id="@+id/btn_people_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/btn_people_info_selector" />
+</LinearLayout>
+
 
 
                 </RelativeLayout>

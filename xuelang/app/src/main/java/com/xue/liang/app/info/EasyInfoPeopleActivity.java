@@ -2,14 +2,18 @@ package com.xue.liang.app.info;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity_;
+import com.xue.liang.app.common.Config;
+import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -22,13 +26,16 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
     @ViewById(R.id.webview)
     protected WebView webview;
 
+    @ViewById(R.id.btn_alarmwarning)
+    ImageButton btn_alarmwarning;
+
 
     @AfterViews
     public void initView() {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String url = bundle.getString("url");
+        String phone = bundle.getString("phone");
         WebSettings webSettings = webview.getSettings();
         //设置WebView属性，能够执行Javascript脚本
         webSettings.setJavaScriptEnabled(true);
@@ -37,9 +44,20 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
         //设置支持缩放
         webSettings.setBuiltInZoomControls(true);
         //加载需要显示的网页
+        String url="http://www.uphsh.com/wap/38fceb89d44a4778bb2459556820c69a?userToken="+ Config.TEST_PHONE_NUMBER;
         webview.loadUrl(url);
         //设置Web视图
         webview.setWebViewClient(new webViewClient());
+
+
+        if(DeviceUtil.isPhone(getApplicationContext())){
+            //2为手机
+
+        }else {
+            //1为机顶盒
+
+            btn_alarmwarning.setVisibility(View.GONE);
+        }
     }
 
 

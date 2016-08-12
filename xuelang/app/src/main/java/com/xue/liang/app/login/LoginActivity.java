@@ -3,9 +3,11 @@ package com.xue.liang.app.login;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.oneapm.agent.android.OneApmAgent;
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.RegisterResp;
@@ -15,6 +17,7 @@ import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.main.MainActivity_;
+import com.xue.liang.app.utils.ToastUtil;
 import com.xue.liang.app.utils.Utils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -30,6 +33,7 @@ public class LoginActivity extends FragmentActivity {
 
     @AfterViews
     protected void initView() {
+        OneApmAgent.init(this.getApplicationContext()).setToken("B14FAE4609052F93F64BCD83EFBDA70489").start();
     }
 
     //@Click(R.id.login_btn)
@@ -59,7 +63,7 @@ public class LoginActivity extends FragmentActivity {
 
             @Override
             public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
-                if(true){
+                if (true) {
                     toMainAcitivty();
                     return;
                 }
@@ -85,7 +89,7 @@ public class LoginActivity extends FragmentActivity {
 
         String url = Config.getRegisterUrl();
         RegisterReq registerReq = new RegisterReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
-        HttpManager.HttpBuilder<RegisterReq, RegisterResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<RegisterReq, RegisterResp> httpBuilder = new HttpManager.HttpBuilder<RegisterReq, RegisterResp>();
         httpBuilder.buildRequestValue(registerReq).buildResponseClass(RegisterResp.class).
                 buildUrl(url).
                 buildHttpListenter(httpListenter).
@@ -106,5 +110,13 @@ public class LoginActivity extends FragmentActivity {
         String telRegex = "[1][358]\\d{9}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         if (TextUtils.isEmpty(mobiles)) return false;
         else return mobiles.matches(telRegex);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        String code = event.getKeyCode() + "";
+       // ToastUtil.showToast(getApplicationContext(), "event.getKeyCode()===" + code + "keyCode===" + keyCode, Toast.LENGTH_SHORT);
+        return super.onKeyDown(keyCode, event);
+
     }
 }

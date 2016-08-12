@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.login.LoginActivity_;
+import com.xue.liang.app.main.MainActivity;
 import com.xue.liang.app.main.MainActivity_;
 import com.xue.liang.app.utils.DeviceUtil;
 
@@ -78,7 +79,7 @@ public class SplashActivity extends FragmentActivity {
 			//如果是手机那么就跳转到登陆界面
 
 			Intent intent = new Intent();
-			intent.setClass(this, LoginActivity_.class);
+			intent.setClass(this, MainActivity_.class);
 			startActivity(intent);
 		}else{
 

@@ -28,6 +28,8 @@ import okhttp3.Response;
  */
 public class HttpManager<Q, R> {
 
+    private final  String TAG=HttpManager.class.getSimpleName();
+
     private Gson gson = new Gson();
 
     private Class<Q> mQclass;
@@ -77,6 +79,8 @@ public class HttpManager<Q, R> {
         }
 
         String json = gson.toJson(httpRequest.getData());
+
+        Log.i(TAG,TAG+"request"+"url==="+url+"request"+"==="+json);
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE_JSON, json);
         Request request = new Request.Builder().tag(tag).url(url).post(requestBody).build();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -113,6 +117,7 @@ public class HttpManager<Q, R> {
             public void onResponse(Call call, Response response) throws IOException {
 
                 String json = response.body().string();
+                Log.i(TAG,TAG+"response"+"url==="+url+"response==="+json);
                 httpReponse = new HttpReponse();
                 try{
                     R r = gson.fromJson(json, mRClass);

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.xue.liang.app.R;
@@ -18,6 +19,7 @@ import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.info.adapter.InfoAdapter;
+import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -37,7 +39,11 @@ public class InfoListActivity extends FragmentActivity {
     private InfoAdapter infoAdapter;
 
 
-    private List<NoticeResp.NoticeItem> noticeItemList = new ArrayList<>();
+    private List<NoticeResp.NoticeItem> noticeItemList = new ArrayList<NoticeResp.NoticeItem>();
+
+
+    @ViewById(R.id.btn_alarmwarning)
+    ImageButton btn_alarmwarning;
 
 
     @Click(R.id.bt_back)
@@ -52,6 +58,16 @@ public class InfoListActivity extends FragmentActivity {
     public void initView() {
         initaAdapter();
         getNoticeList(getSupportFragmentManager());
+
+
+        if(DeviceUtil.isPhone(getApplicationContext())){
+            //2为手机
+
+        }else {
+            //1为机顶盒
+
+            btn_alarmwarning.setVisibility(View.GONE);
+        }
     }
 
     private void initaAdapter() {
@@ -94,7 +110,7 @@ public class InfoListActivity extends FragmentActivity {
 
         String url = Config.getNoticeUrl();
         NoticeReq noticeReq = new NoticeReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
-        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<NoticeReq, NoticeResp>();
         httpBuilder.buildRequestValue(noticeReq)
                 .buildResponseClass(NoticeResp.class)
                 .buildUrl(url)

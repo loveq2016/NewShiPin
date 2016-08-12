@@ -28,6 +28,7 @@
             android:layout_marginLeft="12dp"
             android:singleLine="true"
             android:gravity="left|center"
+            android:textSize="24sp"
             android:layout_toRightOf="@+id/play_image_icon"
             android:text="test" />
     </RelativeLayout>

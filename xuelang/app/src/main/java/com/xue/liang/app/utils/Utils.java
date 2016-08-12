@@ -45,7 +45,7 @@ public class Utils {
 
         String url = Config.getNoticeUrl();
         NoticeReq noticeReq = new NoticeReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
-        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<NoticeReq, NoticeResp>();
         httpBuilder.buildRequestValue(noticeReq)
                 .buildResponseClass(NoticeResp.class)
                 .buildUrl(url)
@@ -73,7 +73,7 @@ public class Utils {
 
         String url = Config.getNoticeDetailUrl();
         NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<NoticeDetailReq, NoticeDetailResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<NoticeDetailReq, NoticeDetailResp> httpBuilder = new HttpManager.HttpBuilder<NoticeDetailReq, NoticeDetailResp>();
         httpBuilder.buildRequestValue(noticeDetailReq)
                 .buildResponseClass(NoticeDetailResp.class)
                 .buildUrl(url)
@@ -101,7 +101,7 @@ public class Utils {
         String url = Config.getDeviceListUrl();
         DeviceListReq deviceListReq=new DeviceListReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,null,null);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<DeviceListReq, DeviceListResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<DeviceListReq, DeviceListResp> httpBuilder = new HttpManager.HttpBuilder<DeviceListReq, DeviceListResp>();
         httpBuilder.buildRequestValue(deviceListReq)
                 .buildResponseClass(DeviceListResp.class)
                 .buildUrl(url)
@@ -134,7 +134,7 @@ public class Utils {
         //DeviceListReq deviceListReq=new DeviceListReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,null,null);
        SendAlarmReq sendAlarmReq=new SendAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,alermType,null);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp> httpBuilder = new HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp>();
         httpBuilder.buildRequestValue(sendAlarmReq)
                 .buildResponseClass(SendAlarmResp.class)
                 .buildUrl(url)
@@ -165,7 +165,7 @@ public class Utils {
 
         UpdateAlarmReq updateAlarmReq=new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,content,fileid);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp>();
         httpBuilder.buildRequestValue(updateAlarmReq)
                 .buildResponseClass(UpdateAlarmResp.class)
                 .buildUrl(url)

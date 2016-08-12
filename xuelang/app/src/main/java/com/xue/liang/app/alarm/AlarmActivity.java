@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -91,7 +92,7 @@ public class AlarmActivity extends FragmentActivity {
     private static int CARMERA = 1;
 
 
-    private List<String> listFilePath = new ArrayList<>();
+    private List<String> listFilePath = new ArrayList<String>();
 
 
     @Click({R.id.bt_image0, R.id.bt_image1, R.id.bt_image2, R.id.bt_image3, R.id.bt_image4})
@@ -119,11 +120,11 @@ public class AlarmActivity extends FragmentActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            startActivityForResult(intent, SELECT_PIC_KITKAT);//4.4版本
-        } else {
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+//            startActivityForResult(intent, SELECT_PIC_KITKAT);//4.4版本
+//        } else {
             startActivityForResult(intent, SELECT_PIC);//4.4以下版本，先不处理
-        }
+      //  }
 
 
     }
@@ -311,7 +312,7 @@ public class AlarmActivity extends FragmentActivity {
             pd.dismiss();
             UpdateResp updateResp = new Gson().fromJson(msg.obj.toString(), UpdateResp.class);
             if (updateResp.getRet_code() == 0) {
-                List<String> fileList = new ArrayList<>();
+                List<String> fileList = new ArrayList<String>();
                 for (UpdateResp.UpdateFile updateFile : updateResp.getResponse()) {
                     fileList.add(updateFile.getFile_id());
                 }
@@ -346,7 +347,7 @@ public class AlarmActivity extends FragmentActivity {
 
         UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, content, fileids);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp>();
         httpBuilder.buildRequestValue(updateAlarmReq)
                 .buildResponseClass(UpdateAlarmResp.class)
                 .buildUrl(url)

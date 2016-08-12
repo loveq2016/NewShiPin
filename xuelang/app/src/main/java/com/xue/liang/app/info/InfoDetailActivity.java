@@ -3,9 +3,11 @@ package com.xue.liang.app.info;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
+import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -31,6 +34,9 @@ public class InfoDetailActivity extends FragmentActivity {
     TextView text_content;
 
 
+    @ViewById(R.id.btn_alarmwarning)
+    ImageButton btn_alarmwarning;
+
     @AfterViews
     public void initview() {
 
@@ -38,6 +44,17 @@ public class InfoDetailActivity extends FragmentActivity {
         Bundle bundle = intent.getBundleExtra("bundle");
         String guid = bundle.getString("guid");
         getNoticeDetail(guid, getSupportFragmentManager());
+
+
+        if(DeviceUtil.isPhone(getApplicationContext())){
+            //2为手机
+
+        }else {
+            //1为机顶盒
+
+            btn_alarmwarning.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -67,7 +84,7 @@ public class InfoDetailActivity extends FragmentActivity {
 
         String url = Config.getNoticeDetailUrl();
         NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<NoticeDetailReq, NoticeDetailResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<NoticeDetailReq, NoticeDetailResp> httpBuilder = new HttpManager.HttpBuilder<NoticeDetailReq, NoticeDetailResp>();
         httpBuilder.buildRequestValue(noticeDetailReq)
                 .buildResponseClass(NoticeDetailResp.class)
                 .buildUrl(url)

@@ -11,14 +11,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueware.agent.android.A;
 import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
@@ -40,6 +45,7 @@ import com.xue.liang.app.info.InfoListActivity_;
 import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 import com.xue.liang.app.type.HttpType;
+import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -80,15 +86,33 @@ public class MainActivity extends FragmentActivity {
     @ViewById(R.id.tv_gundong_info)
     TextView tv_gundong_info;
 
+    @ViewById(R.id.btn_people_info)
+    Button btn_people_info;
+
+
+    @ViewById(R.id.btn_alarmwarning)
+    ImageButton btn_alarmwarning;
+
     private PlayerAdapter playerAdapter;
 
-    private List<DeviceItem> deviceItemList = new ArrayList<>();
+    private List<DeviceItem> deviceItemList = new ArrayList<DeviceItem>();
 
     @AfterViews
     public void initView() {
         initFragment();
         initAdapter();
         getNoticeList();
+
+        if(DeviceUtil.isPhone(getApplicationContext())){
+            //2为手机
+
+        }else {
+           //1为机顶盒
+            btn_people_info.setVisibility(View.GONE);
+            btn_alarmwarning.setVisibility(View.GONE);
+        }
+
+        startPaomaDENG();
     }
 
     @Click({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
@@ -164,7 +188,7 @@ public class MainActivity extends FragmentActivity {
         String url = Config.getDeviceListUrl();
         DeviceListReq deviceListReq = new DeviceListReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, null, null);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<DeviceListReq, DeviceListResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<DeviceListReq, DeviceListResp> httpBuilder = new HttpManager.HttpBuilder<DeviceListReq, DeviceListResp>();
         httpBuilder.buildRequestValue(deviceListReq)
                 .buildResponseClass(DeviceListResp.class)
                 .buildUrl(url)
@@ -184,7 +208,7 @@ public class MainActivity extends FragmentActivity {
     public void toEasyInfoPeopleActivity() {
 
         Bundle bundle = new Bundle();
-        bundle.putString("url", "http://baidu.com");
+        bundle.putString("phone", Config.TEST_PHONE_NUMBER);
         Intent intent = new Intent();
         intent.setClass(this, EasyInfoPeopleActivity_.class);
         intent.putExtras(bundle);
@@ -261,7 +285,7 @@ public class MainActivity extends FragmentActivity {
         //DeviceListReq deviceListReq=new DeviceListReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,null,null);
         SendAlarmReq sendAlarmReq = new SendAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, String.valueOf(alermType), null);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
-        HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp> httpBuilder = new HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp>();
         httpBuilder.buildRequestValue(sendAlarmReq)
                 .buildResponseClass(SendAlarmResp.class)
                 .buildUrl(url)
@@ -305,12 +329,37 @@ public class MainActivity extends FragmentActivity {
 
         String url = Config.getNoticeUrl();
         NoticeReq noticeReq = new NoticeReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
-        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<>();
+        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<NoticeReq, NoticeResp>();
         httpBuilder.buildRequestValue(noticeReq)
                 .buildResponseClass(NoticeResp.class)
                 .buildUrl(url)
                 .buildHttpListenter(httpListenter)
                 .build()
                 .dopost("Notice");
+    }
+
+    /**
+     * 开始跑马灯
+     */
+    public void startPaomaDENG(){
+        AnimationSet animationSet = new AnimationSet(true);
+        //参数1～2：x轴的开始位置
+        //参数3～4：y轴的开始位置
+        //参数5～6：x轴的结束位置
+        //参数7～8：x轴的结束位置
+        TranslateAnimation translateAnimation =
+                new TranslateAnimation(
+                        Animation.RELATIVE_TO_PARENT,0f,
+                        Animation.RELATIVE_TO_PARENT,-1f,
+                        Animation.RELATIVE_TO_SELF,0f,
+                        Animation.RELATIVE_TO_SELF,0f);
+        translateAnimation.setDuration(3000);
+        translateAnimation.setRepeatMode(TranslateAnimation.RESTART);
+        translateAnimation.setRepeatCount(-1);
+        animationSet.addAnimation(translateAnimation);
+
+
+        tv_gundong_info.startAnimation(animationSet);
+
     }
 }

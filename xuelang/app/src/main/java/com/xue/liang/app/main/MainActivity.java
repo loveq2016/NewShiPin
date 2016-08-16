@@ -69,8 +69,6 @@ public class MainActivity extends FragmentActivity {
     ListView listview;
 
 
-    @ViewById(R.id.bottom_rl)
-    RelativeLayout bottom_rl;
 
     @ViewById(R.id.ll_btn)
     LinearLayout ll_btn;
@@ -92,6 +90,12 @@ public class MainActivity extends FragmentActivity {
 
     @ViewById(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
+
+    @ViewById(R.id.bottom_rl_gundong_info)
+    RelativeLayout bottom_rl_gundong_info;
+
+    @ViewById(R.id.bottom_rl_all)
+    RelativeLayout bottom_rl_all;
 
     private PlayerAdapter playerAdapter;
 
@@ -122,13 +126,19 @@ public class MainActivity extends FragmentActivity {
             btn_full_sceen_other.setVisibility(View.VISIBLE);
             title_main.setVisibility(View.GONE);
             listview.setVisibility(View.GONE);
-            bottom_rl.setVisibility(View.GONE);
+
+            bottom_rl_gundong_info.setVisibility(View.GONE);
+            bottom_rl_all.setVisibility(View.GONE);
+
             ll_btn.setVisibility(View.GONE);
+
+
         } else {
             btn_full_sceen_other.setVisibility(View.GONE);
             title_main.setVisibility(View.VISIBLE);
             listview.setVisibility(View.VISIBLE);
-            bottom_rl.setVisibility(View.VISIBLE);
+            bottom_rl_gundong_info.setVisibility(View.VISIBLE);
+            bottom_rl_all.setVisibility(View.VISIBLE);
             ll_btn.setVisibility(View.VISIBLE);
         }
 

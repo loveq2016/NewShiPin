@@ -79,7 +79,7 @@ public class SplashActivity extends FragmentActivity {
 			//如果是手机那么就跳转到登陆界面
 
 			Intent intent = new Intent();
-			intent.setClass(this, MainActivity_.class);
+			intent.setClass(this, LoginActivity_.class);
 			startActivity(intent);
 		}else{
 

@@ -63,10 +63,10 @@ public class LoginActivity extends FragmentActivity {
 
             @Override
             public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
-                if (true) {
-                    toMainAcitivty();
-                    return;
-                }
+//                if (true) {
+//                    toMainAcitivty();
+//                    return;
+//                }
 
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getRet_code() != null) {
                     if (httpReponse.getData().getRet_code() == 0) {

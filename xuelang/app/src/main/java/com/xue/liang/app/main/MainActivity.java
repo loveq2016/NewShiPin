@@ -363,7 +363,7 @@ public class MainActivity extends FragmentActivity {
                         Animation.RELATIVE_TO_PARENT,-1f,
                         Animation.RELATIVE_TO_SELF,0f,
                         Animation.RELATIVE_TO_SELF,0f);
-        translateAnimation.setDuration(3000);
+        translateAnimation.setDuration(5000);
         translateAnimation.setRepeatMode(TranslateAnimation.RESTART);
         translateAnimation.setRepeatCount(-1);
         animationSet.addAnimation(translateAnimation);

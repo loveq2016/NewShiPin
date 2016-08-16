@@ -55,6 +55,9 @@
         android:id="@+id/text_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:lineSpacingExtra="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

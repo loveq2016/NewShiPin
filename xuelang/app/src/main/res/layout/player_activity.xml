@@ -18,7 +18,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/list"
+            android:padding="6dp"
+            android:layout_margin="6dp"
+            android:background="@mipmap/list"
             android:choiceMode="singleChoice"
             android:listSelector="@drawable/bt_selector"
             tools:listitem="@layout/player_item">
@@ -58,7 +60,6 @@
                     android:id="@+id/bottom_rl_gundong_info"
                     android:layout_width="wrap_content"
                     android:background="#252527"
-                    android:padding="6dp"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/bottom_rl_all">
 
@@ -83,6 +84,7 @@
                         android:id="@+id/ll_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true">
 
@@ -99,6 +101,7 @@
                             android:id="@+id/btn_people_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="6dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:background="@drawable/btn_people_info_selector" />
@@ -201,6 +204,7 @@
                         android:background="@drawable/full_screen_selector" />
 
                 </RelativeLayout>
+
             </RelativeLayout>
 
 

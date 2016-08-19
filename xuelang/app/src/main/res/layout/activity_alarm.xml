@@ -162,6 +162,18 @@
                 android:background="@drawable/bt_selector_update"
                 android:text="拍照报警"
                 android:textColor="@android:color/white" />
+            <Button
+                android:id="@+id/bt_alrm_to_video"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/bt_alrm_to_carme"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="30dp"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bt_selector_update"
+                android:text="录像报警"
+                android:textColor="@android:color/white" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

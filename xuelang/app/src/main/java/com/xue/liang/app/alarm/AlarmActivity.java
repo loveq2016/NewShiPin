@@ -90,6 +90,7 @@ public class AlarmActivity extends FragmentActivity {
     private static int SELECT_PIC = 2;
 
     private static int CARMERA = 1;
+    public static int VIDEO=3;
 
 
     private List<String> listFilePath = new ArrayList<String>();
@@ -136,6 +137,8 @@ public class AlarmActivity extends FragmentActivity {
             setdataFromImageList(requestCode, resultCode, data);
         } else if (requestCode == CARMERA) {
             setdatasaveFille(requestCode, resultCode, data);
+        }else if(requestCode==VIDEO){
+            setdataFromVideo(requestCode, resultCode, data);
         }
 
     }
@@ -190,6 +193,26 @@ public class AlarmActivity extends FragmentActivity {
             }
         }
 
+    }
+
+    private void setdataFromVideo(int requestCode, int resultCode, Intent data){
+        String videoPath = "";
+        if (resultCode == RESULT_OK
+                && null != data) {
+            data.getData();
+
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Video.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            videoPath = cursor.getString(columnIndex);
+            cursor.close();
+
+            updateFile(videoPath);
+        }
     }
 
     private void setdataFromImageList(int requestCode, int resultCode, Intent data) {
@@ -359,8 +382,15 @@ public class AlarmActivity extends FragmentActivity {
 
     @Click(R.id.bt_alrm_to_carme)
     public void toCarmera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CARMERA);
+    }
+    @Click(R.id.bt_alrm_to_video)
+    public void toVideo() {
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
+        startActivityForResult(intent, VIDEO);
     }
 
     @Click(R.id.bt_back)

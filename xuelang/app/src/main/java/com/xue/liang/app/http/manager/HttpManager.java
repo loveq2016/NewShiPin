@@ -28,7 +28,7 @@ import okhttp3.Response;
  */
 public class HttpManager<Q, R> {
 
-    private final  String TAG=HttpManager.class.getSimpleName();
+    private final String TAG = HttpManager.class.getSimpleName();
 
     private Gson gson = new Gson();
 
@@ -42,8 +42,14 @@ public class HttpManager<Q, R> {
     public HttpReponse<R> httpReponse;
     public HttpListenter<R> httpListenter;
 
+    OkHttpClient okHttpClient = null;
+
+    public HttpManager() {
+        okHttpClient=OkhttpUtils.getOkHttpClientInstance();
+    }
+
+
     private Handler uiHandler = new Handler(Looper.getMainLooper());
-    ;
 
 
     public void ecUrl(String url) {
@@ -73,31 +79,24 @@ public class HttpManager<Q, R> {
     }
 
     public void dopost(String tag) {
-        LoadingHttpListener loadingHttpListener=null;
-        if(httpListenter!=null&&httpListenter instanceof LoadingHttpListener){
-            loadingHttpListener= (LoadingHttpListener) httpListenter;
+        LoadingHttpListener loadingHttpListener = null;
+        if (httpListenter != null && httpListenter instanceof LoadingHttpListener) {
+            loadingHttpListener = (LoadingHttpListener) httpListenter;
         }
 
         String json = gson.toJson(httpRequest.getData());
 
-        Log.i(TAG,TAG+"request"+"url==="+url+"request"+"==="+json);
+        Log.i(TAG, TAG + "request" + "url===" + url + "request" + "===" + json);
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE_JSON, json);
-        Request request = new Request.Builder().tag(tag).url(url).post(requestBody).build();
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(50, TimeUnit.SECONDS)
-                .build();
-       // OkHttpClient okHttpClient = new OkHttpClient();
-        if(loadingHttpListener!=null){
+        Request request = new Request.Builder().addHeader("Connection", "close").tag(tag).url(url).post(requestBody).build();
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(5, TimeUnit.SECONDS)
+//                .readTimeout(50, TimeUnit.SECONDS)
+//                .build();
+
+        if (loadingHttpListener != null) {
             loadingHttpListener.showDialog();
         }
-
-//        try {
-//            Response response= okHttpClient.newCall(request).execute();
-//            Log.d("测试代码","测试代码--------"+response.body().string());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
 
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -117,9 +116,9 @@ public class HttpManager<Q, R> {
             public void onResponse(Call call, Response response) throws IOException {
 
                 String json = response.body().string();
-                Log.i(TAG,TAG+"response"+"url==="+url+"response==="+json);
+                Log.i(TAG, TAG + "response" + "url===" + url + "response===" + json);
                 httpReponse = new HttpReponse();
-                try{
+                try {
                     R r = gson.fromJson(json, mRClass);
                     httpReponse.setData(r);
                     uiHandler.post(new Runnable() {
@@ -128,8 +127,8 @@ public class HttpManager<Q, R> {
                             httpListenter.onSuccess(httpReponse);
                         }
                     });
-                }catch (final Exception e){
-                    final String msg=e.toString();
+                } catch (final Exception e) {
+                    final String msg = e.toString();
                     uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -137,7 +136,6 @@ public class HttpManager<Q, R> {
                         }
                     });
                 }
-
 
 
             }
@@ -201,6 +199,30 @@ public class HttpManager<Q, R> {
         }
 
 
+    }
+
+    public void cancelTag(Object tag) {
+        for (Call call : okHttpClient.dispatcher().queuedCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+        for (Call call : okHttpClient.dispatcher().runningCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+    }
+
+    public void cancelAll() {
+        for (Call call : okHttpClient.dispatcher().queuedCalls()) {
+
+            call.cancel();
+
+        }
+        for (Call call : okHttpClient.dispatcher().runningCalls()) {
+            call.cancel();
+        }
     }
 
 

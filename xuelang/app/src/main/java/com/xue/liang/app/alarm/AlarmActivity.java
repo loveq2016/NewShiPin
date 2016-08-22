@@ -37,6 +37,7 @@ import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.update.PostFile;
+import com.xue.liang.app.update.okupdateFile.UpdateFileUtils;
 import com.xue.liang.app.utils.Pathutil;
 import com.xue.liang.app.utils.ToastUtil;
 
@@ -269,6 +270,7 @@ public class AlarmActivity extends FragmentActivity {
     private void updateFile(String path) {
         pd = new ProgressDialog(this);
         pd.setMessage("正在上传...");
+        pd.setCancelable(false);
         pd.show();
         String t = MD5.toMD5(System.currentTimeMillis() + "");
         File file = new File(path);
@@ -297,6 +299,7 @@ public class AlarmActivity extends FragmentActivity {
     private void updateFile(List<String> paths) {
         pd = new ProgressDialog(this);
         pd.setMessage("正在上传...");
+        pd.setCancelable(false);
         pd.show();
 
         params = new HashMap<String, String>();
@@ -310,22 +313,22 @@ public class AlarmActivity extends FragmentActivity {
             files.put(filename, new File(path));
         }
 
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    result = PostFile.post(Config.getUpdateFile(), params, files);
-                } catch (IOException e) {
-                    pd.dismiss();
-                    e.printStackTrace();
-                }
-                Message msg = handler.obtainMessage();
-                msg.what = 1;
-                msg.obj = result;
-                handler.sendMessage(msg);
-            }
-        }).start();
+        UpdateFileUtils.getInstance().upload(files);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    result = PostFile.post(Config.getUpdateFile(), params, files);
+//                } catch (IOException e) {
+//                    pd.dismiss();
+//                    e.printStackTrace();
+//                }
+//                Message msg = handler.obtainMessage();
+//                msg.what = 1;
+//                msg.obj = result;
+//                handler.sendMessage(msg);
+//            }
+//        }).start();
     }
 
     Handler handler = new Handler() {

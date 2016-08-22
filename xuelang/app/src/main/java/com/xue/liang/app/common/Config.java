@@ -12,14 +12,14 @@ public class Config {
 
     public static final String HTPP = "http://";
     //121.41.32.246:9004
-    public static final String IP = "121.41.32.246";
-    public static final String PORT = ":9004";
+    public static  String IP = "182.150.56.75";//182.150.56.75:9002    121.41.32.246:9004
+    public static  String PORT = "9002";
 
     private static String getStartUrl() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(HTPP);
         stringBuilder.append(IP);
-        stringBuilder.append(PORT);
+        stringBuilder.append(":"+PORT);
         return stringBuilder.toString();
 
     }

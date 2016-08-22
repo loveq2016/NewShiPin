@@ -34,6 +34,7 @@ import com.xue.liang.app.data.reponse.SendAlarmResp;
 import com.xue.liang.app.data.request.DeviceListReq;
 import com.xue.liang.app.data.request.NoticeReq;
 import com.xue.liang.app.data.request.SendAlarmReq;
+import com.xue.liang.app.dialog.SettingFragmentDialog;
 import com.xue.liang.app.event.UrlEvent;
 import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
@@ -67,7 +68,6 @@ public class MainActivity extends FragmentActivity {
 
     @ViewById(R.id.listview)
     ListView listview;
-
 
 
     @ViewById(R.id.ll_btn)
@@ -107,11 +107,11 @@ public class MainActivity extends FragmentActivity {
         initAdapter();
         getNoticeList();
 
-        if(DeviceUtil.isPhone(getApplicationContext())){
+        if (DeviceUtil.isPhone(getApplicationContext())) {
             //2为手机
 
-        }else {
-           //1为机顶盒
+        } else {
+            //1为机顶盒
             btn_people_info.setVisibility(View.GONE);
             btn_alarmwarning.setVisibility(View.GONE);
         }
@@ -189,7 +189,7 @@ public class MainActivity extends FragmentActivity {
 
                 deviceItemList = httpReponse.getData().getResponse();
                 playerAdapter.reshData(deviceItemList);
-                if (deviceItemList!=null&&!deviceItemList.isEmpty() && !TextUtils.isEmpty(deviceItemList.get(0).getDev_name()))
+                if (deviceItemList != null && !deviceItemList.isEmpty() && !TextUtils.isEmpty(deviceItemList.get(0).getDev_name()))
                     little_title_tv.setText(deviceItemList.get(0).getDev_name());
             }
         }, fragmentManager);
@@ -309,9 +309,20 @@ public class MainActivity extends FragmentActivity {
     public void toAlarmActivity() {
         Intent intent = new Intent();
         intent.setClass(this, AlarmActivity_.class);
-
-
         startActivity(intent);
+    }
+
+    @Click(R.id.btn_setting)
+    public void toSettingDialog() {
+        SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
+        msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
+            @Override
+            public void onSuccess() {
+                finish();
+            }
+        });
+        msettingFragmentDialog.show(getSupportFragmentManager(),
+                "dialog");
     }
 
     public void getNoticeList() {
@@ -325,7 +336,7 @@ public class MainActivity extends FragmentActivity {
             public void onSuccess(HttpReponse<NoticeResp> httpReponse) {
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && !httpReponse.getData().getResponse().isEmpty()) {
                     List<NoticeResp.NoticeItem> noticeItems = httpReponse.getData().getResponse();
-                    if (noticeItems!=null&&!noticeItems.isEmpty()) {
+                    if (noticeItems != null && !noticeItems.isEmpty()) {
                         if (!TextUtils.isEmpty(noticeItems.get(0).getTitle())) {
                             tv_gundong_info.setText(noticeItems.get(0).getTitle());
                         }
@@ -351,7 +362,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * 开始跑马灯
      */
-    public void startPaomaDENG(){
+    public void startPaomaDENG() {
         AnimationSet animationSet = new AnimationSet(true);
         //参数1～2：x轴的开始位置
         //参数3～4：y轴的开始位置
@@ -359,10 +370,10 @@ public class MainActivity extends FragmentActivity {
         //参数7～8：x轴的结束位置
         TranslateAnimation translateAnimation =
                 new TranslateAnimation(
-                        Animation.RELATIVE_TO_PARENT,0f,
-                        Animation.RELATIVE_TO_PARENT,-1f,
-                        Animation.RELATIVE_TO_SELF,0f,
-                        Animation.RELATIVE_TO_SELF,0f);
+                        Animation.RELATIVE_TO_PARENT, 0f,
+                        Animation.RELATIVE_TO_PARENT, -1f,
+                        Animation.RELATIVE_TO_SELF, 0f,
+                        Animation.RELATIVE_TO_SELF, 0f);
         translateAnimation.setDuration(5000);
         translateAnimation.setRepeatMode(TranslateAnimation.RESTART);
         translateAnimation.setRepeatCount(-1);

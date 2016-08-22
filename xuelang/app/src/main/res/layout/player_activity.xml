@@ -17,12 +17,12 @@
             android:id="@+id/listview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="6dp"
             android:layout_margin="6dp"
+            android:layout_weight="1"
             android:background="@mipmap/list"
             android:choiceMode="singleChoice"
             android:listSelector="@drawable/bt_selector"
+            android:padding="6dp"
             tools:listitem="@layout/player_item">
 
         </ListView>
@@ -55,157 +55,169 @@
                 android:visibility="gone" />
 
 
+            <RelativeLayout
+                android:id="@+id/bottom_rl_gundong_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bottom_rl_all"
+                android:background="#252527">
 
                 <RelativeLayout
-                    android:id="@+id/bottom_rl_gundong_info"
-                    android:layout_width="wrap_content"
-                    android:background="#252527"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/bottom_rl_all">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@+id/ll_info">
-
-                        <TextView
-                            android:id="@+id/tv_gundong_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:gravity="center"
-                            android:text="" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="6dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true">
-
-                        <Button
-                            android:id="@+id/btn_info_notice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="12dp"
-                            android:layout_toLeftOf="@+id/btn_people_info"
-                            android:background="@drawable/btn_info_notice_selector" />
-
-                        <Button
-                            android:id="@+id/btn_people_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="6dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/btn_people_info_selector" />
-
-                    </LinearLayout>
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/bottom_rl_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="#0C0C0E">
+                    android:layout_centerInParent="true"
+                    android:layout_toLeftOf="@+id/ll_info">
 
-                    <LinearLayout
-                        android:id="@+id/ll_btn"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_gundong_info"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/btn_full_sceen"
-                        android:orientation="horizontal">
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="" />
+                </RelativeLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="6dp">
-
-                            <Button
-                                android:id="@+id/btn_fire"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@drawable/bt_fire_selector"
-                                android:drawableLeft="@mipmap/fire_logo"
-                                android:paddingBottom="6dp"
-                                android:paddingLeft="6dp"
-                                android:paddingTop="6dp"
-                                android:text="火警"
-                                android:textColor="@android:color/white"
-                                android:textSize="16sp" />
-
-                            <Button
-                                android:id="@+id/btn_theft"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="6dp"
-                                android:background="@drawable/bt_theft_selector"
-                                android:drawableLeft="@mipmap/theif_logo"
-                                android:paddingBottom="6dp"
-                                android:paddingLeft="6dp"
-                                android:paddingTop="6dp"
-                                android:text="盗贼"
-                                android:textColor="@android:color/white"
-                                android:textSize="16sp" />
-
-                            <Button
-                                android:id="@+id/btn_hurt"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="6dp"
-                                android:background="@drawable/bt_hurt_selector"
-                                android:drawableLeft="@mipmap/hurt_logo"
-                                android:paddingBottom="6dp"
-                                android:paddingLeft="6dp"
-                                android:paddingTop="6dp"
-                                android:text="伤害"
-                                android:textColor="@android:color/white"
-                                android:textSize="16sp" />
-
-                            <Button
-                                android:id="@+id/btn_other"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="6dp"
-                                android:background="@drawable/bt_other_selector"
-                                android:drawableLeft="@mipmap/other_logo"
-                                android:paddingBottom="6dp"
-                                android:paddingLeft="6dp"
-                                android:paddingTop="6dp"
-                                android:text="其他"
-                                android:textColor="@android:color/white"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-
-                    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp">
 
                     <Button
-                        android:id="@+id/btn_full_sceen"
+                        android:id="@+id/btn_info_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@+id/btn_people_info"
+                        android:background="@drawable/btn_info_notice_selector" />
+
+                    <Button
+                        android:id="@+id/btn_people_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="12dp"
-                        android:background="@drawable/full_screen_selector" />
+                        android:layout_marginRight="6dp"
+                        android:background="@drawable/btn_people_info_selector" />
 
-                </RelativeLayout>
+                </LinearLayout>
+
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottom_rl_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#0C0C0E">
+
+                <LinearLayout
+                    android:id="@+id/ll_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/btn_full_sceen"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="6dp"
+                        android:paddingTop="6dp">
+
+                        <Button
+                            android:id="@+id/btn_fire"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bt_fire_selector"
+                            android:drawableLeft="@mipmap/fire_logo"
+                            android:paddingBottom="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:text="火警"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_theft"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/bt_theft_selector"
+                            android:drawableLeft="@mipmap/theif_logo"
+                            android:paddingBottom="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:text="盗贼"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_hurt"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/bt_hurt_selector"
+                            android:drawableLeft="@mipmap/hurt_logo"
+                            android:paddingBottom="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:text="伤害"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_other"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/bt_other_selector"
+                            android:drawableLeft="@mipmap/other_logo"
+                            android:paddingBottom="6dp"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:text="其他"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_setting"
+                            android:layout_width="70dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/bt_hurt_selector"
+                            android:text="设置"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/btn_full_sceen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/full_screen_selector" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
 
     </LinearLayout>

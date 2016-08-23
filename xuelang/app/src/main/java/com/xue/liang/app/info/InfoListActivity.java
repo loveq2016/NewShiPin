@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity_;
@@ -46,6 +47,9 @@ public class InfoListActivity extends FragmentActivity {
     ImageButton btn_alarmwarning;
 
 
+    @ViewById(R.id.tv_title)
+    TextView tv_title;
+
     @Click(R.id.bt_back)
     public void closeActivity() {
         finish();
@@ -56,6 +60,7 @@ public class InfoListActivity extends FragmentActivity {
 
     @AfterViews
     public void initView() {
+        tv_title.setText("公告通知");
         initaAdapter();
         getNoticeList(getSupportFragmentManager());
 

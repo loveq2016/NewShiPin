@@ -9,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity_;
@@ -29,9 +30,14 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
     @ViewById(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
 
+    @ViewById(R.id.tv_title)
+    TextView tv_title;
+
 
     @AfterViews
     public void initView() {
+
+        tv_title.setText("便民信息");
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();

@@ -16,9 +16,11 @@ import android.provider.MediaStore;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -79,6 +81,9 @@ public class AlarmActivity extends FragmentActivity {
 
     @ViewById(R.id.bt_image4)
     public ImageView bt_image4;
+
+    @ViewById(R.id.et_info)
+    public EditText et_info;
 
 
     private ImageView currentChooseImageView;
@@ -257,7 +262,14 @@ public class AlarmActivity extends FragmentActivity {
         if (!listFilePath.isEmpty()) {
             updateFile(listFilePath);
         } else {
-            ToastUtil.showToast(getApplicationContext(), "请选择需要上传的文件", Toast.LENGTH_SHORT);
+            //如果没有上传的文件那么直接报警
+
+            String text=et_info.getText().toString();
+            if(TextUtils.isEmpty(text)){
+                text="";
+            }
+            updateAlermHelp(getSupportFragmentManager(),text,new ArrayList<String>());
+            //ToastUtil.showToast(getApplicationContext(), "请选择需要上传的文件", Toast.LENGTH_SHORT);
         }
 
     }
@@ -313,22 +325,22 @@ public class AlarmActivity extends FragmentActivity {
             files.put(filename, new File(path));
         }
 
-        UpdateFileUtils.getInstance().upload(files);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    result = PostFile.post(Config.getUpdateFile(), params, files);
-//                } catch (IOException e) {
-//                    pd.dismiss();
-//                    e.printStackTrace();
-//                }
-//                Message msg = handler.obtainMessage();
-//                msg.what = 1;
-//                msg.obj = result;
-//                handler.sendMessage(msg);
-//            }
-//        }).start();
+        //UpdateFileUtils.getInstance().upload(files);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    result = PostFile.post(Config.getUpdateFile(), params, files);
+                } catch (IOException e) {
+                    pd.dismiss();
+                    e.printStackTrace();
+                }
+                Message msg = handler.obtainMessage();
+                msg.what = 1;
+                msg.obj = result;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     Handler handler = new Handler() {
@@ -336,17 +348,26 @@ public class AlarmActivity extends FragmentActivity {
         public void handleMessage(Message msg) {
             Log.d("测试代码", "测试代码+Json" + msg.obj);
             pd.dismiss();
-            UpdateResp updateResp = new Gson().fromJson(msg.obj.toString(), UpdateResp.class);
-            if (updateResp.getRet_code() == 0) {
-                List<String> fileList = new ArrayList<String>();
-                for (UpdateResp.UpdateFile updateFile : updateResp.getResponse()) {
-                    fileList.add(updateFile.getFile_id());
-                }
-                updateAlermHelp(getSupportFragmentManager(), "", fileList);
+            try{
+                UpdateResp updateResp = new Gson().fromJson(msg.obj.toString(), UpdateResp.class);
+                if (updateResp.getRet_code() == 0) {
+                    List<String> fileList = new ArrayList<String>();
+                    for (UpdateResp.UpdateFile updateFile : updateResp.getResponse()) {
+                        fileList.add(updateFile.getFile_id());
+                    }
+                    String text=et_info.getText().toString();
+                    if(TextUtils.isEmpty(text)){
+                        text="";
+                    }
+                    updateAlermHelp(getSupportFragmentManager(), text, fileList);
 
-            } else {
-                ToastUtil.showToast(getApplicationContext(), updateResp.getRet_string(), Toast.LENGTH_SHORT);
+                } else {
+                    ToastUtil.showToast(getApplicationContext(), updateResp.getRet_string(), Toast.LENGTH_SHORT);
+                }
+            }catch (Exception e){
+                ToastUtil.showToast(getApplicationContext(),"上传文件失败", Toast.LENGTH_SHORT);
             }
+
 
             super.handleMessage(msg);
         }
@@ -358,12 +379,12 @@ public class AlarmActivity extends FragmentActivity {
         HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<UpdateAlarmResp>() {
             @Override
             public void onFailed(String msg) {
-                ToastUtil.showToast(getApplicationContext(), "上传文件失败", Toast.LENGTH_SHORT);
+                ToastUtil.showToast(getApplicationContext(), "报警失败", Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onSuccess(HttpReponse<UpdateAlarmResp> httpReponse) {
-                ToastUtil.showToast(getApplicationContext(), "上传文件接口返回成功", Toast.LENGTH_SHORT);
+                ToastUtil.showToast(getApplicationContext(), "报警成功", Toast.LENGTH_SHORT);
 
             }
         }, fragmentManager);

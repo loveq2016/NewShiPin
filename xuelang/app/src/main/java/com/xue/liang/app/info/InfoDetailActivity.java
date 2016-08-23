@@ -37,9 +37,14 @@ public class InfoDetailActivity extends FragmentActivity {
     @ViewById(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
 
+
+    @ViewById(R.id.tv_title)
+    TextView tv_title;
     @AfterViews
     public void initview() {
 
+
+        tv_title.setText("公告通知");
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         String guid = bundle.getString("guid");

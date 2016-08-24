@@ -16,13 +16,17 @@ public class DeviceListResp {
 
     private String ret_string;
 
+    private String groupname;
+
+    private String groupid;
+
     /**
      * dev_url : rtsp://192.168.1.60:556/HongTranSvr?DevId=1071a8d2-44ec-438a-acc4-5ac6466dfa2d&Session=76553962637299
      * dev_name : xx社区
      * dev_id : 1071a8d2-44ec-438a-acc4-5ac6466dfa2d
      */
 
-    private List<DeviceItem> response;
+    private DeviceListResponse response;
 
     public int getRet_code() {
         return ret_code;
@@ -32,12 +36,48 @@ public class DeviceListResp {
         this.ret_code = ret_code;
     }
 
-    public List<DeviceItem> getResponse() {
+    public DeviceListResponse getResponse() {
         return response;
     }
 
-    public void setResponse(List<DeviceItem> response) {
+    public void setResponse(DeviceListResponse response) {
         this.response = response;
+    }
+
+    public static class DeviceListResponse {
+        private String groupid;
+        private String groupname;
+        /**
+         * dev_url : rtsp://60.255.1.179:558/HongTranSvr?DevId=f0fece8d-2d8e-4e6d-a888-229a033e3a54&Session=f0fece8d-2d8e-4e6d-a888-229a033e3a54
+         * dev_name : 御景花园门口
+         * dev_id : f0fece8d-2d8e-4e6d-a888-229a033e3a54
+         */
+
+        private List<DeviceItem> arList;
+
+        public String getGroupid() {
+            return groupid;
+        }
+
+        public void setGroupid(String groupid) {
+            this.groupid = groupid;
+        }
+
+        public String getGroupname() {
+            return groupname;
+        }
+
+        public void setGroupname(String groupname) {
+            this.groupname = groupname;
+        }
+
+        public List<DeviceItem> getArList() {
+            return arList;
+        }
+
+        public void setArList(List<DeviceItem> arList) {
+            this.arList = arList;
+        }
     }
 
     public static class DeviceItem {
@@ -77,5 +117,22 @@ public class DeviceListResp {
 
     public void setRet_string(String ret_string) {
         this.ret_string = ret_string;
+    }
+
+
+    public String getGroupname() {
+        return groupname;
+    }
+
+    public void setGroupname(String groupname) {
+        this.groupname = groupname;
+    }
+
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
     }
 }

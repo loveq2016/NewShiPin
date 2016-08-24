@@ -187,10 +187,14 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSuccess(HttpReponse<DeviceListResp> httpReponse) {
 
-                deviceItemList = httpReponse.getData().getResponse();
-                playerAdapter.reshData(deviceItemList);
-                if (deviceItemList != null && !deviceItemList.isEmpty() && !TextUtils.isEmpty(deviceItemList.get(0).getDev_name()))
-                    little_title_tv.setText(deviceItemList.get(0).getDev_name());
+                if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && httpReponse.getData().getResponse().getArList() != null) {
+                    deviceItemList = httpReponse.getData().getResponse().getArList();
+                    playerAdapter.reshData(deviceItemList);
+                    String groupname = httpReponse.getData().getResponse().getGroupname();//村名
+                    if (!TextUtils.isEmpty(groupname))
+                        little_title_tv.setText(groupname);
+                }
+
             }
         }, fragmentManager);
 

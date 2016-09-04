@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -251,13 +252,21 @@ public class MainActivity extends FragmentActivity {
 
 
     private void alarmDialog(final HttpType type) {
+        final ChoiceOnClickListener choiceListener =
+                new ChoiceOnClickListener();
+         String[] province = new String[] { "是否拨打6995" };
         Dialog alertDialog = new AlertDialog.Builder(this).setTitle("确定报警？")
-                .setMessage("您确定要报警？").setIcon(R.mipmap.ic_launcher)
+                .setIcon(R.mipmap.ic_launcher).setMultiChoiceItems(province, new boolean[]{true},choiceListener)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub
+
+
+                        if(choiceListener.getWhich()==0&&choiceListener.isChecked()){
+                            doCall6995();
+                        }
                         sendAlarm(type.value(), getSupportFragmentManager());
                     }
                 })
@@ -386,5 +395,42 @@ public class MainActivity extends FragmentActivity {
 
         tv_gundong_info.startAnimation(animationSet);
 
+    }
+
+    private void doCall6995(){
+        String number ="6995";
+        //用intent启动拨打电话
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+number));
+        startActivity(intent);
+    }
+
+
+    private class ChoiceOnClickListener implements DialogInterface.OnMultiChoiceClickListener {
+
+
+        private int which=0;
+        private boolean isChecked=true;
+
+        @Override
+        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+            this.which=which;
+            this.isChecked=isChecked;
+        }
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+
+        public int getWhich() {
+            return which;
+        }
+
+        public void setWhich(int which) {
+            this.which = which;
+        }
     }
 }

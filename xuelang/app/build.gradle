@@ -4,6 +4,16 @@ apply plugin: 'oneapm'
 def AAVersion = '3.2+'
 
 android {
+    signingConfigs {
+        myConfig {
+            storeFile file("xueliangkey.jks")
+            storePassword '123456'
+            keyAlias '123456'
+            keyPassword '123456'
+        }
+    }
+
+
     compileSdkVersion 14
     buildToolsVersion "24.0.0"
 
@@ -12,13 +22,16 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 4
-        versionName "2.0.1"
+        versionName "2.0.3"
     }
     buildTypes {
         release {
+            signingConfig  signingConfigs.myConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+
     }
 }
 

@@ -8,6 +8,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xue.liang.app.utils.CrashHandler;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by Administrator on 2016/8/11.
@@ -19,8 +24,20 @@ public class MianApplication extends Application {
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
         initImageLoader(getApplicationContext());
+        initOkUtils();
 
 
+    }
+
+    private void initOkUtils() {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .addInterceptor(new LoggerInterceptor("TAG"))
+                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                //其他配置
+                .build();
+
+        OkHttpUtils.initClient(okHttpClient);
     }
 
     public static void initImageLoader(Context context) {

@@ -96,7 +96,7 @@ public class AlarmActivity extends FragmentActivity {
     private static int SELECT_PIC = 2;
 
     private static int CARMERA = 1;
-    public static int VIDEO=3;
+    public static int VIDEO = 3;
 
 
     private List<String> listFilePath = new ArrayList<String>();
@@ -130,8 +130,8 @@ public class AlarmActivity extends FragmentActivity {
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 //            startActivityForResult(intent, SELECT_PIC_KITKAT);//4.4版本
 //        } else {
-            startActivityForResult(intent, SELECT_PIC);//4.4以下版本，先不处理
-      //  }
+        startActivityForResult(intent, SELECT_PIC);//4.4以下版本，先不处理
+        //  }
 
 
     }
@@ -143,7 +143,7 @@ public class AlarmActivity extends FragmentActivity {
             setdataFromImageList(requestCode, resultCode, data);
         } else if (requestCode == CARMERA) {
             setdatasaveFille(requestCode, resultCode, data);
-        }else if(requestCode==VIDEO){
+        } else if (requestCode == VIDEO) {
             setdataFromVideo(requestCode, resultCode, data);
         }
 
@@ -201,7 +201,7 @@ public class AlarmActivity extends FragmentActivity {
 
     }
 
-    private void setdataFromVideo(int requestCode, int resultCode, Intent data){
+    private void setdataFromVideo(int requestCode, int resultCode, Intent data) {
         String videoPath = "";
         if (resultCode == RESULT_OK
                 && null != data) {
@@ -264,11 +264,11 @@ public class AlarmActivity extends FragmentActivity {
         } else {
             //如果没有上传的文件那么直接报警
 
-            String text=et_info.getText().toString();
-            if(TextUtils.isEmpty(text)){
-                text="";
+            String text = et_info.getText().toString();
+            if (TextUtils.isEmpty(text)) {
+                text = "";
             }
-            updateAlermHelp(getSupportFragmentManager(),text,new ArrayList<String>());
+            updateAlermHelp(getSupportFragmentManager(), text, new ArrayList<String>());
             //ToastUtil.showToast(getApplicationContext(), "请选择需要上传的文件", Toast.LENGTH_SHORT);
         }
 
@@ -314,6 +314,8 @@ public class AlarmActivity extends FragmentActivity {
         pd.setCancelable(false);
         pd.show();
 
+        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
         params = new HashMap<String, String>();
         files = new HashMap<String, File>();
 
@@ -348,24 +350,24 @@ public class AlarmActivity extends FragmentActivity {
         public void handleMessage(Message msg) {
             Log.d("测试代码", "测试代码+Json" + msg.obj);
             pd.dismiss();
-            try{
+            try {
                 UpdateResp updateResp = new Gson().fromJson(msg.obj.toString(), UpdateResp.class);
                 if (updateResp.getRet_code() == 0) {
                     List<String> fileList = new ArrayList<String>();
                     for (UpdateResp.UpdateFile updateFile : updateResp.getResponse()) {
                         fileList.add(updateFile.getFile_id());
                     }
-                    String text=et_info.getText().toString();
-                    if(TextUtils.isEmpty(text)){
-                        text="";
+                    String text = et_info.getText().toString();
+                    if (TextUtils.isEmpty(text)) {
+                        text = "";
                     }
                     updateAlermHelp(getSupportFragmentManager(), text, fileList);
 
                 } else {
                     ToastUtil.showToast(getApplicationContext(), updateResp.getRet_string(), Toast.LENGTH_SHORT);
                 }
-            }catch (Exception e){
-                ToastUtil.showToast(getApplicationContext(),"上传文件失败", Toast.LENGTH_SHORT);
+            } catch (Exception e) {
+                ToastUtil.showToast(getApplicationContext(), "上传文件失败", Toast.LENGTH_SHORT);
             }
 
 
@@ -384,7 +386,17 @@ public class AlarmActivity extends FragmentActivity {
 
             @Override
             public void onSuccess(HttpReponse<UpdateAlarmResp> httpReponse) {
-                ToastUtil.showToast(getApplicationContext(), "报警成功", Toast.LENGTH_SHORT);
+                if (null != httpReponse && null != httpReponse.getData()) {
+                    if (httpReponse.getData().getRet_code() == 0) {
+                        ToastUtil.showToast(getApplicationContext(), "报警成功", Toast.LENGTH_SHORT);
+                        clearUpdate();
+                    } else {
+                        ToastUtil.showToast(getApplicationContext(), "报警失败ret_code=" + httpReponse.getData().getRet_code(), Toast.LENGTH_SHORT);
+                    }
+                } else {
+                    ToastUtil.showToast(getApplicationContext(), "报警失败", Toast.LENGTH_SHORT);
+                }
+
 
             }
         }, fragmentManager);
@@ -410,6 +422,7 @@ public class AlarmActivity extends FragmentActivity {
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CARMERA);
     }
+
     @Click(R.id.bt_alrm_to_video)
     public void toVideo() {
         Intent intent = new Intent();
@@ -420,5 +433,14 @@ public class AlarmActivity extends FragmentActivity {
     @Click(R.id.bt_back)
     public void close() {
         finish();
+    }
+
+    private void clearUpdate() {
+        bt_image0.setImageResource(R.mipmap.image_upto);
+        bt_image1.setImageResource(R.mipmap.image_upto);
+        bt_image2.setImageResource(R.mipmap.image_upto);
+        bt_image3.setImageResource(R.mipmap.image_upto);
+        bt_image4.setImageResource(R.mipmap.image_upto);
+        listFilePath.clear();
     }
 }

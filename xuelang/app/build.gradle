@@ -6,9 +6,9 @@ def AAVersion = '3.2+'
 android {
     signingConfigs {
         myConfig {
-            storeFile file("xueliangkey.jks")
+            storeFile file("xueliang.jks")
             storePassword '123456'
-            keyAlias '123456'
+            keyAlias 'xueliang'
             keyPassword '123456'
         }
     }

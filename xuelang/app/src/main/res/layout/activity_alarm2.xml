@@ -62,34 +62,22 @@
                 android:hint="求助内容"
                 android:textSize="16sp" />
 
-            <HorizontalScrollView
-                android:id="@+id/ll_image"
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_below="@+id/et_info"
+                android:orientation="horizontal">
 
-                android:orientation="horizontal"
-                android:scrollbars="none">
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center"
-                    android:orientation="horizontal">
-
-                </android.support.v7.widget.RecyclerView>
-
-            </HorizontalScrollView>
+            </android.support.v7.widget.RecyclerView>
 
 
             <Button
                 android:id="@+id/bt_alrm_right_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_image"
+                android:layout_below="@+id/recyclerView"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bt_selector_update"

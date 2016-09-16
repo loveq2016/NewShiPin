@@ -17,6 +17,7 @@ import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.main.MainActivity_;
+import com.xue.liang.app.utils.SharedDB;
 import com.xue.liang.app.utils.ToastUtil;
 import com.xue.liang.app.utils.Utils;
 
@@ -30,10 +31,15 @@ public class LoginActivity extends FragmentActivity {
 
     @ViewById(R.id.login_edittext)
     public EditText login_edittext;
+    private String phoneNum;
+
+    private  String key="PHONENUM";
 
     @AfterViews
     protected void initView() {
         OneApmAgent.init(this.getApplicationContext()).setToken("B14FAE4609052F93F64BCD83EFBDA70489").start();
+        phoneNum=SharedDB.getStringValue(getApplicationContext(),key,"");
+        login_edittext.setText(phoneNum);
     }
 
     //@Click(R.id.login_btn)
@@ -45,7 +51,7 @@ public class LoginActivity extends FragmentActivity {
 
     @Click(R.id.login_btn)
     public void doLogin() {
-        String phoneNum = login_edittext.getText().toString();
+         phoneNum = login_edittext.getText().toString();
 
         if (!isMobileNO(phoneNum)) {
             Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
@@ -70,7 +76,9 @@ public class LoginActivity extends FragmentActivity {
 
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getRet_code() != null) {
                     if (httpReponse.getData().getRet_code() == 0) {
+                        SharedDB.putStringValue(getApplicationContext(),key,phoneNum);
                         toMainAcitivty();
+
                     } else {
                         String errorinfo = httpReponse.getData().getRet_string();
                         if (TextUtils.isEmpty(errorinfo)) {

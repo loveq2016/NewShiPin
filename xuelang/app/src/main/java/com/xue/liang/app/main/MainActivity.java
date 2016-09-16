@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.blueware.agent.android.A;
 import com.xue.liang.app.R;
+import com.xue.liang.app.alarm.AlarmActivity2_;
 import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.DeviceListResp;
@@ -321,7 +322,7 @@ public class MainActivity extends FragmentActivity {
     @Click(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, AlarmActivity_.class);
+        intent.setClass(this, AlarmActivity2_.class);
         startActivity(intent);
     }
 

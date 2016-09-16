@@ -3,8 +3,6 @@
     package="com.xue.liang.app">
 
 
-
-
     <!--发送性能数据到服务器需要该权限-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--发送性能数据到服务器需要该权限-->
@@ -14,14 +12,15 @@
     <!--【非必选】若想知道 Crash 的时候，后台有哪些任务运行，请引入该权限-->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+
     <application
         android:name=".MianApplication"
         android:allowBackup="false"
@@ -55,11 +54,18 @@
             android:name=".info.InfoDetailActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity android:name=".info.EasyInfoPeopleActivity_"
+        <activity
+            android:name=".info.EasyInfoPeopleActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
 
-        <activity android:name=".alarm.AlarmActivity_"
+        <activity
+            android:name=".alarm.AlarmActivity_"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+
+        <activity
+            android:name=".alarm.AlarmActivity2_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
     </application>

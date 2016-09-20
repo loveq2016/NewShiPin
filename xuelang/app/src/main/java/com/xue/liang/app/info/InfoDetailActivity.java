@@ -21,6 +21,7 @@ import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
+import com.xue.liang.app.utils.Constant;
 import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -108,6 +109,7 @@ public class InfoDetailActivity extends FragmentActivity {
     @Click(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
+        intent.putExtra(Constant.DEVICE_ID,"");
         intent.setClass(this, AlarmActivity2_.class);
 
         startActivity(intent);

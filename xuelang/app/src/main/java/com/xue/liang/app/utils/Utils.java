@@ -1,21 +1,16 @@
 package com.xue.liang.app.utils;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.DeviceListResp;
 import com.xue.liang.app.data.reponse.NoticeDetailResp;
 import com.xue.liang.app.data.reponse.NoticeResp;
-import com.xue.liang.app.data.reponse.RegisterResp;
 import com.xue.liang.app.data.reponse.SendAlarmResp;
 import com.xue.liang.app.data.reponse.UpdateAlarmResp;
 import com.xue.liang.app.data.request.DeviceListReq;
 import com.xue.liang.app.data.request.NoticeDetailReq;
 import com.xue.liang.app.data.request.NoticeReq;
-import com.xue.liang.app.data.request.RegisterReq;
 import com.xue.liang.app.data.request.SendAlarmReq;
 import com.xue.liang.app.data.request.UpdateAlarmReq;
 import com.xue.liang.app.http.manager.HttpManager;

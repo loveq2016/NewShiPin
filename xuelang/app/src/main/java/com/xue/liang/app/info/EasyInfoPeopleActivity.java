@@ -15,6 +15,7 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity2_;
 import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
+import com.xue.liang.app.utils.Constant;
 import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -83,6 +84,7 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
     @Click(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
+        intent.putExtra(Constant.DEVICE_ID,"");
         intent.setClass(this, AlarmActivity2_.class);
 
 

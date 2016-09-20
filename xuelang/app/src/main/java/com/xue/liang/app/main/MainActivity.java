@@ -48,6 +48,7 @@ import com.xue.liang.app.info.InfoListActivity_;
 import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 import com.xue.liang.app.type.HttpType;
+import com.xue.liang.app.utils.Constant;
 import com.xue.liang.app.utils.DeviceUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -59,6 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+
 
 
 @EActivity(R.layout.player_activity)
@@ -100,6 +102,8 @@ public class MainActivity extends FragmentActivity {
     RelativeLayout bottom_rl_all;
 
     private PlayerAdapter playerAdapter;
+
+    private String mdevicieId;
 
     private List<DeviceItem> deviceItemList = new ArrayList<DeviceItem>();
 
@@ -167,6 +171,7 @@ public class MainActivity extends FragmentActivity {
                 // TODO Auto-generated method stub
                 listview.setItemChecked(position, true);
                 String deviceid = deviceItemList.get(position).getDev_id();
+                mdevicieId = deviceItemList.get(position).getDev_id();
                 String devicename = deviceItemList.get(position).getDev_name();
                 String url = deviceItemList.get(position).getDev_url();
                 //String url1 = "rtsp://218.200.202.144:556/HongTranSvr?DevId=fdc382e7-bb5b-4e36-bbd1-c28060c7fdb4&Session=fdc382e7-bb5b-4e36-bbd1-c28060c7fdb4&Url=\"rtsp://admin:admin12345@117.139.27.44:554/h264/ch1/main/av_stream\"";
@@ -322,6 +327,7 @@ public class MainActivity extends FragmentActivity {
     @Click(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
+        intent.putExtra(Constant.DEVICE_ID,mdevicieId);
         intent.setClass(this, AlarmActivity2_.class);
         startActivity(intent);
     }

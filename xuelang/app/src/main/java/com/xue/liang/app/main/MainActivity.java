@@ -1,15 +1,19 @@
 package com.xue.liang.app.main;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,10 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blueware.agent.android.A;
 import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity2_;
-import com.xue.liang.app.alarm.AlarmActivity_;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.DeviceListResp;
 import com.xue.liang.app.data.reponse.DeviceListResp.DeviceItem;
@@ -42,14 +44,13 @@ import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
-import com.xue.liang.app.info.EasyInfoPeopleActivity;
 import com.xue.liang.app.info.EasyInfoPeopleActivity_;
 import com.xue.liang.app.info.InfoListActivity_;
 import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 import com.xue.liang.app.type.HttpType;
-import com.xue.liang.app.utils.Constant;
 import com.xue.liang.app.utils.DeviceUtil;
+import com.xue.liang.app.utils.ToastUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -62,9 +63,10 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 
-
 @EActivity(R.layout.player_activity)
 public class MainActivity extends FragmentActivity {
+
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @ViewById(R.id.title_main)
     protected View title_main;
@@ -260,9 +262,9 @@ public class MainActivity extends FragmentActivity {
     private void alarmDialog(final HttpType type) {
         final ChoiceOnClickListener choiceListener =
                 new ChoiceOnClickListener();
-         String[] province = new String[] { "是否拨打6995" };
+        String[] province = new String[]{"是否拨打6995"};
         Dialog alertDialog = new AlertDialog.Builder(this).setTitle("确定报警？")
-                .setIcon(R.mipmap.ic_launcher).setMultiChoiceItems(province, new boolean[]{true},choiceListener)
+                .setIcon(R.mipmap.ic_launcher).setMultiChoiceItems(province, new boolean[]{true}, choiceListener)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
                     @Override
@@ -270,8 +272,8 @@ public class MainActivity extends FragmentActivity {
                         // TODO Auto-generated method stub
 
 
-                        if(choiceListener.getWhich()==0&&choiceListener.isChecked()){
-                            doCall6995();
+                        if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
+                            checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
                         }
                         sendAlarm(type.value(), getSupportFragmentManager());
                     }
@@ -327,7 +329,6 @@ public class MainActivity extends FragmentActivity {
     @Click(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.putExtra(Constant.DEVICE_ID,mdevicieId);
         intent.setClass(this, AlarmActivity2_.class);
         startActivity(intent);
     }
@@ -404,24 +405,99 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    private void doCall6995(){
-        String number ="6995";
+    private void doCall6995() {
+        String number = "6995";
         //用intent启动拨打电话
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+number));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
         startActivity(intent);
+
+    }
+
+    /**
+     * API23 6.0需要检测权限
+     */
+    private void checkCallPermissions() {
+        // Here, thisActivity is the current activity
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.CALL_PHONE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            doCall6995();
+//
+//        } else {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.READ_CONTACTS},
+//                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+//
+//        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CALL_PHONE)) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+            }
+
+
+        } else {
+
+            doCall6995();
+
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    doCall6995();
+
+                } else {
+
+                    ToastUtil.showToast(getApplicationContext(), "未能获得拨打电话的权限", Toast.LENGTH_SHORT);
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
 
     private class ChoiceOnClickListener implements DialogInterface.OnMultiChoiceClickListener {
 
 
-        private int which=0;
-        private boolean isChecked=true;
+        private int which = 0;
+        private boolean isChecked = true;
 
         @Override
         public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-            this.which=which;
-            this.isChecked=isChecked;
+            this.which = which;
+            this.isChecked = isChecked;
         }
 
         public boolean isChecked() {

@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.oneapm.agent.android.OneApmAgent;
 import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.RegisterResp;
@@ -17,9 +16,8 @@ import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.main.MainActivity_;
+import com.xue.liang.app.utils.DeviceUtil;
 import com.xue.liang.app.utils.SharedDB;
-import com.xue.liang.app.utils.ToastUtil;
-import com.xue.liang.app.utils.Utils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -33,25 +31,26 @@ public class LoginActivity extends FragmentActivity {
     public EditText login_edittext;
     private String phoneNum;
 
-    private  String key="PHONENUM";
+    private String key = "PHONENUM";
 
     @AfterViews
     protected void initView() {
-        OneApmAgent.init(this.getApplicationContext()).setToken("B14FAE4609052F93F64BCD83EFBDA70489").start();
-        phoneNum=SharedDB.getStringValue(getApplicationContext(),key,"");
+        DeviceUtil.initConfig(getApplicationContext());
+        phoneNum = SharedDB.getStringValue(getApplicationContext(), key, "");
         login_edittext.setText(phoneNum);
     }
 
-    //@Click(R.id.login_btn)
+
     public void toMainAcitivty() {
         Intent intent = new Intent();
         intent.setClass(this, MainActivity_.class);
         startActivity(intent);
     }
 
+
     @Click(R.id.login_btn)
     public void doLogin() {
-         phoneNum = login_edittext.getText().toString();
+        phoneNum = login_edittext.getText().toString();
 
         if (!isMobileNO(phoneNum)) {
             Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
@@ -69,14 +68,11 @@ public class LoginActivity extends FragmentActivity {
 
             @Override
             public void onSuccess(HttpReponse<RegisterResp> httpReponse) {
-//                if (true) {
-//                    toMainAcitivty();
-//                    return;
-//                }
+
 
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getRet_code() != null) {
                     if (httpReponse.getData().getRet_code() == 0) {
-                        SharedDB.putStringValue(getApplicationContext(),key,phoneNum);
+                        SharedDB.putStringValue(getApplicationContext(), key, phoneNum);
                         toMainAcitivty();
 
                     } else {
@@ -123,14 +119,17 @@ public class LoginActivity extends FragmentActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         String code = event.getKeyCode() + "";
-       // ToastUtil.showToast(getApplicationContext(), "event.getKeyCode()===" + code + "keyCode===" + keyCode, Toast.LENGTH_SHORT);
+        // ToastUtil.showToast(getApplicationContext(), "event.getKeyCode()===" + code + "keyCode===" + keyCode, Toast.LENGTH_SHORT);
         return super.onKeyDown(keyCode, event);
 
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
     }
+
+
 }

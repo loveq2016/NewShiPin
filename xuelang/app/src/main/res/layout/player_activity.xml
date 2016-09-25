@@ -9,51 +9,69 @@
         android:id="@+id/title_main"
         layout="@layout/title" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp"
-            android:layout_weight="1"
-            android:background="@mipmap/list"
-            android:choiceMode="singleChoice"
-            android:listSelector="@drawable/bt_selector"
-            android:padding="6dp"
-            tools:listitem="@layout/player_item">
+        <LinearLayout
+            android:id="@+id/ll_play"
+            android:layout_above="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        </ListView>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2.5">
-
-            <LinearLayout
-                android:id="@+id/playerFrament"
-                android:layout_width="match_parent"
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/bottom_rl_gundong_info"
-                android:layout_centerInParent="true"
-                android:orientation="horizontal"></LinearLayout>
+                android:layout_margin="6dp"
+                android:layout_weight="1"
+                android:background="@mipmap/list"
+                android:choiceMode="singleChoice"
+                android:listSelector="@drawable/bt_selector"
+                android:padding="6dp"
+                tools:listitem="@layout/player_item">
 
-            <Button
-                android:id="@+id/btn_full_sceen_other"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/bottom_rl_gundong_info"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/full_screen_selector"
-                android:visibility="gone" />
+            </ListView>
 
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5">
+
+                <LinearLayout
+                    android:id="@+id/playerFrament"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_full_sceen_other"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/full_screen_selector"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:id="@+id/ll_bottom"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/bottom_rl_gundong_info"
@@ -121,7 +139,7 @@
                     android:id="@+id/ll_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/btn_full_sceen"
+                    android:layout_toLeftOf="@+id/btn_group"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -189,38 +207,49 @@
                             android:text="其他"
                             android:textColor="@android:color/white"
                             android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/btn_setting"
-                            android:layout_width="70dp"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="6dp"
-                            android:background="@drawable/bt_hurt_selector"
-                            android:text="设置"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp" />
                     </LinearLayout>
 
 
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btn_group"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/btn_setting"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/bt_hurt_selector"
+                    android:text="组群"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
 
 
                 <Button
+                    android:id="@+id/btn_setting"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/btn_full_sceen"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/bt_hurt_selector"
+                    android:text="设置"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+                <Button
                     android:id="@+id/btn_full_sceen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="6dp"
                     android:background="@drawable/full_screen_selector" />
 
             </RelativeLayout>
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

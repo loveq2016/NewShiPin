@@ -84,7 +84,6 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
     @Click(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.putExtra(Constant.DEVICE_ID,"");
         intent.setClass(this, AlarmActivity2_.class);
 
 

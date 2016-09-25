@@ -31,9 +31,10 @@ public class SplashActivity extends FragmentActivity {
 
     @AfterViews
     protected void initView() {
+        DeviceUtil.initConfig(getApplicationContext());
         delayHandler = new DelayHandler(this);
         toDelayTimeActivity();
-        initConfig();
+
     }
 
     private void toDelayTimeActivity() {
@@ -68,16 +69,6 @@ public class SplashActivity extends FragmentActivity {
     }
 
     public void toPlayerActivity() {
-        String mac = DeviceUtil.getLocalMacAddress(getApplicationContext());
-        if (TextUtils.isEmpty(mac)) {
-
-        }
-        Config.TEST_MAC = mac;
-        if (DeviceUtil.isPhone(getApplicationContext())) {
-            Config.TEST_TYPE = "2";//2为手机
-        } else {
-            Config.TEST_TYPE = "1";//1为机顶盒
-        }
 
         if (DeviceUtil.isPhone(getApplicationContext())) {
             //如果是手机那么就跳转到登陆界面
@@ -94,13 +85,5 @@ public class SplashActivity extends FragmentActivity {
 
     }
 
-    private void initConfig() {
-        Config.IP = SharedDB.getStringValue(getApplicationContext(),
-                ShareKey.IP_KEY, DefaultData.Default_IP);
-        Config.PORT = SharedDB.getStringValue(getApplicationContext(),
-                ShareKey.PORT_KEY, DefaultData.Default_Port);
-//		Configure.Mac = SharedDB.getStringValue(getApplicationContext(),
-//				ShareKey.MAC_KEY, DefaultData.Default_Mac);
-    }
 
 }

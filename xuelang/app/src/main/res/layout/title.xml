@@ -7,13 +7,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:background="#303132">
 
         <ImageView
             android:id="@+id/title_logo"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
+            android:layout_width="88dp"
+            android:layout_height="32dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/login_logo" />
 
@@ -39,7 +39,7 @@
                     android:gravity="center"
                     android:text="雪亮工程监控报警平台"
                     android:textColor="@android:color/white"
-                    android:textSize="28sp" />
+                    android:textSize="@dimen/text_size_18sp" />
 
                 <TextView
                     android:id="@+id/little_title_tv"
@@ -57,8 +57,8 @@
 
         <ImageButton
             android:id="@+id/btn_alarmwarning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
           android:layout_marginRight="6dp"

@@ -108,7 +108,7 @@
                     <Button
                         android:id="@+id/btn_info_notice"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="28dp"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="12dp"
                         android:layout_toLeftOf="@+id/btn_people_info"
@@ -117,7 +117,7 @@
                     <Button
                         android:id="@+id/btn_people_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="28dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="6dp"
@@ -152,7 +152,7 @@
                         <Button
                             android:id="@+id/btn_fire"
                             android:layout_width="70dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             android:background="@drawable/bt_fire_selector"
                             android:drawableLeft="@mipmap/fire_logo"
@@ -166,7 +166,7 @@
                         <Button
                             android:id="@+id/btn_theft"
                             android:layout_width="70dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:background="@drawable/bt_theft_selector"
@@ -181,7 +181,7 @@
                         <Button
                             android:id="@+id/btn_hurt"
                             android:layout_width="70dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:background="@drawable/bt_hurt_selector"
@@ -196,7 +196,7 @@
                         <Button
                             android:id="@+id/btn_other"
                             android:layout_width="70dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:background="@drawable/bt_other_selector"
@@ -214,7 +214,7 @@
                 <Button
                     android:id="@+id/btn_group"
                     android:layout_width="70dp"
-                    android:layout_height="35dp"
+                    android:layout_height="32dp"
 
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/btn_setting"
@@ -229,7 +229,7 @@
                 <Button
                     android:id="@+id/btn_setting"
                     android:layout_width="70dp"
-                    android:layout_height="35dp"
+                    android:layout_height="32dp"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/btn_full_sceen"
                     android:layout_gravity="center"
@@ -242,6 +242,7 @@
                     android:id="@+id/btn_full_sceen"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginLeft="6dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="6dp"

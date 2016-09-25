@@ -68,6 +68,11 @@
             android:name=".alarm.AlarmActivity2_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+
+        <activity
+            android:name=".group.GroupActivity_"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
     </application>
 
 </manifest>

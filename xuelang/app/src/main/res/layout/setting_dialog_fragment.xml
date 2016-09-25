@@ -11,18 +11,19 @@
 
         <LinearLayout
             android:layout_width="450dp"
-            android:padding="12dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-android:background="@mipmap/list"
+            android:background="@mipmap/list"
+            android:orientation="vertical"
 
-            android:orientation="vertical">
+            android:padding="12dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center"
-                android:textSize="24sp"
-                android:text="设置"/>
+                android:text="设置"
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,9 +44,9 @@ android:background="@mipmap/list"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginTop="6dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,8 +64,8 @@ android:background="@mipmap/list"
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="80dp"
@@ -78,19 +79,19 @@ android:background="@mipmap/list"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp">
 
                 <Button
                     android:id="@+id/bt_mac"
                     android:layout_width="0dp"
-                    android:visibility="invisible"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/btn_selector"
                     android:text="获取本地MAC地址"
-                    android:textColor="@android:color/white"></Button>
+                    android:textColor="@android:color/white"
+                    android:visibility="invisible"></Button>
 
                 <Button
                     android:id="@+id/bt_rest"
@@ -104,8 +105,8 @@ android:background="@mipmap/list"
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="6dp"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp">
 
                 <Button
                     android:id="@+id/bt_cancle"

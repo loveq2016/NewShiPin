@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.temobi.vcp.http.download.LogUtils;
 import com.xue.liang.app.R;
 import com.xue.liang.app.alarm.AlarmActivity2_;
 import com.xue.liang.app.common.Config;
@@ -51,6 +52,7 @@ import com.xue.liang.app.info.InfoListActivity_;
 import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 import com.xue.liang.app.type.HttpType;
+import com.xue.liang.app.utils.Des3DesUtils;
 import com.xue.liang.app.utils.DeviceUtil;
 import com.xue.liang.app.utils.ThreeDES;
 import com.xue.liang.app.utils.ToastUtil;
@@ -135,11 +137,12 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Click(R.id.btn_group)
-    public void toGroupActivity(){
-        Intent intent=new Intent();
+    public void toGroupActivity() {
+        Intent intent = new Intent();
         intent.setClass(this, GroupActivity_.class);
         startActivity(intent);
     }
+
     @Click({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
     public void setFullScreen() {
         boolean isfull = title_main.getVisibility() == View.VISIBLE ? true : false;
@@ -532,28 +535,25 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    private void testTvAlarmCallPhone(){
+    private void testTvAlarmCallPhone() {
 
-        String pamars="Action=Alarm&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
-
-
+        //String pamars="Action=Alarm&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
 
 
-        // 24字节的密钥（我们可以取apk签名的指纹的前12个byte和后12个byte拼接在一起为我们的密钥）
-        final byte[] keyBytes = { 0x11, 0x22, 0x4F, 0x58, (byte) 0x88, 0x10, 0x40, 0x38, 0x28, 0x25, 0x79, 0x51, (byte) 0xCB, (byte) 0xDD, 0x55, 0x66, 0x77, 0x29, 0x74, (byte) 0x98, 0x30, 0x40, 0x36, (byte) 0xE2 };
-        String szSrc = "This is a 3DES test. 测试";
+        String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295 SendType=1&Content=报警求助";
 
-        System.out.println("加密前的字符串:" + pamars);
-
-        byte[] encoded = ThreeDES.encryptMode(keyBytes, pamars.getBytes());
-        System.out.println("加密后的字符串:" + new String(encoded));
-
-        byte[] srcBytes = ThreeDES.decryptMode(keyBytes, encoded);
-        System.out.println("解密后的字符串:" + (new String(srcBytes)));
+        String key = "kingon!qaz@wsx#edc$rfv%^";
+        String encrypInfo="";
+        try {
+             encrypInfo= Des3DesUtils.encryptThreeDESECB(pamars,key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //encrypInfo="YT/O76jD0CHFrsLVWxVDcOozun/4YYVBiO/srjz123+fADY3qL/IFZaRLZJ2U5UXpojxWBvjCW4LyQgOTwmY4VfcQdsDwqocTP2asHKcRll45lsPSGw2GQzAik8Z5VnGsKVJxeurHVavlC0DiADILjKlzQApyq/MMPXIY6j9Mswbtr4YNLJWV3jxfk900L4rkpnlC/W7ucY=";
 
         OkHttpUtils
-                .postString().content("")
-                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx"+"?"+pamars)
+                .postString().content(encrypInfo)
+                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx?"+encrypInfo)//+ "?" + encrypInfo
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
                 .execute(new StringCallback() {
@@ -564,7 +564,7 @@ public class MainActivity extends FragmentActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-
+                        LogUtils.d(response);
                     }
                 });
     }

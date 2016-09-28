@@ -289,8 +289,8 @@ public class MainActivity extends FragmentActivity {
 
 
                         if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
-                            //checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
-                            testTvAlarmCallPhone();
+                            checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
+                            //testTvAlarmCallPhone();
                         }
                         sendAlarm(type.value(), getSupportFragmentManager());
                     }

@@ -6,6 +6,12 @@
     android:orientation="vertical"
     tools:context="com.xue.liang.app.login.LoginActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test456"
+        android:onClick="test123"/>
+
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -36,7 +42,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
             android:layout_weight="1"
-            android:background="@mipmap/login_logo" />
+            android:background="@mipmap/iconchinaunicom" />
 
     </LinearLayout>
 

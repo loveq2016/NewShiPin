@@ -38,7 +38,7 @@ public class SplashActivity extends FragmentActivity {
     }
 
     private void toDelayTimeActivity() {
-        delayHandler.sendEmptyMessageDelayed(0, 2000);
+        delayHandler.sendEmptyMessageDelayed(0, 1);
 
     }
 

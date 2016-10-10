@@ -57,6 +57,7 @@ import com.xue.liang.app.utils.DeviceUtil;
 import com.xue.liang.app.utils.ThreeDES;
 import com.xue.liang.app.utils.ToastUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
+
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.androidannotations.annotations.AfterViews;
@@ -64,12 +65,20 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 @EActivity(R.layout.player_activity)
@@ -286,7 +295,6 @@ public class MainActivity extends FragmentActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub
-
 
                         if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
                             checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
@@ -535,12 +543,18 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    public  void testyidong9556(View view ){
+       // testTvAlarmCallPhone();
+        //test123();
+        test456();
+    }
+
     private void testTvAlarmCallPhone() {
 
         //String pamars="Action=Alarm&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
 
 
-        String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295 SendType=1&Content=报警求助";
+        String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
 
         String key = "kingon!qaz@wsx#edc$rfv%^";
         String encrypInfo="";
@@ -553,13 +567,13 @@ public class MainActivity extends FragmentActivity {
 
         OkHttpUtils
                 .postString().content(encrypInfo)
-                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx?"+encrypInfo)//+ "?" + encrypInfo
+                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx")//+ "?" + encrypInfo
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        LogUtils.d(e.toString());
                     }
 
                     @Override
@@ -567,5 +581,81 @@ public class MainActivity extends FragmentActivity {
                         LogUtils.d(response);
                     }
                 });
+    }
+
+    private void test123(){
+        //创建okHttpClient对象
+
+
+        String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
+
+        String key = "kingon!qaz@wsx#edc$rfv%^";
+        String encrypInfo="";
+        try {
+            encrypInfo= Des3DesUtils.encryptThreeDESECB(pamars,key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+//创建一个Request
+        final Request request = new Request.Builder()
+                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx?"+encrypInfo)
+                .build();
+//new call
+        Call call = mOkHttpClient.newCall(request);
+//请求加入调度
+        call.enqueue(new Callback()
+        {
+
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LogUtils.d(e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LogUtils.d(response.body().string());
+            }
+
+
+        });
+    }
+
+    private void test456(){
+        String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
+
+        String key = "kingon!qaz@wsx#edc$rfv%^";
+        String encrypInfo="";
+        try {
+            encrypInfo= Des3DesUtils.encryptThreeDESECB(pamars,key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        String url="http://218.200.206.182:8005/Xlgc/MobileService.aspx?"+encrypInfo;
+
+
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+         RequestBody requestBody = RequestBody.create(MediaType.parse("utf-8"),"");
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LogUtils.d(e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LogUtils.d(response.body().string());
+            }
+        });
     }
 }

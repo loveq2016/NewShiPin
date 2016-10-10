@@ -15,7 +15,7 @@
             android:layout_width="88dp"
             android:layout_height="32dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/login_logo" />
+            android:src="@mipmap/iconchinaunicom" />
 
         <RelativeLayout
             android:layout_width="match_parent"

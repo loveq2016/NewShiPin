@@ -116,7 +116,6 @@ public class LoginActivity extends FragmentActivity {
     }
 
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         String code = event.getKeyCode() + "";
@@ -132,32 +131,30 @@ public class LoginActivity extends FragmentActivity {
 
     }
 
-    public void test123(View view ){
+    public void test123(View view) {
         //创建okHttpClient对象
 
 
         String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
 
         String key = "kingon!qaz@wsx#edc$rfv%^";
-        String encrypInfo="";
+        String encrypInfo = "";
         try {
-            encrypInfo= Des3DesUtils.encryptThreeDESECB(pamars,key);
+            encrypInfo = Des3DesUtils.encryptThreeDESECB(pamars, key);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-
         OkHttpClient mOkHttpClient = new OkHttpClient();
 //创建一个Request
         final Request request = new Request.Builder()
-                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx?"+encrypInfo)
+                .url("http://218.200.206.182:8005/Xlgc/MobileService.aspx?" + encrypInfo)
                 .build();
 //new call
         Call call = mOkHttpClient.newCall(request);
 //请求加入调度
-        call.enqueue(new Callback()
-        {
+        call.enqueue(new Callback() {
 
 
             @Override
@@ -174,23 +171,23 @@ public class LoginActivity extends FragmentActivity {
         });
     }
 
-    public void test456(View view){
+    public void test456(View view) {
         String pamars = "Action=SendCall&Account=Xlgc&Password=Xlgc&SendTel=13877149295&SendType=1&Content=报警求助";
 
         String key = "kingon!qaz@wsx#edc$rfv%^";
-        String encrypInfo="";
+        String encrypInfo = "";
         try {
-            encrypInfo= Des3DesUtils.encryptThreeDESECB(pamars,key);
+            encrypInfo = Des3DesUtils.encryptThreeDESECB(pamars, key);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        String url="http://218.200.206.182:8005/Xlgc/MobileService.aspx?"+encrypInfo;
+        String url = "http://218.200.206.182:8005/Xlgc/MobileService.aspx";
 
 
         OkHttpClient mOkHttpClient = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(MediaType.parse("utf-8"),"");
+        RequestBody requestBody = RequestBody.create(MediaType.parse("utf-8"), encrypInfo);
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -203,8 +200,18 @@ public class LoginActivity extends FragmentActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                LogUtils.d(response.body().string());
-                LogUtils.e(response.body().string());
+
+
+                String key = "kingon!qaz@wsx#edc$rfv%^";
+                String encrypInfo1 = response.body().string();
+                try {
+                    String testinfo = Des3DesUtils.decryptThreeDESECB(encrypInfo1, key);
+                    LogUtils.e(testinfo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
     }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.data.bean.MemberInfo;
 
 import java.util.List;
 
@@ -16,11 +17,11 @@ import java.util.List;
  * Created by Administrator on 2016/9/25.
  */
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
-    private List<String> data;
+    private List<MemberInfo> data;
     private Context mcontext;
     private LayoutInflater layoutInflater;
 
-    public GroupAdapter(Context context, List<String> data) {
+    public GroupAdapter(Context context, List<MemberInfo> data) {
         mcontext = context;
         this.data = data;
         layoutInflater = LayoutInflater.from(mcontext);
@@ -57,9 +58,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
         }
 
-        public void bindData(String info) {
-            tv_name.setText(info);
-            tv_phonenum.setText(info);
+        public void bindData(MemberInfo info) {
+            tv_name.setText(info.getTrueName());
+
+            tv_phonenum.setText(info.getTel());
         }
+    }
+
+    public void reshListData(List<MemberInfo> memberInfoList) {
+        this.data = memberInfoList;
+        notifyDataSetChanged();
     }
 }

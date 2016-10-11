@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.xue.liang.app.login.LoginActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.xue.liang.app.login.LoginActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test123"
-        android:onClick="test123"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test456"
-        android:onClick="test456"/>
 
     <LinearLayout
         android:id="@+id/title"
@@ -35,7 +25,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/login_titile"
-            android:textSize="26sp" />
+            android:textSize="26sp"/>
 
 
         <ImageView
@@ -47,7 +37,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
             android:layout_weight="1"
-            android:background="@mipmap/iconchinaunicom" />
+            android:background="@mipmap/iconchinaunicom"/>
 
     </LinearLayout>
 
@@ -80,24 +70,24 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"></View>
 
                 <EditText
                     android:id="@+id/login_edittext"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
-                    android:inputType="phone"
-                    android:maxLength="11"
                     android:gravity="center"
-                    android:hint="请输入手机号码" />
+                    android:hint="请输入手机号码"
+                    android:inputType="phone"
+                    android:maxLength="11"/>
+
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"></View>
             </LinearLayout>
-
 
 
             <View
@@ -129,8 +119,8 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"></View>
 
                 <Button
                     android:id="@+id/login_btn"
@@ -140,11 +130,12 @@
                     android:background="@drawable/bt_selector"
                     android:text="登   录"
                     android:textColor="@android:color/white"
-                    android:textSize="26sp" />
+                    android:textSize="26sp"/>
+
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="match_parent"></View>
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"></View>
             </LinearLayout>
 
             <View

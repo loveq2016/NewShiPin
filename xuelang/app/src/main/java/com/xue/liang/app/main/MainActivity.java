@@ -112,6 +112,8 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     private String mdevicieId;
 
+    private String mphoneNum;
+
     private List<DeviceItem> deviceItemList = new ArrayList<DeviceItem>();
 
     private MainPresenter mainPresenter;
@@ -139,6 +141,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     @Click(R.id.btn_group)
     public void toGroupActivity() {
         Intent intent = new Intent();
+        intent.putExtra("phonenum",mphoneNum);
         intent.setClass(this, GroupActivity_.class);
         startActivity(intent);
     }
@@ -215,6 +218,9 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && httpReponse.getData().getResponse().getArList() != null) {
                     deviceItemList = httpReponse.getData().getResponse().getArList();
                     playerAdapter.reshData(deviceItemList);
+                    mphoneNum = httpReponse.getData().getUser_tel();
+
+
                     String groupname = httpReponse.getData().getResponse().getGroupname();//村名
                     if (!TextUtils.isEmpty(groupname))
                         little_title_tv.setText(groupname);
@@ -288,8 +294,15 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                         // TODO Auto-generated method stub
 
                         if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
-                            //   checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
-                            mainPresenter.sendCall("13877149295");
+
+                            if (DeviceUtil.isPhone(getApplicationContext())) {
+                                //   checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
+                                mainPresenter.sendCall(mphoneNum);
+                            } else {
+                                mainPresenter.sendCall(mphoneNum);
+                            }
+
+
                         }
                         sendAlarm(type.value(), getSupportFragmentManager());
                     }

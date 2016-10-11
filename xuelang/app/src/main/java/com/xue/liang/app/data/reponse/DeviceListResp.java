@@ -14,11 +14,23 @@ public class DeviceListResp {
 
     private int ret_code;
 
+
+    private String user_tel;
+
     private String ret_string;
+
 
     private String groupname;
 
     private String groupid;
+
+    public String getUser_tel() {
+        return user_tel;
+    }
+
+    public void setUser_tel(String user_tel) {
+        this.user_tel = user_tel;
+    }
 
     /**
      * dev_url : rtsp://192.168.1.60:556/HongTranSvr?DevId=1071a8d2-44ec-438a-acc4-5ac6466dfa2d&Session=76553962637299

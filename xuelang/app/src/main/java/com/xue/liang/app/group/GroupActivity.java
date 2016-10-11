@@ -35,15 +35,21 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
 
     private GroupPresenter groupPresenter;
 
+    private String mphoneNum;
+
     @AfterViews
     public void initView() {
+        if (getIntent() != null) {
+            mphoneNum = getIntent().getStringExtra("phonenum");
+        }
+
         groupPresenter = new GroupPresenter(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
         groupAdapter = new GroupAdapter(this, memberList);
         recyclerView.setAdapter(groupAdapter);
-        groupPresenter.getGroupMemberList("15902881585");
+        groupPresenter.getGroupMemberList(mphoneNum);
     }
 
 
@@ -61,7 +67,7 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
     public AddGroupDialogFragment.OnAddGroupListener onAddGroupListener = new AddGroupDialogFragment.OnAddGroupListener() {
         @Override
         public void onAdd(String name, String addphoneNum) {
-            groupPresenter.addGroupMemberList("15902881580", addphoneNum, name);
+            groupPresenter.addGroupMemberList(mphoneNum, addphoneNum, name);
         }
 
         @Override

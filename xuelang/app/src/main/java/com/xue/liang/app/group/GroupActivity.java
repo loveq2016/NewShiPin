@@ -89,7 +89,8 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
     }
 
     @Override
-    public void onAddSuccess(YidongGroupMemberResp yidongGroupMemberResp) {
+    public void onAddSuccess() {
+        
 
     }
 }

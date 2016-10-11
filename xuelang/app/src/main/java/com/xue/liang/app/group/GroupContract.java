@@ -9,7 +9,7 @@ import com.xue.liang.app.base.BaseView;
 public class GroupContract {
 
     interface View<T> extends BaseView<T> {
-      void  onAddSuccess(T t);
+      void  onAddSuccess();
     }
 
 

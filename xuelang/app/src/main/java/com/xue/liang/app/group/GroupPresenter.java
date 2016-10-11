@@ -85,8 +85,8 @@ public class GroupPresenter implements GroupContract.Presenter {
                     String testinfo = Des3DesUtils.decryptThreeDESECB(response, Constant.KEY);
                     YiDongAlarmResp yiDongAlarmResp = XmlAnalysisUtils.analysisYiDongSendCallXML(testinfo);
                     if (null != view) {
-                        if (yiDongAlarmResp.getResultCode().equals("200")) {
-                            view.onSuccess(yiDongAlarmResp);
+                        if (yiDongAlarmResp.getResultCode().equals("0")) {
+                            view.onAddSuccess();
                         } else {
                             view.onFail(yiDongAlarmResp.getResultMsg());
                         }

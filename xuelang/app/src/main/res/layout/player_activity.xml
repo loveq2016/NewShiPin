@@ -214,6 +214,7 @@
                 <Button
                     android:id="@+id/btn_group"
                     android:layout_width="70dp"
+                    android:visibility="invisible"
                     android:layout_height="32dp"
 
                     android:layout_centerVertical="true"

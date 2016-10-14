@@ -5,7 +5,7 @@ package com.xue.liang.app.common;
  */
 public class Config {
 
-    public static String TEST_PHONE_NUMBER = "18000000000";//18000000000
+    public static String TEST_PHONE_NUMBER = "";//18000000000
     public static String TEST_MAC = "38:BC:1A:C5:DA:4F";//38:BC:1A:C5:DA:4F
     public static String TEST_TYPE = "2";//
 

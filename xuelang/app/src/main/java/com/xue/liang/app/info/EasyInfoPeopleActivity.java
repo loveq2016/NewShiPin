@@ -1,6 +1,8 @@
 package com.xue.liang.app.info;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import android.os.Bundle;
@@ -12,31 +14,38 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.xue.liang.app.R;
-import com.xue.liang.app.alarm.AlarmActivity2_;
-import com.xue.liang.app.alarm.AlarmActivity_;
+
+import com.xue.liang.app.alarm.AlarmActivity2;
 import com.xue.liang.app.common.Config;
-import com.xue.liang.app.utils.Constant;
+
 import com.xue.liang.app.utils.DeviceUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-@EActivity(R.layout.activity_easy_info_people)
+
 public class EasyInfoPeopleActivity extends FragmentActivity {
 
-    @ViewById(R.id.webview)
+    @BindView(R.id.webview)
     protected WebView webview;
 
-    @ViewById(R.id.btn_alarmwarning)
+    @BindView(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
 
-    @ViewById(R.id.tv_title)
+    @BindView(R.id.tv_title)
     TextView tv_title;
 
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_easy_info_people);
+        ButterKnife.bind(this);
+        initView();
+    }
+
+
     public void initView() {
 
         tv_title.setText("便民信息");
@@ -52,16 +61,16 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
         //设置支持缩放
         webSettings.setBuiltInZoomControls(true);
         //加载需要显示的网页
-        String url="http://www.uphsh.com/wap/38fceb89d44a4778bb2459556820c69a?userToken="+ Config.TEST_PHONE_NUMBER;
+        String url = "http://www.uphsh.com/wap/38fceb89d44a4778bb2459556820c69a?userToken=" + Config.TEST_PHONE_NUMBER;
         webview.loadUrl(url);
         //设置Web视图
         webview.setWebViewClient(new webViewClient());
 
 
-        if(DeviceUtil.isPhone(getApplicationContext())){
+        if (DeviceUtil.isPhone(getApplicationContext())) {
             //2为手机
 
-        }else {
+        } else {
             //1为机顶盒
 
             btn_alarmwarning.setVisibility(View.GONE);
@@ -76,17 +85,16 @@ public class EasyInfoPeopleActivity extends FragmentActivity {
             return true;
         }
     }
-    @Click(R.id.bt_back)
+
+    @OnClick(R.id.bt_back)
     public void close() {
         finish();
     }
 
-    @Click(R.id.btn_alarmwarning)
+    @OnClick(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, AlarmActivity2_.class);
-
-
+        intent.setClass(this, AlarmActivity2.class);
         startActivity(intent);
     }
 }

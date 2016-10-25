@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
-import com.xue.liang.app.alarm.AlarmActivity2_;
+
+import com.xue.liang.app.alarm.AlarmActivity2;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.DeviceListResp;
 import com.xue.liang.app.data.reponse.DeviceListResp.DeviceItem;
@@ -41,71 +44,73 @@ import com.xue.liang.app.data.request.NoticeReq;
 import com.xue.liang.app.data.request.SendAlarmReq;
 import com.xue.liang.app.dialog.SettingFragmentDialog;
 import com.xue.liang.app.event.UrlEvent;
-import com.xue.liang.app.group.GroupActivity_;
+
+import com.xue.liang.app.group.GroupActivity;
 import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
-import com.xue.liang.app.info.EasyInfoPeopleActivity_;
-import com.xue.liang.app.info.InfoListActivity_;
+
+import com.xue.liang.app.info.EasyInfoPeopleActivity;
+import com.xue.liang.app.info.InfoListActivity;
 import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 import com.xue.liang.app.type.HttpType;
 import com.xue.liang.app.utils.DeviceUtil;
 import com.xue.liang.app.utils.ToastUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 
-@EActivity(R.layout.player_activity)
+
 public class MainActivity extends FragmentActivity implements MainContract.View<YiDongAlarmResp> {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
-    @ViewById(R.id.title_main)
+    @BindView(R.id.title_main)
     protected View title_main;
 
 
-    @ViewById(R.id.listview)
+    @BindView(R.id.listview)
     ListView listview;
 
 
-    @ViewById(R.id.ll_btn)
+    @BindView(R.id.ll_btn)
     LinearLayout ll_btn;
 
-    @ViewById(R.id.btn_full_sceen_other)
+    @BindView(R.id.btn_full_sceen_other)
     Button btn_full_sceen_other;
 
 
-    @ViewById(R.id.little_title_tv)
+    @BindView(R.id.little_title_tv)
     TextView little_title_tv;
 
 
-    @ViewById(R.id.tv_gundong_info)
+    @BindView(R.id.tv_gundong_info)
     TextView tv_gundong_info;
 
-    @ViewById(R.id.btn_people_info)
+    @BindView(R.id.btn_people_info)
     Button btn_people_info;
 
 
-    @ViewById(R.id.btn_alarmwarning)
+    @BindView(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
 
-    @ViewById(R.id.btn_setting)
+    @BindView(R.id.btn_setting)
     Button btn_setting;
 
-    @ViewById(R.id.bottom_rl_gundong_info)
+    @BindView(R.id.bottom_rl_gundong_info)
     RelativeLayout bottom_rl_gundong_info;
 
-    @ViewById(R.id.bottom_rl_all)
+    @BindView(R.id.bottom_rl_all)
     RelativeLayout bottom_rl_all;
 
     private PlayerAdapter playerAdapter;
@@ -118,7 +123,15 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     private MainPresenter mainPresenter;
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.player_activity);
+        ButterKnife.bind(this);
+        initView();
+    }
+
+
     public void initView() {
 
         mainPresenter = new MainPresenter(this);
@@ -138,15 +151,15 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         startPaomaDENG();
     }
 
-    @Click(R.id.btn_group)
+    @OnClick(R.id.btn_group)
     public void toGroupActivity() {
         Intent intent = new Intent();
         intent.putExtra("phonenum",mphoneNum);
-        intent.setClass(this, GroupActivity_.class);
+        intent.setClass(this, GroupActivity.class);
         startActivity(intent);
     }
 
-    @Click({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
+    @OnClick({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
     public void setFullScreen() {
         boolean isfull = title_main.getVisibility() == View.VISIBLE ? true : false;
         if (isfull) {
@@ -242,26 +255,26 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 .dopost("DeviceList");
     }
 
-    @Click(R.id.btn_info_notice)
+    @OnClick(R.id.btn_info_notice)
     public void toInfoListActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, InfoListActivity_.class);
+        intent.setClass(this, InfoListActivity.class);
         startActivity(intent);
     }
 
-    @Click(R.id.btn_people_info)
+    @OnClick(R.id.btn_people_info)
     public void toEasyInfoPeopleActivity() {
 
         Bundle bundle = new Bundle();
         bundle.putString("phone", Config.TEST_PHONE_NUMBER);
         Intent intent = new Intent();
-        intent.setClass(this, EasyInfoPeopleActivity_.class);
+        intent.setClass(this, EasyInfoPeopleActivity.class);
         intent.putExtras(bundle);
 
         startActivity(intent);
     }
 
-    @Click({R.id.btn_fire, R.id.btn_theft, R.id.btn_hurt, R.id.btn_other})
+    @OnClick({R.id.btn_fire, R.id.btn_theft, R.id.btn_hurt, R.id.btn_other})
     public void Call110(View view) {
         switch (view.getId()) {
             case R.id.btn_fire:
@@ -356,14 +369,14 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     }
 
-    @Click(R.id.btn_alarmwarning)
+    @OnClick(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, AlarmActivity2_.class);
+        intent.setClass(this, AlarmActivity2.class);
         startActivity(intent);
     }
 
-    @Click(R.id.btn_setting)
+    @OnClick(R.id.btn_setting)
     public void toSettingDialog() {
         SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
         msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {

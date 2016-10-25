@@ -1,6 +1,8 @@
 package com.xue.liang.app.login;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -15,26 +17,34 @@ import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
-import com.xue.liang.app.main.MainActivity_;
+
+import com.xue.liang.app.main.MainActivity;
 import com.xue.liang.app.utils.DeviceUtil;
 import com.xue.liang.app.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.utils.SharedDB;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-@EActivity(R.layout.activity_login)
+
 public class LoginActivity extends FragmentActivity {
 
-    @ViewById(R.id.login_edittext)
+    @BindView(R.id.login_edittext)
     public EditText login_edittext;
     private String phoneNum;
 
     private String key = "PHONENUM";
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
+        initView();
+    }
+
+
     protected void initView() {
         DeviceUtil.initConfig(getApplicationContext());
         phoneNum = SharedDB.getStringValue(getApplicationContext(), key, "");
@@ -44,12 +54,12 @@ public class LoginActivity extends FragmentActivity {
 
     public void toMainAcitivty() {
         Intent intent = new Intent();
-        intent.setClass(this, MainActivity_.class);
+        intent.setClass(this, MainActivity.class);
         startActivity(intent);
     }
 
 
-    @Click(R.id.login_btn)
+    @OnClick(R.id.login_btn)
     public void doLogin() {
         phoneNum = login_edittext.getText().toString();
 

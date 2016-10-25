@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -43,9 +44,7 @@ import com.xue.liang.app.update.okupdateFile.UpdateFileUtils;
 import com.xue.liang.app.utils.Pathutil;
 import com.xue.liang.app.utils.ToastUtil;
 
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,31 +57,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 /**
  * Created by Administrator on 2016/8/8.
  */
-@EActivity(R.layout.activity_alarm)
+
 public class AlarmActivity extends FragmentActivity {
 
     private ProgressDialog pd;
 
-    @ViewById(R.id.bt_image0)
+    @BindView(R.id.bt_image0)
     public ImageView bt_image0;
 
-    @ViewById(R.id.bt_image1)
+    @BindView(R.id.bt_image1)
     public ImageView bt_image1;
 
-    @ViewById(R.id.bt_image2)
+    @BindView(R.id.bt_image2)
     public ImageView bt_image2;
 
-    @ViewById(R.id.bt_image3)
+    @BindView(R.id.bt_image3)
     public ImageView bt_image3;
 
-    @ViewById(R.id.bt_image4)
+    @BindView(R.id.bt_image4)
     public ImageView bt_image4;
 
-    @ViewById(R.id.et_info)
+    @BindView(R.id.et_info)
     public EditText et_info;
 
 
@@ -102,7 +105,14 @@ public class AlarmActivity extends FragmentActivity {
     private List<String> listFilePath = new ArrayList<String>();
 
 
-    @Click({R.id.bt_image0, R.id.bt_image1, R.id.bt_image2, R.id.bt_image3, R.id.bt_image4})
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alarm);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick({R.id.bt_image0, R.id.bt_image1, R.id.bt_image2, R.id.bt_image3, R.id.bt_image4})
     public void setImage(View view) {
         // TODO Auto-generated method stub
         //使用intent调用系统提供的相册功能，使用startActivityForResult是为了获取用户选择的图片
@@ -257,7 +267,7 @@ public class AlarmActivity extends FragmentActivity {
         }
     }
 
-    @Click(R.id.bt_alrm_right_now)
+    @OnClick(R.id.bt_alrm_right_now)
     public void allupdateFile() {
         if (!listFilePath.isEmpty()) {
             updateFile(listFilePath);
@@ -416,21 +426,21 @@ public class AlarmActivity extends FragmentActivity {
     }
 
 
-    @Click(R.id.bt_alrm_to_carme)
+    @OnClick(R.id.bt_alrm_to_carme)
     public void toCarmera() {
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CARMERA);
     }
 
-    @Click(R.id.bt_alrm_to_video)
+    @OnClick(R.id.bt_alrm_to_video)
     public void toVideo() {
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intent, VIDEO);
     }
 
-    @Click(R.id.bt_back)
+    @OnClick(R.id.bt_back)
     public void close() {
         finish();
     }

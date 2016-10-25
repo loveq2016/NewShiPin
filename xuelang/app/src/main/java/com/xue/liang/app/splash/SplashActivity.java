@@ -1,35 +1,39 @@
 package com.xue.liang.app.splash;
 
-import java.lang.ref.WeakReference;
-
-
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 
 import com.xue.liang.app.R;
-import com.xue.liang.app.common.Config;
-import com.xue.liang.app.login.LoginActivity_;
+
+import com.xue.liang.app.login.LoginActivity;
 import com.xue.liang.app.main.MainActivity;
-import com.xue.liang.app.main.MainActivity_;
-import com.xue.liang.app.utils.DefaultData;
 import com.xue.liang.app.utils.DeviceUtil;
-import com.xue.liang.app.utils.ShareKey;
-import com.xue.liang.app.utils.SharedDB;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.w3c.dom.Text;
 
-@EActivity(R.layout.activity_splash)
+
+import java.lang.ref.WeakReference;
+
+import butterknife.ButterKnife;
+
+
 public class SplashActivity extends FragmentActivity {
 
     private DelayHandler delayHandler;
 
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
+        initView();
+    }
+
+
     protected void initView() {
         DeviceUtil.initConfig(getApplicationContext());
         delayHandler = new DelayHandler(this);
@@ -74,12 +78,12 @@ public class SplashActivity extends FragmentActivity {
             //如果是手机那么就跳转到登陆界面
 
             Intent intent = new Intent();
-            intent.setClass(this, LoginActivity_.class);
+            intent.setClass(this, LoginActivity.class);
             startActivity(intent);
         } else {
 
             Intent intent = new Intent();
-            intent.setClass(this, MainActivity_.class);
+            intent.setClass(this, MainActivity.class);
             startActivity(intent);
         }
 

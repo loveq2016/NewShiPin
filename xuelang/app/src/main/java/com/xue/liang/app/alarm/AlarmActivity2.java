@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -39,10 +40,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,13 +51,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016/9/15.
  */
 
-@EActivity(R.layout.activity_alarm2)
+
 public class AlarmActivity2 extends FragmentActivity {
     public static final int SELECT_PIC_KITKAT = 5;
 
@@ -73,10 +74,10 @@ public class AlarmActivity2 extends FragmentActivity {
     private ProgressDialog pd;
 
 
-    @ViewById(R.id.et_info)
+    @BindView(R.id.et_info)
     public EditText et_info;
 
-    @ViewById(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
     private AlarmAdapter alarmAdapter;
@@ -93,7 +94,14 @@ public class AlarmActivity2 extends FragmentActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alarm2);
+        ButterKnife.bind(this);
+        initView();
+    }
+
     public void initView() {
         initData();
         alarmAdapter = new AlarmAdapter(getApplicationContext(), mdata);
@@ -200,7 +208,7 @@ public class AlarmActivity2 extends FragmentActivity {
 
     }
 
-    @Click(R.id.bt_back)
+    @OnClick(R.id.bt_back)
     public void close() {
         finish();
     }
@@ -272,7 +280,7 @@ public class AlarmActivity2 extends FragmentActivity {
         }
     }
 
-    @Click(R.id.bt_alrm_right_now)
+    @OnClick(R.id.bt_alrm_right_now)
     public void updatefile() {
         List<String> filelist = new ArrayList<>();
         for (String data : mdata) {
@@ -419,7 +427,7 @@ public class AlarmActivity2 extends FragmentActivity {
         }
     }
 
-    @Click(R.id.bt_alrm_to_carme)
+    @OnClick(R.id.bt_alrm_to_carme)
     public void toCarmera() {
         verifyStoragePermissions(CARMERA);
         Intent intent = new Intent();
@@ -427,7 +435,7 @@ public class AlarmActivity2 extends FragmentActivity {
         startActivityForResult(intent, CARMERA);
     }
 
-    @Click(R.id.bt_alrm_to_video)
+    @OnClick(R.id.bt_alrm_to_video)
     public void toVideo() {
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);

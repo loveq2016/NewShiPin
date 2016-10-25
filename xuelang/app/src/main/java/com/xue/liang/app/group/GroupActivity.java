@@ -1,5 +1,8 @@
 package com.xue.liang.app.group;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,22 +15,22 @@ import com.xue.liang.app.data.bean.MemberInfo;
 import com.xue.liang.app.data.reponse.YidongGroupMemberResp;
 import com.xue.liang.app.dialog.AddGroupDialogFragment;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.EView;
-import org.androidannotations.annotations.ViewById;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by Administrator on 2016/9/25.
  */
-@EActivity(R.layout.activity_group)
+
 public class GroupActivity extends FragmentActivity implements GroupContract.View<YidongGroupMemberResp> {
 
-    @ViewById(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     private GroupAdapter groupAdapter;
 
@@ -37,7 +40,15 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
 
     private String mphoneNum;
 
-    @AfterViews
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_group);
+        ButterKnife.bind(this);
+        initView();
+    }
+
+
     public void initView() {
         if (getIntent() != null) {
             mphoneNum = getIntent().getStringExtra("phonenum");
@@ -53,12 +64,12 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
     }
 
 
-    @Click(R.id.bt_add_player)
+    @OnClick(R.id.bt_add_player)
     public void addPlayer() {
         new AddGroupDialogFragment.Builder().setOnAddGroupListener(onAddGroupListener).show(getSupportFragmentManager(), "Dialg");
     }
 
-    @Click(R.id.bt_back)
+    @OnClick(R.id.bt_back)
     public void close() {
         finish();
     }

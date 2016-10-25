@@ -1,10 +1,14 @@
 package com.xue.liang.app.dialog;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,41 +18,55 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.utils.ToastUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 /**
  * Created by Administrator on 2016/9/25.
  */
-@EFragment(R.layout.fragment_add_people)
+
 public class AddGroupDialogFragment extends DialogFragment {
 
     private OnAddGroupListener onAddGroupListener;
 
 
-    @ViewById(R.id.et_group_name)
+    @BindView(R.id.et_group_name)
     EditText et_group_name;
 
-    @ViewById(R.id.et_group_phone_num)
+    @BindView(R.id.et_group_phone_num)
     EditText et_group_phone_num;
 
-    @ViewById(R.id.bt_add)
+    @BindView(R.id.bt_add)
     Button bt_add;
 
-    @ViewById(R.id.bt_add)
-    Button bt_cancle;
 
-    @AfterViews
-    public void init() {
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view =inflater.inflate(R.layout.fragment_add_people,container,false);
+        ButterKnife.bind(view);
+        initView();
+        return view;
+    }
+
+    public void initView() {
         setCancelable(false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
     }
 
-    @Click(R.id.bt_cancle)
+    @OnClick(R.id.bt_cancle)
     public void close() {
         if (onAddGroupListener != null) {
             onAddGroupListener.onCancle();
@@ -56,7 +74,7 @@ public class AddGroupDialogFragment extends DialogFragment {
         dismissAllowingStateLoss();
     }
 
-    @Click(R.id.bt_add)
+    @OnClick(R.id.bt_add)
     public void add() {
 
         String name = et_group_name.getText().toString();
@@ -102,7 +120,7 @@ public class AddGroupDialogFragment extends DialogFragment {
         private AddGroupDialogFragment addGroupDialogFragment;
 
         public Builder() {
-            addGroupDialogFragment = new AddGroupDialogFragment_();
+            addGroupDialogFragment = new AddGroupDialogFragment();
         }
 
         public Builder setOnAddGroupListener(OnAddGroupListener l) {

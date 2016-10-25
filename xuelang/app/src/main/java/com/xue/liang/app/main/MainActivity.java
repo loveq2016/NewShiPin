@@ -299,8 +299,8 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                                 checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
                                // mainPresenter.sendCall(mphoneNum);
                             } else {
-                                checkCallPermissions();
-                              // mainPresenter.sendCall(mphoneNum);
+                               //checkCallPermissions();
+                              mainPresenter.sendCall(mphoneNum);
                             }
 
 

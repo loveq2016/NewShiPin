@@ -3,12 +3,12 @@ package com.xue.liang.app.v3.activity.login;
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.httputils.retrofit2.RegisterService;
-import com.xue.liang.app.v3.httputils.retrofit2.UserInfoService;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -35,7 +35,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         RegisterService service=    retrofit.create(RegisterService.class);
 
 
-        service.getRegisterService(bean).subscribeOn(Schedulers.io())
+        Subscription subscrip=   service.getRegisterService(bean).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<LoginRespBean>() {

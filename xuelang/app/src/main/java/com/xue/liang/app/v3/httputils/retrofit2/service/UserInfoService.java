@@ -1,4 +1,4 @@
-package com.xue.liang.app.v3.httputils.retrofit2;
+package com.xue.liang.app.v3.httputils.retrofit2.service;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

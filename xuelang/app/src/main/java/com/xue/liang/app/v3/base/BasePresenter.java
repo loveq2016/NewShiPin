@@ -16,6 +16,9 @@
 
 package com.xue.liang.app.v3.base;
 
+import rx.Subscription;
+
 public interface BasePresenter {
+
 
 }

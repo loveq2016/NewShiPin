@@ -1,4 +1,4 @@
-package com.xue.liang.app.v3.httputils.retrofit2;
+package com.xue.liang.app.v3.httputils.retrofit2.service;
 
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;

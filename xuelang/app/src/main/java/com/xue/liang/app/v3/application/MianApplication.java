@@ -1,4 +1,4 @@
-package com.xue.liang.app;
+package com.xue.liang.app.v3.application;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;

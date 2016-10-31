@@ -30,6 +30,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void loadData(LoginReqBean bean) {
 
         String GET_API_URL = "http://182.150.56.73:9013/";
+        mView.showLoadingView("");
         Retrofit retrofit= RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
         RegisterService service=    retrofit.create(RegisterService.class);
         subscrip=   service.getRegisterService(bean).subscribeOn(Schedulers.io())
@@ -43,12 +44,18 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        mView.hideLoadingView();
+                        mView.onError(e.toString());
                     }
 
                     @Override
-                    public void onNext(LoginRespBean s) {
-
+                    public void onNext(LoginRespBean bean) {
+                        mView.hideLoadingView();
+                        if(bean.getRet_code()==0){
+                            mView.onSuccess(bean);
+                        }else{
+                            mView.onFail(bean);
+                        }
                     }
                 });
 

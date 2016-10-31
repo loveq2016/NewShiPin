@@ -30,4 +30,7 @@ public interface BaseView {
      */
     void hideLoadingView();
 
+    void onError(String info);
+
+
 }

@@ -15,6 +15,9 @@ public class LoginContract {
 
         void onSuccess(LoginRespBean userInfo);
 
+        void onFail(LoginRespBean userInfo);
+
+
     }
 
     interface Presenter extends BasePresenter {

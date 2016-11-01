@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 
+def SupportVersion = '24.2.1'
 
 android {
     signingConfigs {
@@ -60,6 +61,9 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:+'
     compile 'com.squareup.retrofit2:adapter-rxjava:+'
+
+
+    compile 'com.aurelhubert:ahbottomnavigation:1.5.1'
 
 
     compile project(path: ':vcpSdk')

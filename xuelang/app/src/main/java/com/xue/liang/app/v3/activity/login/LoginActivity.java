@@ -1,10 +1,12 @@
 package com.xue.liang.app.v3.activity.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.activity.main.MainActivity;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
@@ -56,6 +58,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void onFail(LoginRespBean userInfo) {
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
 
     }
 
@@ -71,25 +75,27 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void onError(String info) {
-
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 
     @OnClick(R.id.login_btn)
     public void doLogin() {
-        phoneNum = login_edittext.getText().toString();
-
-        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
-            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
-
-        String mac = DeviceUtil.getMac();
-
-        LoginReqBean loginReqBean = generateLoginReqBean(phoneNum, type, mac);
-        loginPresenter.loadData(loginReqBean);
+       toMainActivity();
+//        phoneNum = login_edittext.getText().toString();
+//
+//        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
+//            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
+//
+//        String mac = DeviceUtil.getMac();
+//
+//        LoginReqBean loginReqBean = generateLoginReqBean(phoneNum, type, mac);
+//        loginPresenter.loadData(loginReqBean);
 
     }
 
@@ -111,5 +117,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private void savePhoneNumber() {
 
+    }
+
+    private void toMainActivity(){
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

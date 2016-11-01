@@ -5,6 +5,7 @@ import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
 import com.xue.liang.app.v3.httputils.retrofit2.service.RegisterService;
 
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -44,6 +45,14 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
+//                        try {
+//                            // Your onError handling code
+//                            RetrofitError ex = (RetrofitError) e;
+//                            Response res = ex.getResponse();
+//
+//                        } catch (Exception ex) {
+//                            // Catch the culprit who's causing this whole problem
+//                        }
                         mView.hideLoadingView();
                         mView.onError(e.toString());
                     }

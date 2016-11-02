@@ -11,6 +11,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
+import com.xue.liang.app.v3.fragment.PlayerFragment;
 
 import butterknife.BindView;
 
@@ -48,6 +49,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+
+        mContext = getApplicationContext();
+        setUpBottomNavigation();
+
+        initFragment(PlayerFragment.class.getName());
+
+
+    }
+
+
+    private void setUpBottomNavigation() {
+
         int[] tabColors;
         tabColors = getApplicationContext().getResources().getIntArray(R.array.tab_colors);
         navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.main_menu_bar);
@@ -62,13 +75,12 @@ public class MainActivity extends BaseActivity {
                 Log.e("测试代码", "测试代码" + position + "----------" + wasSelected);
 
                 if (!wasSelected) {
-                    //setFragmentIndicator(position, 0);
+                    setFragmentIndicator(position);
                 }
                 return true;
             }
         });
 
-        mContext = getApplicationContext();
     }
 
     /**
@@ -77,41 +89,42 @@ public class MainActivity extends BaseActivity {
     private void initFragment(String className) {
         mFragments = new Fragment[5];
 
-        mFragmentMap.put(2, Fragment.instantiate(mContext, className));
+        mFragmentMap.put(0, Fragment.instantiate(mContext, className));
 
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.fragment_container, mFragmentMap.get(2));
+        fragmentTransaction.replace(R.id.fragment_container, mFragmentMap.get(0));
         fragmentTransaction.commit();
-        mFragmentMap.get(2).setUserVisibleHint(true);
-        mCurrentFragement = mFragmentMap.get(2);
+        mFragmentMap.get(0).setUserVisibleHint(true);
+        mCurrentFragement = mFragmentMap.get(0);
 
-        nIndex = 2;
+        nIndex = 0;
     }
 
-    public void setFragmentIndicator(int which, int index) {
+    public void setFragmentIndicator(int which) {
 
         if (which == nIndex) {
             return;
         }
 
+
         Fragment fragment = mFragmentMap.get(which);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
-//            if (which == 0) {
-//                fragment = Fragment.instantiate(mContext, LeaguesContainerFragment.class.getName());
-//            } else if (which == 1) {
-//                fragment = Fragment.instantiate(mContext, PlayerContainerFragment.class.getName());
-//            } else if (which == 2) {
-//                fragment = Fragment.instantiate(mContext, LiveContainerFragment.class.getName());
-//            } else if (which == 3) {
-//                fragment = Fragment.instantiate(mContext, AttentionFragment.class.getName());
-//
-//            } else if (which == 4) {
-//                fragment = Fragment.instantiate(mContext, CompareFragment.class.getName());
-//            }
+            if (which == 0) {
+                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+            } else if (which == 1) {
+                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+            } else if (which == 2) {
+                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+            } else if (which == 3) {
+                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+
+            } else if (which == 4) {
+                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+            }
             mFragmentMap.put(which, fragment);
             fragmentTransaction.add(R.id.fragment_container, fragment);
         } else {

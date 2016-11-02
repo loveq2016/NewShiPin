@@ -7,22 +7,20 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:background="#303132">
 
         <ImageView
             android:id="@+id/title_logo"
-            android:layout_width="88dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@mipmap/login_logo" />
+            android:src="@mipmap/title_logo" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/btn_alarmwarning"
-            android:layout_toRightOf="@id/title_logo">
+            android:layout_centerInParent="true">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,15 +52,36 @@
 
         </RelativeLayout>
 
-
-        <ImageButton
-            android:id="@+id/btn_alarmwarning"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-          android:layout_marginRight="6dp"
-            android:background="@drawable/warning_btn_selector" />
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="28dp"
+                android:layout_marginLeft="8dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/icon_sos" />
+            <Button
+                android:layout_width="28dp"
+                android:layout_marginLeft="8dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/icon_camera" />
+            <Button
+                android:layout_width="28dp"
+                android:layout_marginLeft="8dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/icon_video" />
+            <Button
+                android:layout_width="28dp"
+                android:layout_marginLeft="8dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/icon_setting" />
+
+
+        </LinearLayout>
 
 
     </RelativeLayout>

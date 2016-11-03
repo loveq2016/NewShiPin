@@ -11,7 +11,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
-import com.xue.liang.app.v3.fragment.PlayerFragment;
+import com.xue.liang.app.v3.fragment.help.HelpFragment;
+import com.xue.liang.app.v3.fragment.player.PlayerFragment;
 
 import butterknife.BindView;
 
@@ -116,7 +117,7 @@ public class MainActivity extends BaseActivity {
             if (which == 0) {
                 fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
             } else if (which == 1) {
-                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, HelpFragment.class.getName());
             } else if (which == 2) {
                 fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
             } else if (which == 3) {

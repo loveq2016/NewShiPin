@@ -11,6 +11,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
+import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity {
             } else if (which == 2) {
                 fragment = Fragment.instantiate(mContext, NewInfoFragment.class.getName());
             } else if (which == 3) {
-                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, AlarmProcessFragment.class.getName());
 
             } else if (which == 4) {
                 fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());

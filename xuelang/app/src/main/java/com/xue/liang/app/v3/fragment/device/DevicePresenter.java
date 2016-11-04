@@ -1,14 +1,11 @@
-package com.xue.liang.app.v3.activity.login;
+package com.xue.liang.app.v3.fragment.device;
 
-import com.xue.liang.app.v3.bean.login.LoginReqBean;
-import com.xue.liang.app.v3.bean.login.LoginRespBean;
+import com.xue.liang.app.v3.bean.device.DeviceReqBean;
+import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
-import com.xue.liang.app.v3.httputils.retrofit2.service.RegisterService;
+import com.xue.liang.app.v3.httputils.retrofit2.service.GetDeviceListService;
 
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -17,27 +14,27 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Administrator on 2016/10/26.
  */
-public class LoginPresenter implements LoginContract.Presenter {
+public class DevicePresenter implements DeviceContract.Presenter {
 
-    private LoginContract.View mView;
+    private DeviceContract.View mView;
 
     public Subscription subscrip;
 
-    public LoginPresenter(LoginContract.View view) {
+    public DevicePresenter(DeviceContract.View view) {
         mView = view;
     }
 
     @Override
-    public void loadData(LoginReqBean bean) {
+    public void loadData(DeviceReqBean bean) {
 
         String GET_API_URL = "http://182.150.56.73:9003/";
         mView.showLoadingView("");
         Retrofit retrofit= RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
-        RegisterService service=    retrofit.create(RegisterService.class);
-        subscrip=   service.getRegisterService(bean).subscribeOn(Schedulers.io())
+        GetDeviceListService service=    retrofit.create(GetDeviceListService.class);
+        subscrip=   service.getDeviceListService(bean).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginRespBean>() {
+                .subscribe(new Subscriber<DeviceRespBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -58,7 +55,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(LoginRespBean bean) {
+                    public void onNext(DeviceRespBean bean) {
                         mView.hideLoadingView();
                         if(bean.getRet_code()==0){
                             mView.onSuccess(bean);

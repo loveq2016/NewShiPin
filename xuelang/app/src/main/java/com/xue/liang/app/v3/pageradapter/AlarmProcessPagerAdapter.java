@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
-import com.xue.liang.app.v3.fragment.player.PlayerFragment;
+import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 
 /**
  * Created by jikun on 2016/11/3.
@@ -27,7 +27,7 @@ public class AlarmProcessPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return Fragment.instantiate(mContext, PlayerFragment.class.getName());
+            return Fragment.instantiate(mContext,DeviceFragment.class.getName());
         } else {
             return Fragment.instantiate(mContext, HelpFragment.class.getName());
         }

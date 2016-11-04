@@ -14,7 +14,7 @@ import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
-import com.xue.liang.app.v3.fragment.player.PlayerFragment;
+import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 
 import butterknife.BindView;
 
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
         mContext = getApplicationContext();
         setUpBottomNavigation();
 
-        initFragment(PlayerFragment.class.getName());
+        initFragment(DeviceFragment.class.getName());
 
 
     }
@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
             if (which == 0) {
-                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, DeviceFragment.class.getName());
             } else if (which == 1) {
                 fragment = Fragment.instantiate(mContext, HelpFragment.class.getName());
             } else if (which == 2) {
@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity {
                 fragment = Fragment.instantiate(mContext, AlarmProcessFragment.class.getName());
 
             } else if (which == 4) {
-                fragment = Fragment.instantiate(mContext, PlayerFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, DeviceFragment.class.getName());
             }
             mFragmentMap.put(which, fragment);
             fragmentTransaction.add(R.id.fragment_container, fragment);

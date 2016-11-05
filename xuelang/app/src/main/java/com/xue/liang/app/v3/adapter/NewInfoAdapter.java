@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
 import com.xue.liang.app.v3.viewholder.newsinfo.NewsInfoItemViewHolder;
 
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.List;
  */
 
 public class NewInfoAdapter extends RecyclerView.Adapter {
-    private List<String> dataList;
+    private List<NoticeRespBean.ResponseBean> dataList;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public NewInfoAdapter(Context context,List<String> dataList) {
+    public NewInfoAdapter(Context context,List<NoticeRespBean.ResponseBean> dataList) {
         this.context=context;
         this.dataList = dataList;
         layoutInflater=LayoutInflater.from(context);
@@ -41,5 +42,11 @@ public class NewInfoAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return dataList == null ? 0 : dataList.size();
+    }
+
+    public void reshData(List<NoticeRespBean.ResponseBean> dataList){
+        this.dataList=dataList;
+        notifyDataSetChanged();
+
     }
 }

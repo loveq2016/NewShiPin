@@ -9,6 +9,9 @@ import android.view.View;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.NewInfoAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
+import com.xue.liang.app.v3.bean.notice.NoticeReqBean;
+import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
+import com.xue.liang.app.v3.config.TestData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +21,7 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2016/11/2.
  */
-public class NewInfoFragment extends BaseFragment {
+public class NewInfoFragment extends BaseFragment implements NewInfoContract.View {
 
 
     @BindView(R.id.recyclerView)
@@ -28,7 +31,9 @@ public class NewInfoFragment extends BaseFragment {
 
     private NewInfoAdapter adapter;
 
-    private List<String> mListData;
+    private List<NoticeRespBean.ResponseBean> mListData;
+
+    private NewInfoPresenter newInfoPresenter;
 
     @Override
     protected void onFirstUserVisible() {
@@ -47,9 +52,20 @@ public class NewInfoFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+        newInfoPresenter = new NewInfoPresenter(this);
 
         setupRecyclerView();
 
+    }
+
+    private void reshData() {
+        NoticeReqBean noticeReqBean = new NoticeReqBean();
+        noticeReqBean.setTermi_type("2");
+        noticeReqBean.setTermi_unique_code(TestData.termi_unique_code);
+        noticeReqBean.setCount(20);
+        noticeReqBean.setStrat_index(0);
+        noticeReqBean.setUser_id("123");
+        newInfoPresenter.loadData(noticeReqBean);
     }
 
     @Override
@@ -59,11 +75,9 @@ public class NewInfoFragment extends BaseFragment {
 
     protected void setupRecyclerView() {
         mListData = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            mListData.add("");
-        }
+
         if (adapter == null) {
-            adapter = new NewInfoAdapter(getContext(),mListData);
+            adapter = new NewInfoAdapter(getContext(), mListData);
         }
         mRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
@@ -81,6 +95,34 @@ public class NewInfoFragment extends BaseFragment {
         });
         mRecyclerView.setLayoutManager(layoutManager);
 
+
+    }
+
+    @Override
+    public void onSuccess(NoticeRespBean noticeRespBean) {
+        if (noticeRespBean != null & noticeRespBean.getResponse() != null) {
+            adapter.reshData(noticeRespBean.getResponse());
+        }
+
+    }
+
+    @Override
+    public void onFail(NoticeRespBean noticeRespBean) {
+
+    }
+
+    @Override
+    public void showLoadingView(String msg) {
+
+    }
+
+    @Override
+    public void hideLoadingView() {
+
+    }
+
+    @Override
+    public void onError(String info) {
 
     }
 }

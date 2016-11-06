@@ -4,6 +4,7 @@ import com.xue.liang.app.v3.base.BasePresenter;
 import com.xue.liang.app.v3.base.BaseView;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
+import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 
 /**
  * Created by jikun on 2016/11/4.
@@ -16,6 +17,10 @@ public class DeviceContract {
         void onSuccess(DeviceRespBean userInfo);
 
         void onFail(DeviceRespBean userInfo);
+
+        void onPostAlermSuccess(PostAlermResp postAlermResp);
+
+        void onPostAlermFail(String msg);
 
 
     }

@@ -2,16 +2,19 @@ package com.xue.liang.app.v3.activity.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
+import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
 import com.xue.liang.app.v3.fragment.device.DeviceFragment;
@@ -25,8 +28,8 @@ public class MainActivity extends BaseActivity {
     private AHBottomNavigationAdapter navigationAdapter;
 
 
-    @BindView(R.id.bottom_navigation)
-    AHBottomNavigation bottomNavigation;
+    @BindView(R.id.bottomBar)
+    BottomBar bottomBar;
 
 
     private int nIndex = 0;
@@ -54,43 +57,72 @@ public class MainActivity extends BaseActivity {
     protected void initViews() {
 
         mContext = getApplicationContext();
-        setUpBottomNavigation();
+        setUpBottomBar();
 
         initFragment(DeviceFragment.class.getName());
 
 
     }
 
-
-    private void setUpBottomNavigation() {
-
-        int[] tabColors;
-        tabColors = getApplicationContext().getResources().getIntArray(R.array.tab_colors);
-        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.main_menu_bar);
-        bottomNavigation.setForceTitlesDisplay(true);
-        navigationAdapter.setupWithBottomNavigation(bottomNavigation, tabColors);
-
-
-        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-
+    private void setUpBottomBar() {
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                Log.e("测试代码", "测试代码" + position + "----------" + wasSelected);
-
-                if (!wasSelected) {
-                    setFragmentIndicator(position);
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.tab_0:
+                        setFragmentIndicator(0);
+                        break;
+                    case R.id.tab_1:
+                        setFragmentIndicator(1);
+                        break;
+                    case R.id.tab_2:
+                        setFragmentIndicator(2);
+                        break;
+                    case R.id.tab_3:
+                        setFragmentIndicator(3);
+                        break;
+                    case R.id.tab_4:
+                        setFragmentIndicator(4);
+                        break;
+                    case R.id.tab_5:
+                        setFragmentIndicator(5);
+                        break;
                 }
-                return true;
+
             }
         });
-
     }
+
+
+//    private void setUpBottomNavigation() {
+//
+//        int[] tabColors;
+//        tabColors = getApplicationContext().getResources().getIntArray(R.array.tab_colors);
+//        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.main_menu_bar);
+//        bottomNavigation.setForceTitlesDisplay(true);
+//        navigationAdapter.setupWithBottomNavigation(bottomNavigation, tabColors);
+//
+//
+//        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+//
+//            @Override
+//            public boolean onTabSelected(int position, boolean wasSelected) {
+//                Log.e("测试代码", "测试代码" + position + "----------" + wasSelected);
+//
+//                if (!wasSelected) {
+//                    setFragmentIndicator(position);
+//                }
+//                return true;
+//            }
+//        });
+//
+//    }
 
     /**
      * 初始化Fragment in MainActivy
      */
     private void initFragment(String className) {
-        mFragments = new Fragment[5];
+        mFragments = new Fragment[6];
 
         mFragmentMap.put(0, Fragment.instantiate(mContext, className));
 
@@ -119,14 +151,17 @@ public class MainActivity extends BaseActivity {
             if (which == 0) {
                 fragment = Fragment.instantiate(mContext, DeviceFragment.class.getName());
             } else if (which == 1) {
-                fragment = Fragment.instantiate(mContext, HelpFragment.class.getName());
+                fragment = EasyPeopleInfoFragment.newInstance("18000000001");
             } else if (which == 2) {
-                fragment = Fragment.instantiate(mContext, NewInfoFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, HelpFragment.class.getName());
+
             } else if (which == 3) {
-                fragment = Fragment.instantiate(mContext, AlarmProcessFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, NewInfoFragment.class.getName());
 
             } else if (which == 4) {
-                fragment = Fragment.instantiate(mContext, DeviceFragment.class.getName());
+                fragment = Fragment.instantiate(mContext, AlarmProcessFragment.class.getName());
+            } else if (which == 5) {
+                fragment = Fragment.instantiate(mContext, NewInfoFragment.class.getName());
             }
             mFragmentMap.put(which, fragment);
             fragmentTransaction.add(R.id.fragment_container, fragment);

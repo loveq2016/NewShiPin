@@ -2,6 +2,7 @@ package com.xue.liang.app.v3.activity.login;
 
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
+import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
 import com.xue.liang.app.v3.httputils.retrofit2.service.RegisterService;
 
@@ -30,7 +31,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void loadData(LoginReqBean bean) {
 
-        String GET_API_URL = "http://182.150.56.73:9003/";
+        String GET_API_URL =  UriHelper.getStartUrl();
         mView.showLoadingView("");
         Retrofit retrofit= RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
         RegisterService service=    retrofit.create(RegisterService.class);

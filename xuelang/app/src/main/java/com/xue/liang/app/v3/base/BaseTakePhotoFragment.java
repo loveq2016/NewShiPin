@@ -4,19 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jph.takephoto.app.TakePhotoFragment;
 
 import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/10/26.
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseTakePhotoFragment extends TakePhotoFragment {
 
     private boolean isFirstVisible = true;
     private boolean isFirstInvisible = true;
@@ -156,8 +156,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected void showProgressDialog() {
         materialDialog = new MaterialDialog.Builder(getActivity())
-                .title("加载中")
-                .content("请稍后")
+                .title("title")
+                .content("content")
                 .progress(true, 0)
                 .progressIndeterminateStyle(false)
                 .show();

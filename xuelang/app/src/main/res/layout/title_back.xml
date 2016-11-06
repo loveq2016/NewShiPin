@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#303132">
+
+        <Button
+            android:id="@+id/bt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="@android:color/transparent"
+            android:padding="6dp"
+            android:text="返回首页"
+            android:textSize="@dimen/text_size_14sp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="left"
+            tools:text="报警求助"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_18sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/darker_gray"></View>
+
+
+    </RelativeLayout>
+</LinearLayout>

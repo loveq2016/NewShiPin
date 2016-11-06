@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.activity.newinfo.NewInfoDetailActivity;
 import com.xue.liang.app.v3.adapter.NewInfoAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.notice.NoticeReqBean;
 import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
 import com.xue.liang.app.v3.config.TestData;
+import com.xue.liang.app.v3.utils.BundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +39,17 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     private NewInfoPresenter newInfoPresenter;
 
+
     @Override
     protected void onFirstUserVisible() {
+
+        //reshData();
 
     }
 
     @Override
     protected void onUserVisible() {
+        Log.d("c", "c");
 
     }
 
@@ -55,6 +63,8 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
         newInfoPresenter = new NewInfoPresenter(this);
 
         setupRecyclerView();
+
+        reshData();
 
     }
 
@@ -79,6 +89,17 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
         if (adapter == null) {
             adapter = new NewInfoAdapter(getContext(), mListData);
         }
+
+        adapter.setmItemClickLister(new NewInfoAdapter.RecyclerItemClickListener<NoticeRespBean.ResponseBean>() {
+            @Override
+            public void onItemClick(View view, int section, int postion, NoticeRespBean.ResponseBean value) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString(BundleConstant.GUID, value.getGuid());
+                readyGo(NewInfoDetailActivity.class, bundle);
+
+            }
+        });
         mRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
 
@@ -113,12 +134,14 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @Override
     public void showLoadingView(String msg) {
+        showProgressDialog();
+
 
     }
 
     @Override
     public void hideLoadingView() {
-
+        dimissProgressDialog();
     }
 
     @Override

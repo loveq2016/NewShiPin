@@ -85,7 +85,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             itemView.setOnClickListener(this);
             image = (ImageView) itemView.findViewById(R.id.image);
             imageLoader = ImageLoader.getInstance(); // Get singleton instance
-            imageSize = new ImageSize(100, 100);
+            imageSize = new ImageSize(600, 600);
 
         }
 
@@ -93,9 +93,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             mposition = position;
             String picturePath = data.get(position);
             if (TextUtils.isEmpty(picturePath)) {
-                image.setImageResource(R.mipmap.image_upto);
-                //image.setBackgroundResource(R.mipmap.image_upto);
+
+                image.setBackgroundResource(R.mipmap.image_upto);
             } else {
+
                 imageLoader.displayImage("file://" + picturePath, image, imageSize);
             }
 

@@ -11,6 +11,10 @@
 
     <item
         android:icon="@mipmap/ic_content_add"
+        android:title="报警求助" />
+
+    <item
+        android:icon="@mipmap/ic_content_add"
         android:title="新闻公告" />
     <item
         android:icon="@mipmap/ic_content_add"

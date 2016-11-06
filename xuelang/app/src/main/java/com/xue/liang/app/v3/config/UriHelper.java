@@ -18,4 +18,16 @@ public class UriHelper {
         stringBuilder.append("/");
         return stringBuilder.toString();
     }
+
+    /**
+     * 上传文件接口
+     *
+     * @return
+     */
+    public static String getUpdateFile() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getStartUrl());
+        stringBuilder.append("/mobileservice/uploadfiles.ashx");
+        return stringBuilder.toString();
+    }
 }

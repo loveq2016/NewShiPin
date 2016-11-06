@@ -1,0 +1,26 @@
+<tabs>
+    <tab
+        icon="@mipmap/ic_content_add"
+        id="@+id/tab_0"
+        title="视频监控 " />
+    <tab
+        icon="@mipmap/ic_content_add"
+        id="@+id/tab_1"
+        title="便民信息" />
+    <tab
+        icon="@mipmap/ic_content_add"
+        id="@+id/tab_2"
+        title="报警求助" />
+    <tab
+        icon="@mipmap/ic_content_add"
+        id="@+id/tab_3"
+        title="新闻公告" />
+    <tab
+        icon="@mipmap/ic_content_add"
+        id="@+id/tab_4"
+        title="报警处理" />
+    <tab
+        icon="@mipmap/ic_content_add"
+        id="@+id/tab_5"
+        title="村村响" />
+</tabs>

@@ -1,10 +1,14 @@
-package com.xue.liang.app.v3.fragment.newinfo;
+package com.xue.liang.app.v3.activity.newinfo;
 
+import com.xue.liang.app.v3.activity.login.LoginContract;
+import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
-import com.xue.liang.app.v3.bean.notice.NoticeReqBean;
 import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
+import com.xue.liang.app.v3.bean.noticedetail.NoticeDetailReqBean;
+import com.xue.liang.app.v3.bean.noticedetail.NoticeDetailRespBean;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
+import com.xue.liang.app.v3.httputils.retrofit2.service.NoticeDetailService;
 import com.xue.liang.app.v3.httputils.retrofit2.service.NoticeService;
 import com.xue.liang.app.v3.httputils.retrofit2.service.RegisterService;
 
@@ -15,31 +19,30 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by jikun on 2016/11/5.
+ * Created by Administrator on 2016/10/26.
  */
+public class NewInfoDetailPresenter implements NewInfoDetailContract.Presenter {
 
-public class NewInfoPresenter implements NewInfoContract.Presenter {
-
-    private NewInfoContract.View mView;
+    private NewInfoDetailContract.View mView;
 
     public Subscription subscrip;
 
-    public NewInfoPresenter(NewInfoContract.View view) {
+    public NewInfoDetailPresenter(NewInfoDetailContract.View view) {
         mView = view;
     }
 
     @Override
-    public void loadData(NoticeReqBean bean) {
+    public void loadData(NoticeDetailReqBean bean) {
 
 
-        String GET_API_URL =  UriHelper.getStartUrl();
+        String GET_API_URL = UriHelper.getStartUrl();
         mView.showLoadingView("");
         Retrofit retrofit = RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
-        NoticeService service = retrofit.create(NoticeService.class);
-        subscrip = service.getNoticeService(bean).subscribeOn(Schedulers.io())
+        NoticeDetailService service = retrofit.create(NoticeDetailService.class);
+        subscrip = service.getNoticeDetailService(bean).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<NoticeRespBean>() {
+                .subscribe(new Subscriber<NoticeDetailRespBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -60,7 +63,7 @@ public class NewInfoPresenter implements NewInfoContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(NoticeRespBean bean) {
+                    public void onNext(NoticeDetailRespBean bean) {
                         mView.hideLoadingView();
                         if (bean.getRet_code() == 0) {
                             mView.onSuccess(bean);
@@ -69,6 +72,7 @@ public class NewInfoPresenter implements NewInfoContract.Presenter {
                         }
                     }
                 });
+
 
     }
 }

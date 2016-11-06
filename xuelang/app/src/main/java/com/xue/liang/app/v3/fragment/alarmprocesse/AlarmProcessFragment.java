@@ -1,6 +1,7 @@
 package com.xue.liang.app.v3.fragment.alarmprocesse;
 
 import android.support.v4.view.ViewPager;
+import android.widget.TextView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.xue.liang.app.R;
@@ -22,6 +23,9 @@ public class AlarmProcessFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     @Override
     protected void onFirstUserVisible() {
 
@@ -39,6 +43,7 @@ public class AlarmProcessFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+        tv_title.setText("报警处理");
         setupViewPager();
 
 
@@ -48,7 +53,6 @@ public class AlarmProcessFragment extends BaseFragment {
     protected int getContentViewLayoutID() {
         return R.layout.fragment_alarm_process;
     }
-
 
 
     private void setupViewPager() {

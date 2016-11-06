@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xue.liang.app.R;
@@ -11,15 +12,19 @@ import com.xue.liang.app.v3.adapter.PlayerAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
+import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
+import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
+import com.xue.liang.app.v3.utils.AlarmTypeConstant;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -28,8 +33,6 @@ import de.greenrobot.event.EventBus;
 public class DeviceFragment extends BaseFragment implements DeviceContract.View {
     @BindView(R.id.listview)
     ListView listview;
-
-    private MaterialDialog materialDialog;
 
 
     private PlayerAdapter playerAdapter;
@@ -106,7 +109,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
     public void onSuccess(DeviceRespBean deviceRespBean) {
 
         if (deviceRespBean != null) {
-            dataList=deviceRespBean.getResponse();
+            dataList = deviceRespBean.getResponse();
             playerAdapter.reshData(dataList);
         }
 
@@ -119,17 +122,24 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
     }
 
     @Override
+    public void onPostAlermSuccess(PostAlermResp postAlermResp) {
+        Toast.makeText(getActivity(), "报警成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPostAlermFail(String msg) {
+        Toast.makeText(getActivity(), "报警失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showLoadingView(String msg) {
 
-showIndeterminateProgressDialog(false);
+        showProgressDialog();
     }
 
     @Override
     public void hideLoadingView() {
-        if(materialDialog.isShowing()){
-            materialDialog.dismiss();
-        }
-
+        dimissProgressDialog();
     }
 
     @Override
@@ -145,12 +155,42 @@ showIndeterminateProgressDialog(false);
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    private void showIndeterminateProgressDialog(boolean horizontal) {
-        materialDialog= new MaterialDialog.Builder(getActivity())
-                .title("title")
-                .content("content")
-                .progress(true, 0)
-                .progressIndeterminateStyle(horizontal)
-                .show();
+    @OnClick({R.id.bt_other_alarm, R.id.bt_hurt_alarm, R.id.bt_theft_alarm, R.id.bt_fire_alarm})
+    public void alarm(View view) {
+
+        switch (view.getId()) {
+            case R.id.bt_other_alarm:
+                sendAlarm(AlarmTypeConstant.OTHER);
+                break;
+            case R.id.bt_hurt_alarm:
+                sendAlarm(AlarmTypeConstant.DANGEROUS_DAMAGE);
+                break;
+            case R.id.bt_theft_alarm:
+                sendAlarm(AlarmTypeConstant.STOLEN_ROB);
+                break;
+            case R.id.bt_fire_alarm:
+                sendAlarm(AlarmTypeConstant.FIFE);
+                break;
+        }
+
     }
+
+    private void sendAlarm(int type) {
+        PostAlermReq postAlermReq = new PostAlermReq();
+        postAlermReq.setTermi_type("2");
+        postAlermReq.setAlerm_level(0);
+        postAlermReq.setAlerm_type(type);
+        postAlermReq.setCam_dev_name("");
+        postAlermReq.setCam_dev_uid("");
+        postAlermReq.setCam_url("");
+        postAlermReq.setStb_car_id("");
+        postAlermReq.setStb_id("");
+        postAlermReq.setStb_info("");
+        postAlermReq.setStb_type(2);
+        postAlermReq.setUpdate_time("");
+        postAlermReq.setUser_id("");
+        devicePresenter.postalarmType(postAlermReq);
+    }
+
+
 }

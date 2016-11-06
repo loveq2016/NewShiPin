@@ -60,6 +60,7 @@
                 android:orientation="vertical">
 
                 <Button
+                    android:id="@+id/bt_fire_alarm"
                     android:layout_width="60dp"
                     android:layout_marginTop="10dp"
                     android:background="@mipmap/icon_fire_alarm"
@@ -67,18 +68,21 @@
 
 
                 <Button
+                    android:id="@+id/bt_theft_alarm"
                     android:layout_width="60dp"
                     android:layout_marginTop="10dp"
                     android:background="@mipmap/icon_theft_alarm"
                     android:layout_height="25dp" />
 
                 <Button
+                    android:id="@+id/bt_hurt_alarm"
                     android:layout_width="60dp"
                     android:layout_marginTop="10dp"
                     android:background="@mipmap/icon_hurt_alarm"
                     android:layout_height="25dp" />
 
                 <Button
+                    android:id="@+id/bt_other_alarm"
                     android:layout_width="60dp"
                     android:layout_marginTop="10dp"
                     android:background="@mipmap/icon_other_alarm"

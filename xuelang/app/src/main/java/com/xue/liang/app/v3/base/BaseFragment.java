@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -152,6 +153,23 @@ public abstract class BaseFragment extends Fragment {
             intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * show toast
+     *
+     * @param msg
+     */
+    protected void showToast(String msg) {
+
+
+        if (null != getActivity()) {
+            Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+
+
+        //  Snackbar.make(, msg, Snackbar.LENGTH_SHORT).show();
+
     }
 
     protected void showProgressDialog() {

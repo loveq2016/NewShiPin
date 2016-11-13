@@ -42,6 +42,7 @@
                 android:id="@+id/et_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="top"
                 android:layout_below="@+id/ll_info"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="20dp"
@@ -95,6 +96,8 @@
             android:id="@+id/bt_now_alarm"
             android:layout_width="300dp"
             android:layout_height="40dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bt_login_selector"
             android:layout_centerInParent="true"
             android:text="立即报警" />
     </RelativeLayout>

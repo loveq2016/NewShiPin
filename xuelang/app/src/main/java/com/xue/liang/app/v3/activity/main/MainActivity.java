@@ -13,11 +13,15 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
+import com.xue.liang.app.v3.bean.login.LoginRespBean;
+import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
 import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
 import com.xue.liang.app.v3.fragment.device.DeviceFragment;
+import com.xue.liang.app.v3.utils.Constant;
+import com.xue.liang.app.v3.utils.SharedDB;
 
 import butterknife.BindView;
 
@@ -34,7 +38,7 @@ public class MainActivity extends BaseActivity {
 
     private int nIndex = 0;
 
-    private Fragment[] mFragments = null;
+    private Fragment[] mFragments = new Fragment[6];
 
     private SparseArray<Fragment> mFragmentMap = new SparseArray<>();
 
@@ -42,9 +46,16 @@ public class MainActivity extends BaseActivity {
 
     private Context mContext;
 
+    private LoginRespBean mLoginRespBean;
+
 
     @Override
     protected void getBundleExtras(Bundle extras) {
+
+        if (extras != null) {
+            mLoginRespBean = extras.getParcelable(BundleConstant.BUNDLE_LOGIN_DATA);
+        }
+
 
     }
 
@@ -59,7 +70,8 @@ public class MainActivity extends BaseActivity {
         mContext = getApplicationContext();
         setUpBottomBar();
 
-        initFragment(DeviceFragment.class.getName());
+
+        initFragment();
 
 
     }
@@ -121,10 +133,12 @@ public class MainActivity extends BaseActivity {
     /**
      * 初始化Fragment in MainActivy
      */
-    private void initFragment(String className) {
+    private void initFragment() {
         mFragments = new Fragment[6];
 
-        mFragmentMap.put(0, Fragment.instantiate(mContext, className));
+
+        DeviceFragment deviceFragment = DeviceFragment.newInstance(mLoginRespBean);
+        mFragmentMap.put(0, deviceFragment);
 
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -149,9 +163,11 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
             if (which == 0) {
-                fragment = Fragment.instantiate(mContext, DeviceFragment.class.getName());
+                DeviceFragment deviceFragment = DeviceFragment.newInstance(mLoginRespBean);
+                fragment = deviceFragment;
             } else if (which == 1) {
-                fragment = EasyPeopleInfoFragment.newInstance("18000000001");
+                String phoneNum = SharedDB.getStringValue(getApplicationContext(), Constant.ShareDbKey.KEY_PHONE_NUMBER, "");
+                fragment = EasyPeopleInfoFragment.newInstance(phoneNum);
             } else if (which == 2) {
                 fragment = Fragment.instantiate(mContext, HelpFragment.class.getName());
 

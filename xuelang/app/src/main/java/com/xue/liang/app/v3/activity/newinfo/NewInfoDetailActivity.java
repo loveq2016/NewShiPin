@@ -8,7 +8,7 @@ import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.noticedetail.NoticeDetailReqBean;
 import com.xue.liang.app.v3.bean.noticedetail.NoticeDetailRespBean;
 import com.xue.liang.app.v3.config.TestData;
-import com.xue.liang.app.v3.utils.BundleConstant;
+import com.xue.liang.app.v3.constant.BundleConstant;
 
 import butterknife.BindView;
 import butterknife.OnClick;

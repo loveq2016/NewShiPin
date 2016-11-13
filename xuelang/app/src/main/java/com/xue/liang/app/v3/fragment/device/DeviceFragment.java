@@ -1,6 +1,8 @@
 package com.xue.liang.app.v3.fragment.device;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,9 +14,11 @@ import com.xue.liang.app.v3.adapter.PlayerAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
+import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 import com.xue.liang.app.v3.config.TestData;
+import com.xue.liang.app.v3.constant.CarmIdConstant;
 import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
 import com.xue.liang.app.v3.utils.AlarmTypeConstant;
@@ -31,6 +35,8 @@ import de.greenrobot.event.EventBus;
  * Created by Administrator on 2016/11/2.
  */
 public class DeviceFragment extends BaseFragment implements DeviceContract.View {
+
+    public static final String Bundle_Data = "LoginData";
     @BindView(R.id.listview)
     ListView listview;
 
@@ -39,6 +45,10 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
     private DevicePresenter devicePresenter;
 
     private List<DeviceRespBean.ResponseBean> dataList;
+
+    private LoginRespBean mloginRespBean;
+
+    private String mCurrentCamerId = "";
 
     @Override
     protected void onFirstUserVisible() {
@@ -56,8 +66,23 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
     }
 
+    public static DeviceFragment newInstance(LoginRespBean loginRespBean) {
+        DeviceFragment deviceFragment = new DeviceFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Bundle_Data, loginRespBean);
+        deviceFragment.setArguments(bundle);
+        return deviceFragment;
+
+    }
+
     @Override
     protected void initViews() {
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            mloginRespBean = bundle.getParcelable(Bundle_Data);
+        }
+
         devicePresenter = new DevicePresenter(this);
 
         setupListView();
@@ -92,6 +117,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
                 // TODO Auto-generated method stub
                 listview.setItemChecked(position, true);
                 String deviceid = dataList.get(position).getDev_id();
+                mCurrentCamerId = deviceid;
                 String devicename = dataList.get(position).getDev_name();
                 String url = dataList.get(position).getDev_url();
                 EventBus.getDefault().post(new UrlEvent(url));
@@ -123,12 +149,24 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
     @Override
     public void onPostAlermSuccess(PostAlermResp postAlermResp) {
-        Toast.makeText(getActivity(), "报警成功", Toast.LENGTH_SHORT).show();
+        showToast("报警成功");
     }
 
     @Override
     public void onPostAlermFail(String msg) {
-        Toast.makeText(getActivity(), "报警失败", Toast.LENGTH_SHORT).show();
+        showToast("报警失败");
+
+    }
+
+    @Override
+    public void onPtzCmdSuccess(String msg) {
+        showToast("云台控制成功");
+
+    }
+
+    @Override
+    public void onPtzCmdFail(String msg) {
+        showToast("云台控制失败");
     }
 
     @Override
@@ -190,6 +228,44 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
         postAlermReq.setUpdate_time("");
         postAlermReq.setUser_id("");
         devicePresenter.postalarmType(postAlermReq);
+    }
+
+    @OnClick({R.id.btn_ptz_left, R.id.btn_ptz_up, R.id.btn_ptz_right, R.id.btn_ptz_down})
+    public void ptz(View view) {
+        switch (view.getId()) {
+            case R.id.btn_ptz_left:
+                sendPtz(CarmIdConstant.CARM_ID_LEFT);
+                break;
+            case R.id.btn_ptz_up:
+                sendPtz(CarmIdConstant.CARM_ID_UP);
+                break;
+            case R.id.btn_ptz_right:
+                sendPtz(CarmIdConstant.CARM_ID_RIGHT);
+                break;
+            case R.id.btn_ptz_down:
+                sendPtz(CarmIdConstant.CARM_ID_DOWN);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void sendPtz(int cmdzl) {
+
+
+        if (mloginRespBean != null && !TextUtils.isEmpty(mCurrentCamerId)) {
+
+            String sessionID = mloginRespBean.getAlias_id();
+            String cameraID = mCurrentCamerId;
+            int cmdID = cmdzl;
+            int param1 = 1;//速度
+
+            devicePresenter.startPtzCmd(sessionID, cameraID, cmdID, param1, 0);
+
+        }
+
+
     }
 
 

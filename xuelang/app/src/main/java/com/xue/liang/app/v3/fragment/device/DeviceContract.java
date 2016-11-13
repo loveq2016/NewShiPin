@@ -4,6 +4,7 @@ import com.xue.liang.app.v3.base.BasePresenter;
 import com.xue.liang.app.v3.base.BaseView;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
+import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 
 /**
@@ -22,10 +23,18 @@ public class DeviceContract {
 
         void onPostAlermFail(String msg);
 
+        void onPtzCmdSuccess(String msg);
+
+        void onPtzCmdFail(String msg);
+
 
     }
 
     interface Presenter extends BasePresenter {
         void loadData(DeviceReqBean bean);
+
+        void startPtzCmd(String sessionID, String cameraID, int cmdID, int param1, int param2);
+
+        void postalarmType(PostAlermReq bean);
     }
 }

@@ -26,6 +26,13 @@ android {
         versionCode 4
         versionName "3.0.0"
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     buildTypes {
         release {
             signingConfig signingConfigs.myConfig

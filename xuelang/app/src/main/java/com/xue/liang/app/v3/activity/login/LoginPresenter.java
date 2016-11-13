@@ -46,14 +46,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-//                        try {
-//                            // Your onError handling code
-//                            RetrofitError ex = (RetrofitError) e;
-//                            Response res = ex.getResponse();
-//
-//                        } catch (Exception ex) {
-//                            // Catch the culprit who's causing this whole problem
-//                        }
                         mView.hideLoadingView();
                         mView.onError(e.toString());
                     }

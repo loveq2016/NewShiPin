@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.newinfo.NewInfoDetailActivity;
 import com.xue.liang.app.v3.adapter.NewInfoAdapter;
@@ -15,7 +14,7 @@ import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.notice.NoticeReqBean;
 import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
 import com.xue.liang.app.v3.config.TestData;
-import com.xue.liang.app.v3.utils.BundleConstant;
+import com.xue.liang.app.v3.constant.BundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;

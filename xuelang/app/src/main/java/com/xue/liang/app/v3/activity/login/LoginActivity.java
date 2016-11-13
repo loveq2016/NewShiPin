@@ -1,6 +1,5 @@
 package com.xue.liang.app.v3.activity.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,6 +9,8 @@ import com.xue.liang.app.v3.activity.main.MainActivity;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
+import com.xue.liang.app.v3.config.TestData;
+import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.PhoneNumCheckUtils;
@@ -44,58 +45,67 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void initViews() {
         getShareDbNumber();
-
-
         loginPresenter = new LoginPresenter(this);
-
     }
 
 
     @Override
     public void onSuccess(LoginRespBean userInfo) {
+        savePhoneNumber();
+        toMainActivity(userInfo);
 
     }
 
     @Override
     public void onFail(LoginRespBean userInfo) {
-        Intent intent=new Intent(this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent=new Intent(this, MainActivity.class);
+//        startActivity(intent);
+        showToast("登陆失败");
 
     }
 
     @Override
     public void showLoadingView(String msg) {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoadingView() {
+        dimissProgressDialog();
 
     }
 
     @Override
     public void onError(String info) {
-        Intent intent=new Intent(this, MainActivity.class);
-        startActivity(intent);
+        showToast("登陆失败");
+        LoginRespBean loginRespBean=new LoginRespBean();
+        loginRespBean.setUser_id("1234");
+        loginRespBean.setAlias_id("123678");
+        loginRespBean.setApp_key("22222");
+        loginRespBean.setRet_code(200);
+        loginRespBean.setRet_string("222");
+        toMainActivity(loginRespBean);
     }
 
 
     @OnClick(R.id.login_btn)
     public void doLogin() {
-       toMainActivity();
-//        phoneNum = login_edittext.getText().toString();
-//
-//        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
-//            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
-//
-//        String mac = DeviceUtil.getMac();
-//
-//        LoginReqBean loginReqBean = generateLoginReqBean(phoneNum, type, mac);
-//        loginPresenter.loadData(loginReqBean);
+//        toMainActivity();
+        phoneNum = login_edittext.getText().toString();
+
+        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
+            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
+
+        String mac = DeviceUtil.getMac();
+        mac=TestData.termi_unique_code;
+
+        LoginReqBean loginReqBean = generateLoginReqBean(phoneNum, type, mac);
+        loginPresenter.loadData(loginReqBean);
 
     }
 
@@ -116,11 +126,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     private void savePhoneNumber() {
-
+        SharedDB.putStringValue(getApplicationContext(), Constant.ShareDbKey.KEY_PHONE_NUMBER, phoneNum);
     }
 
-    private void toMainActivity(){
-        Intent intent=new Intent(this, MainActivity.class);
-        startActivity(intent);
+    private void toMainActivity(LoginRespBean loginRespBean) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BundleConstant.BUNDLE_LOGIN_DATA, loginRespBean);
+        readyGo(MainActivity.class, bundle);
     }
 }

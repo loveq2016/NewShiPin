@@ -3,7 +3,9 @@ package com.xue.liang.app.v3.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -139,10 +141,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param msg
      */
     protected void showToast(String msg) {
-        //防止遮盖虚拟按键
-//        if (null != msg && !CommonUtils.isEmpty(msg)) {
-//            Snackbar.make(getLoadingTargetView(), msg, Snackbar.LENGTH_SHORT).show();
-//        }
+
+
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+        //  Snackbar.make(, msg, Snackbar.LENGTH_SHORT).show();
+
     }
 
 

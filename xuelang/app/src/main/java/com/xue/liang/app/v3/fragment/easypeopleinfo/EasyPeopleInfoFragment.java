@@ -1,17 +1,14 @@
 package com.xue.liang.app.v3.fragment.easypeopleinfo;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
-import android.widget.WrapperListAdapter;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseFragment;
-import com.xue.liang.app.v3.utils.BundleConstant;
+import com.xue.liang.app.v3.constant.BundleConstant;
 
 import butterknife.BindView;
 

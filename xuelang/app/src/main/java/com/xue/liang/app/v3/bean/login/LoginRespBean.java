@@ -1,9 +1,13 @@
 package com.xue.liang.app.v3.bean.login;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Administrator on 2016/10/26.
  */
-public class LoginRespBean {
+public class LoginRespBean implements Parcelable {
+
 
     private int ret_code;
     private String app_key;
@@ -52,4 +56,42 @@ public class LoginRespBean {
     public void setRet_string(String ret_string) {
         this.ret_string = ret_string;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.ret_code);
+        dest.writeString(this.app_key);
+        dest.writeString(this.ret_string);
+        dest.writeString(this.alias_id);
+        dest.writeString(this.user_id);
+    }
+
+    public LoginRespBean() {
+    }
+
+    protected LoginRespBean(Parcel in) {
+        this.ret_code = in.readInt();
+        this.app_key = in.readString();
+        this.ret_string = in.readString();
+        this.alias_id = in.readString();
+        this.user_id = in.readString();
+    }
+
+    public static final Parcelable.Creator<LoginRespBean> CREATOR = new Parcelable.Creator<LoginRespBean>() {
+        @Override
+        public LoginRespBean createFromParcel(Parcel source) {
+            return new LoginRespBean(source);
+        }
+
+        @Override
+        public LoginRespBean[] newArray(int size) {
+            return new LoginRespBean[size];
+        }
+    };
 }

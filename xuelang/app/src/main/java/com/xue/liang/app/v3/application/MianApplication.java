@@ -13,6 +13,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
@@ -33,7 +34,7 @@ public class MianApplication extends MultiDexApplication {
         initImageLoader(getApplicationContext());
         initOkUtils();
         CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
-
+        initJpushSdk();
 
     }
 
@@ -64,5 +65,10 @@ public class MianApplication extends MultiDexApplication {
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
+    }
+
+    private void initJpushSdk() {
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 }

@@ -36,7 +36,7 @@ public class UriHelper {
     public static String getStayPendingAlarmUrl(){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getStartUrl());
-        stringBuilder.append("/view/alarminfo.html");
+        stringBuilder.append("/view/alarminfo.html?res_t=");
         return stringBuilder.toString();
     }
 }

@@ -5,10 +5,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.gson.Gson;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseFragment;
+import com.xue.liang.app.v3.bean.StayPendBean;
+import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.constant.BundleConstant;
+import com.xue.liang.app.v3.utils.Constant;
+import com.xue.liang.app.v3.utils.EncodeUtils;
 
 import butterknife.BindView;
 
@@ -21,6 +26,8 @@ public class StayPendingAlarmFragment extends BaseFragment {
 
 
     private String url;
+
+    private LoginRespBean mloginRespBean;
 
     @BindView(R.id.webview)
     WebView webview;
@@ -41,23 +48,40 @@ public class StayPendingAlarmFragment extends BaseFragment {
 
     }
 
-    public static StayPendingAlarmFragment newInstance(String phone) {
+    public static StayPendingAlarmFragment newInstance(LoginRespBean loginRespBean) {
         Bundle arguments = new Bundle();
-        arguments.putString(BundleConstant.EASY_PEOPLE_INFO_PHONE, phone);
+        arguments.putParcelable(BundleConstant.BUNDLE_STAY_PENDING_ALARM, loginRespBean);
         StayPendingAlarmFragment stayPendingAlarmFragment = new StayPendingAlarmFragment();
         stayPendingAlarmFragment.setArguments(arguments);
         return stayPendingAlarmFragment;
     }
 
+
+    private String getUrl() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        StayPendBean stayPendBean = new StayPendBean();
+        stayPendBean.setUser_id(mloginRespBean.getUser_id());
+        stayPendBean.setTermi_type(Constant.PHONE);
+        stringBuilder.append(UriHelper.getStayPendingAlarmUrl());
+        String json = new Gson().toJson(stayPendBean);
+
+        String base64String = new String(EncodeUtils.base64Encode(json));
+        stringBuilder.append(base64String);
+        return stringBuilder.toString();
+
+    }
+
     @Override
     protected void initViews() {
-        url= UriHelper.getStayPendingAlarmUrl();
+
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            //mPhone = bundle.getString(BundleConstant.EASY_PEOPLE_INFO_PHONE);
+            mloginRespBean = bundle.getParcelable(BundleConstant.BUNDLE_STAY_PENDING_ALARM);
         }
 
+        url = getUrl();
 
         WebSettings webSettings = webview.getSettings();
         //设置WebView属性，能够执行Javascript脚本

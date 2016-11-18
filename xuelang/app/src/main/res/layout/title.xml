@@ -68,7 +68,7 @@
                 android:layout_width="28dp"
                 android:layout_marginLeft="8dp"
                 android:layout_height="24dp"
-                android:background="@mipmap/icon_camera" />
+                android:background="@mipmap/icon_camera_title" />
             <Button
                 android:layout_width="28dp"
                 android:layout_marginLeft="8dp"

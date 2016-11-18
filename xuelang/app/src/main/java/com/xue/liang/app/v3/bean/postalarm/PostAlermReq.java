@@ -15,7 +15,7 @@ public class PostAlermReq {
 
     private String user_id;//否  用户 id
 
-    private String stb_car_id;//是  机顶盒智能卡号
+    private String stb_car_id;//否  机顶盒智能卡号
 
     private int stb_type;//是  机顶盒分类标识，等同于 termi_type
     //    0: 中间件机顶盒(默认)

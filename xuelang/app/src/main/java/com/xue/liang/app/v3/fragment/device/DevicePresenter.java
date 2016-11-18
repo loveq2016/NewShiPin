@@ -118,7 +118,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
                     @Override
                     public void onNext(PostAlermResp resp) {
                         mView.hideLoadingView();
-                        if (resp.getRet_code() == 0) {
+                        if (resp.getRet_code() == 1) {
                             mView.onPostAlermSuccess(resp);
                         } else {
                             String errorinfo = "";

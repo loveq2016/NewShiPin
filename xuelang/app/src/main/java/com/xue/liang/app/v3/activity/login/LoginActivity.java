@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void showLoadingView(String msg) {
-        showProgressDialog();
+        showProgressDialog("登陆中","请稍后");
 
     }
 
@@ -79,32 +79,33 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void onError(String info) {
         showToast("登陆失败");
-        LoginRespBean loginRespBean=new LoginRespBean();
-        loginRespBean.setUser_id("1234");
-        loginRespBean.setAlias_id("123678");
-        loginRespBean.setApp_key("22222");
-        loginRespBean.setRet_code(200);
-        loginRespBean.setRet_string("222");
-        toMainActivity(loginRespBean);
+//        LoginRespBean loginRespBean = new LoginRespBean();
+//        loginRespBean.setUser_id("1234");
+//        loginRespBean.setAlias_id("123678");
+//        loginRespBean.setApp_key("22222");
+//        loginRespBean.setRet_code(200);
+//        loginRespBean.setRet_string("222");
+//        toMainActivity(loginRespBean);
     }
 
 
     @OnClick(R.id.login_btn)
     public void doLogin() {
-//        toMainActivity();
+
         phoneNum = login_edittext.getText().toString();
 
-        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
-            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
+//            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
         String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
 
-        String mac = DeviceUtil.getMac();
-        mac=TestData.termi_unique_code;
+        String mac = DeviceUtil.getMacAddress(getApplicationContext());
+        mac = TestData.termi_unique_code;
+        phoneNum = TestData.phoneNum;
 
-        LoginReqBean loginReqBean = generateLoginReqBean(phoneNum, type, mac);
+        LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, mac);
         loginPresenter.loadData(loginReqBean);
 
     }

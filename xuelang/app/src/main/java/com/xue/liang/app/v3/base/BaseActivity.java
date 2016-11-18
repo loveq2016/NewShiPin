@@ -3,7 +3,6 @@ package com.xue.liang.app.v3.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -154,6 +153,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         materialDialog = new MaterialDialog.Builder(this)
                 .title("加载中")
                 .content("请稍后")
+                .progress(true, 0)
+                .progressIndeterminateStyle(false)
+                .show();
+    }
+
+    protected void showProgressDialog(String title,String info) {
+        materialDialog = new MaterialDialog.Builder(this)
+                .title(title)
+                .content(info)
                 .progress(true, 0)
                 .progressIndeterminateStyle(false)
                 .show();

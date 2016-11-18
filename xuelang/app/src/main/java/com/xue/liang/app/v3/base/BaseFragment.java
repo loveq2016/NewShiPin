@@ -181,6 +181,15 @@ public abstract class BaseFragment extends Fragment {
                 .show();
     }
 
+    protected void showProgressDialog(String title, String info) {
+        materialDialog = new MaterialDialog.Builder(getActivity())
+                .title(title)
+                .content(info)
+                .progress(true, 0)
+                .progressIndeterminateStyle(false)
+                .show();
+    }
+
     protected void dimissProgressDialog() {
         if (materialDialog != null && materialDialog.isShowing()) {
             materialDialog.dismiss();

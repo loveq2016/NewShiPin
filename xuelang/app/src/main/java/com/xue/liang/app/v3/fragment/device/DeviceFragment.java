@@ -22,6 +22,8 @@ import com.xue.liang.app.v3.constant.CarmIdConstant;
 import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
 import com.xue.liang.app.v3.utils.AlarmTypeConstant;
+import com.xue.liang.app.v3.utils.Constant;
+import com.xue.liang.app.v3.utils.DateUtil;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 
 import java.util.ArrayList;
@@ -46,9 +48,13 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
     private List<DeviceRespBean.ResponseBean> dataList;
 
+    private DeviceRespBean.ResponseBean deviceInfo;
+
     private LoginRespBean mloginRespBean;
 
     private String mCurrentCamerId = "";
+
+    private String mac = "";
 
     @Override
     protected void onFirstUserVisible() {
@@ -87,6 +93,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
         setupListView();
         initPlayerFragment();
+        mac = DeviceUtil.getMacAddress(getActivity().getApplicationContext());
 
         onRefreshData();
 
@@ -115,6 +122,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // TODO Auto-generated method stub
+
+                deviceInfo = dataList.get(position);
                 listview.setItemChecked(position, true);
                 String deviceid = dataList.get(position).getDev_id();
                 mCurrentCamerId = deviceid;
@@ -149,12 +158,12 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
     @Override
     public void onPostAlermSuccess(PostAlermResp postAlermResp) {
-        showToast("报警成功");
+        showToast(postAlermResp.getRet_string());
     }
 
     @Override
     public void onPostAlermFail(String msg) {
-        showToast("报警失败");
+        showToast(msg);
 
     }
 
@@ -172,7 +181,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
     @Override
     public void showLoadingView(String msg) {
 
-        showProgressDialog();
+        showProgressDialog("请求中", "请等待");
     }
 
     @Override
@@ -214,20 +223,24 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
     }
 
     private void sendAlarm(int type) {
-        PostAlermReq postAlermReq = new PostAlermReq();
-        postAlermReq.setTermi_type("2");
-        postAlermReq.setAlerm_level(0);
-        postAlermReq.setAlerm_type(type);
-        postAlermReq.setCam_dev_name("");
-        postAlermReq.setCam_dev_uid("");
-        postAlermReq.setCam_url("");
-        postAlermReq.setStb_car_id("");
-        postAlermReq.setStb_id("");
-        postAlermReq.setStb_info("");
-        postAlermReq.setStb_type(2);
-        postAlermReq.setUpdate_time("");
-        postAlermReq.setUser_id("");
-        devicePresenter.postalarmType(postAlermReq);
+        if (deviceInfo != null) {
+            PostAlermReq postAlermReq = new PostAlermReq();
+            postAlermReq.setTermi_type(Constant.PHONE);
+            postAlermReq.setAlerm_level(0);//是 告警级别 0~5
+            postAlermReq.setAlerm_type(type);
+            postAlermReq.setCam_dev_name(deviceInfo.getDev_name());
+            postAlermReq.setCam_dev_uid(deviceInfo.getDev_id());
+            postAlermReq.setCam_url(deviceInfo.getDev_url());
+            postAlermReq.setStb_id(mac);//设置MAC地址
+            postAlermReq.setStb_info("");
+            postAlermReq.setStb_type(Integer.valueOf(Constant.PHONE));
+            postAlermReq.setUpdate_time(DateUtil.getCurrentTime());
+            postAlermReq.setUser_id(mloginRespBean.getUser_id());
+            devicePresenter.postalarmType(postAlermReq);
+        } else {
+            Toast.makeText(getActivity(), "请选择一个摄像头", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @OnClick({R.id.btn_ptz_left, R.id.btn_ptz_up, R.id.btn_ptz_right, R.id.btn_ptz_down})

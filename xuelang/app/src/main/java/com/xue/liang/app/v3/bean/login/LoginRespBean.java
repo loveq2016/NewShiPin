@@ -3,10 +3,13 @@ package com.xue.liang.app.v3.bean.login;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.xue.liang.app.v3.bean.ServerInfoBean;
+
 /**
  * Created by Administrator on 2016/10/26.
  */
 public class LoginRespBean implements Parcelable {
+
 
 
     private int ret_code;
@@ -15,6 +18,7 @@ public class LoginRespBean implements Parcelable {
     private String ret_string;
     private String alias_id;
     private String user_id;
+    private ServerInfoBean server_info;
 
 
     public String getAlias_id() {
@@ -58,6 +62,18 @@ public class LoginRespBean implements Parcelable {
     }
 
 
+    public ServerInfoBean getServer_info() {
+        return server_info;
+    }
+
+    public void setServer_info(ServerInfoBean server_info) {
+        this.server_info = server_info;
+    }
+
+
+    public LoginRespBean() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -70,9 +86,7 @@ public class LoginRespBean implements Parcelable {
         dest.writeString(this.ret_string);
         dest.writeString(this.alias_id);
         dest.writeString(this.user_id);
-    }
-
-    public LoginRespBean() {
+        dest.writeParcelable(this.server_info, flags);
     }
 
     protected LoginRespBean(Parcel in) {
@@ -81,9 +95,10 @@ public class LoginRespBean implements Parcelable {
         this.ret_string = in.readString();
         this.alias_id = in.readString();
         this.user_id = in.readString();
+        this.server_info = in.readParcelable(ServerInfoBean.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<LoginRespBean> CREATOR = new Parcelable.Creator<LoginRespBean>() {
+    public static final Creator<LoginRespBean> CREATOR = new Creator<LoginRespBean>() {
         @Override
         public LoginRespBean createFromParcel(Parcel source) {
             return new LoginRespBean(source);

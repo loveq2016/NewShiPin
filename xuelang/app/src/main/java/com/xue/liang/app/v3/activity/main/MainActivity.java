@@ -2,26 +2,27 @@ package com.xue.liang.app.v3.activity.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.View;
 
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
+import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
-import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.SharedDB;
+import com.xue.liang.app.v3.widget.BottomBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -29,11 +30,10 @@ import butterknife.BindView;
  * Created by Administrator on 2016/11/1.
  */
 public class MainActivity extends BaseActivity {
-    private AHBottomNavigationAdapter navigationAdapter;
 
 
-    @BindView(R.id.bottomBar)
-    BottomBar bottomBar;
+    @BindView(R.id.bottom_weight_bar)
+    BottomBar bottom_weight_bar;
 
 
     private int nIndex = 0;
@@ -48,6 +48,10 @@ public class MainActivity extends BaseActivity {
 
     private LoginRespBean mLoginRespBean;
 
+    private String title[] = {"视频监控", "便民信息", "报警求助", "新闻公告", "报警处理", "村村响"};
+
+
+    private int image[] = {R.drawable.icon_camra_check, R.drawable.icon_easy_people_check, R.drawable.icon_alarm_use_check, R.drawable.icon_news_info_check, R.drawable.icon_alarm_use_check, R.drawable.icon_ring_check};
 
     @Override
     protected void getBundleExtras(Bundle extras) {
@@ -68,67 +72,33 @@ public class MainActivity extends BaseActivity {
     protected void initViews() {
 
         mContext = getApplicationContext();
-        setUpBottomBar();
+        //  setUpBottomBar();
 
 
         initFragment();
 
 
-    }
+        List<BottomBar.BottomBarItem> bottomBarItemList = new ArrayList<>();
 
-    private void setUpBottomBar() {
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+
+        for (int i = 0; i < image.length; i++) {
+
+            BottomBar.BottomBarItem bottomBarItem = new BottomBar.BottomBarItem(title[i], image[i]);
+            bottomBarItemList.add(bottomBarItem);
+        }
+
+        bottom_weight_bar.setMbottomBarItemList(bottomBarItemList);
+
+        bottom_weight_bar.setOnBottomItemOnListener(new BottomBar.OnBottomItemOnListener() {
             @Override
-            public void onTabSelected(@IdRes int tabId) {
-                switch (tabId) {
-                    case R.id.tab_0:
-                        setFragmentIndicator(0);
-                        break;
-                    case R.id.tab_1:
-                        setFragmentIndicator(1);
-                        break;
-                    case R.id.tab_2:
-                        setFragmentIndicator(2);
-                        break;
-                    case R.id.tab_3:
-                        setFragmentIndicator(3);
-                        break;
-                    case R.id.tab_4:
-                        setFragmentIndicator(4);
-                        break;
-                    case R.id.tab_5:
-                        setFragmentIndicator(5);
-                        break;
-                }
-
+            public void onItemSelected(int i, View view) {
+                setFragmentIndicator(i);
             }
         });
+
+
     }
 
-
-//    private void setUpBottomNavigation() {
-//
-//        int[] tabColors;
-//        tabColors = getApplicationContext().getResources().getIntArray(R.array.tab_colors);
-//        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.main_menu_bar);
-//        bottomNavigation.setForceTitlesDisplay(true);
-//        navigationAdapter.setupWithBottomNavigation(bottomNavigation, tabColors);
-//
-//
-//        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-//
-//            @Override
-//            public boolean onTabSelected(int position, boolean wasSelected) {
-//                Log.e("测试代码", "测试代码" + position + "----------" + wasSelected);
-//
-//                if (!wasSelected) {
-//                    setFragmentIndicator(position);
-//                }
-//                return true;
-//            }
-//        });
-//
-//    }
 
     /**
      * 初始化Fragment in MainActivy

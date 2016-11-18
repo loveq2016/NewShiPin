@@ -5,9 +5,10 @@ package com.xue.liang.app.v3.config;
  */
 public class UriHelper {
 
+
     private static final String HTPP = "http://";
-    //121.41.32.246:9004
-    public final static String IP = "182.150.56.73";//182.150.56.75:9002    121.41.32.246:9004   182.150.56.73  182.150.56.75
+    //121.41.32.246:9004     182.150.56.73:9003
+    public final static String IP = "121.41.32.246";//182.150.56.75:9002    121.41.32.246:9004   182.150.56.73  182.150.56.75
     public final static int PORT = 9003;
 
     public static String getStartUrl() {

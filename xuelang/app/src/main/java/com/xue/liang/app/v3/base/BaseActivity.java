@@ -154,7 +154,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .title("加载中")
                 .content("请稍后")
                 .progress(true, 0)
-                .progressIndeterminateStyle(false)
+                .progressIndeterminateStyle(false).cancelable(false)
                 .show();
     }
 
@@ -163,7 +163,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .title(title)
                 .content(info)
                 .progress(true, 0)
-                .progressIndeterminateStyle(false)
+                .progressIndeterminateStyle(false).cancelable(false)
                 .show();
     }
 

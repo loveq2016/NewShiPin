@@ -177,7 +177,7 @@ public abstract class BaseFragment extends Fragment {
                 .title("加载中")
                 .content("请稍后")
                 .progress(true, 0)
-                .progressIndeterminateStyle(false)
+                .progressIndeterminateStyle(false).cancelable(false)
                 .show();
     }
 
@@ -186,7 +186,7 @@ public abstract class BaseFragment extends Fragment {
                 .title(title)
                 .content(info)
                 .progress(true, 0)
-                .progressIndeterminateStyle(false)
+                .progressIndeterminateStyle(false).cancelable(false)
                 .show();
     }
 

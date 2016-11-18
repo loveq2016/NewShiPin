@@ -159,8 +159,9 @@ public abstract class BaseTakePhotoFragment extends TakePhotoFragment {
                 .title("title")
                 .content("content")
                 .progress(true, 0)
-                .progressIndeterminateStyle(false)
+                .progressIndeterminateStyle(false).cancelable(false)
                 .show();
+
     }
 
     protected void dimissProgressDialog() {

@@ -1,21 +1,17 @@
 package com.xue.liang.app.v3.adapter;
 
 import android.content.Context;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.bumptech.glide.Glide;
 import com.xue.liang.app.R;
 
+import java.io.File;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by Administrator on 2016/9/16.
@@ -26,10 +22,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     private List<String> data;
     private LayoutInflater layoutInflater;
 
+    private Context mcontext;
+
     private OnItemClickListener<String> onitemClickListener;
 
-    public AlarmAdapter(Context context,List<String> data) {
-        this.data=data;
+    public AlarmAdapter(Context context, List<String> data) {
+        mcontext = context;
+        this.data = data;
         layoutInflater = LayoutInflater.from(context);
 
     }
@@ -73,8 +72,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     public class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView image;
-        private ImageLoader imageLoader;
-        private ImageSize imageSize;
+
         private OnItemClickListener monitemClickListener;
 
         private int mposition;
@@ -84,21 +82,30 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             monitemClickListener = onitemClickListener;
             itemView.setOnClickListener(this);
             image = (ImageView) itemView.findViewById(R.id.image);
-            imageLoader = ImageLoader.getInstance(); // Get singleton instance
-            imageSize = new ImageSize(600, 600);
+
 
         }
 
         public void bindDataView(int position) {
             mposition = position;
             String picturePath = data.get(position);
-            if (TextUtils.isEmpty(picturePath)) {
 
-                image.setBackgroundResource(R.mipmap.image_upto);
-            } else {
 
-                imageLoader.displayImage("file://" + picturePath, image, imageSize);
-            }
+            File file = new File(picturePath);
+
+            Glide.with(mcontext)
+                    .load(file).override(100, 100)// resizes the image to these dimensions (in pixel)
+                    .centerCrop().placeholder(R.mipmap.image_upto)
+                    .into(image);
+
+
+//            if (TextUtils.isEmpty(picturePath)) {
+//
+//                image.setBackgroundResource(R.mipmap.image_upto);
+//            } else {
+//
+//                imageLoader.displayImage("file://" + picturePath, image, imageSize);
+//            }
 
         }
 

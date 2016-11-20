@@ -18,6 +18,8 @@ public class LoginRespBean implements Parcelable {
     private String ret_string;
     private String alias_id;
     private String user_id;
+    private int group_value;
+    private int user_type;
     private ServerInfoBean server_info;
 
 
@@ -62,9 +64,27 @@ public class LoginRespBean implements Parcelable {
     }
 
 
+    public int getGroup_value() {
+        return group_value;
+    }
+
+    public void setGroup_value(int group_value) {
+        this.group_value = group_value;
+    }
+
+    public int getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(int user_type) {
+        this.user_type = user_type;
+    }
+
     public ServerInfoBean getServer_info() {
         return server_info;
     }
+
+
 
     public void setServer_info(ServerInfoBean server_info) {
         this.server_info = server_info;
@@ -86,6 +106,8 @@ public class LoginRespBean implements Parcelable {
         dest.writeString(this.ret_string);
         dest.writeString(this.alias_id);
         dest.writeString(this.user_id);
+        dest.writeInt(this.group_value);
+        dest.writeInt(this.user_type);
         dest.writeParcelable(this.server_info, flags);
     }
 
@@ -95,6 +117,8 @@ public class LoginRespBean implements Parcelable {
         this.ret_string = in.readString();
         this.alias_id = in.readString();
         this.user_id = in.readString();
+        this.group_value = in.readInt();
+        this.user_type = in.readInt();
         this.server_info = in.readParcelable(ServerInfoBean.class.getClassLoader());
     }
 

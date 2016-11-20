@@ -139,6 +139,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
     public void startPtzCmd(String sessionID, String cameraID, int cmdID, int param1, int param2) {
 
         mView.showLoadingView("");
+
         Observable.just(startPtz( sessionID,  cameraID,  cmdID,  param1,  param2)).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<Boolean>() {
@@ -179,6 +180,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
      * @return true表示发送成功，false表示发送失败
      */
     private boolean startPtz(String sessionID, String cameraID, int cmdID, int param1, int param2) {
+
         String servAddr =UriHelper.IP;  //camerainfo中的acsIP
         int port = UriHelper.PORT;       //camerainfo中的acsPort
         boolean issuccess = VMSNetSDK.getInstance().sendStartPTZCmd(servAddr, port, sessionID, cameraID, cmdID, param1, param2);

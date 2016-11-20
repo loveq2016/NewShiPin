@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
+import com.xue.liang.app.v3.fragment.alarmprocesse.AlreadyProcessingAlarmFrament;
 import com.xue.liang.app.v3.fragment.alarmprocesse.StayPendingAlarmFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.device.DeviceFragment;
@@ -22,10 +23,10 @@ public class AlarmProcessPagerAdapter extends FragmentPagerAdapter {
     private LoginRespBean mloginRespBean;
 
 
-    public AlarmProcessPagerAdapter(FragmentManager fm, Context context,LoginRespBean loginRespBean) {
+    public AlarmProcessPagerAdapter(FragmentManager fm, Context context, LoginRespBean loginRespBean) {
         super(fm);
         mContext = context;
-        mloginRespBean=loginRespBean;
+        mloginRespBean = loginRespBean;
 
     }
 
@@ -35,7 +36,9 @@ public class AlarmProcessPagerAdapter extends FragmentPagerAdapter {
             StayPendingAlarmFragment stayPendingAlarmFragment = StayPendingAlarmFragment.newInstance(mloginRespBean);
             return stayPendingAlarmFragment;
         } else {
-            return Fragment.instantiate(mContext, HelpFragment.class.getName());
+
+            AlreadyProcessingAlarmFrament alreadyProcessingAlarmFrament = AlreadyProcessingAlarmFrament.newInstance(mloginRespBean);
+            return alreadyProcessingAlarmFrament;
         }
     }
 

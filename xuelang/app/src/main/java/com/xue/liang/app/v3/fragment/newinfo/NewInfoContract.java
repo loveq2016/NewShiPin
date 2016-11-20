@@ -14,12 +14,18 @@ public class NewInfoContract {
 
         void onSuccess(NoticeRespBean noticeRespBean);
 
-        void onFail(NoticeRespBean noticeRespBean);
+        void onFail();
+
+
+        void onSuccessMore(NoticeRespBean noticeRespBean);
+
+        void onFailMore();
 
 
     }
 
     interface Presenter extends BasePresenter {
         void loadData(NoticeReqBean noticeReqBean);
+        void loadMoreData(NoticeReqBean noticeReqBean);
     }
 }

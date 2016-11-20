@@ -1,19 +1,22 @@
 package com.xue.liang.app.v3.fragment.alarmprocesse;
 
 import android.os.Bundle;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.google.gson.Gson;
+import com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout;
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.adapter.StayPendingAlarmAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
-import com.xue.liang.app.v3.bean.StayPendBean;
+import com.xue.liang.app.v3.base.baseadapter.SectionedSpanSizeLookup;
+import com.xue.liang.app.v3.bean.alarm.AlarmReqBean;
+import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
-import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.utils.Constant;
-import com.xue.liang.app.v3.utils.EncodeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -22,16 +25,29 @@ import butterknife.BindView;
  * 待处理报警Fragment
  */
 
-public class StayPendingAlarmFragment extends BaseFragment {
+public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmContract.View {
 
 
-    private String url;
+    @BindView(R.id.swipeRefreshLayout)
+    SHSwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    private PendPresenter pendPresenter;
 
     private LoginRespBean mloginRespBean;
 
-    @BindView(R.id.webview)
-    WebView webview;
+    private final int count = 10;
 
+    private int startindex = 0;
+
+    private List<AlarmRespBean.ResponseBean> responseBeanList;
+
+
+    private int[] type = {AlarmReqBean.TYPE_TO_BE_PROCESSED, AlarmReqBean.TYPE_HAS_BEEN_REPORTED, AlarmReqBean.TYPE_HAS_BEEN_AUTOMATICALLY_REPORTED};
+
+
+    private StayPendingAlarmAdapter adapter;
 
     @Override
     protected void onFirstUserVisible() {
@@ -57,46 +73,82 @@ public class StayPendingAlarmFragment extends BaseFragment {
     }
 
 
-    private String getUrl() {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        StayPendBean stayPendBean = new StayPendBean();
-        stayPendBean.setUser_id(mloginRespBean.getUser_id());
-        stayPendBean.setTermi_type(Constant.PHONE);
-        stringBuilder.append(UriHelper.getStayPendingAlarmUrl());
-        String json = new Gson().toJson(stayPendBean);
-
-        String base64String = new String(EncodeUtils.base64Encode(json));
-        stringBuilder.append(base64String);
-        return stringBuilder.toString();
-
-    }
-
     @Override
     protected void initViews() {
 
+
+        responseBeanList = new ArrayList<>();
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             mloginRespBean = bundle.getParcelable(BundleConstant.BUNDLE_STAY_PENDING_ALARM);
         }
 
-        url = getUrl();
 
-        WebSettings webSettings = webview.getSettings();
-        //设置WebView属性，能够执行Javascript脚本
-        webSettings.setJavaScriptEnabled(true);
-        //设置可以访问文件
-        webSettings.setAllowFileAccess(true);
-        //设置支持缩放
-        webSettings.setBuiltInZoomControls(true);
-        //加载需要显示的网页
-
-        webview.loadUrl(url);
-        //设置Web视图
-        webview.setWebViewClient(new webViewClient());
+        setupRecycler();
+        reshData();
 
 
+    }
+
+
+    protected void setupRecycler() {
+        if (adapter == null) {
+            adapter = new StayPendingAlarmAdapter(getActivity().getApplicationContext(), responseBeanList);
+        }
+        recyclerView.setAdapter(adapter);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
+
+        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+
+
+        gridLayoutManager.setSmoothScrollbarEnabled(true);
+        SectionedSpanSizeLookup lookup = new SectionedSpanSizeLookup(adapter, gridLayoutManager);
+        gridLayoutManager.setSpanSizeLookup(lookup);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SHSwipeRefreshLayout.SHSOnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reshData();
+
+            }
+
+            @Override
+            public void onLoading() {
+                loadMoreData();
+
+            }
+
+            @Override
+            public void onRefreshPulStateChange(float v, int i) {
+
+            }
+
+            @Override
+            public void onLoadmorePullStateChange(float v, int i) {
+
+            }
+        });
+
+
+    }
+
+    private void reshData() {
+        startindex = 0;
+        responseBeanList.clear();
+        AlarmReqBean alarmReqBean = new AlarmReqBean(Constant.PHONE, mloginRespBean.getUser_id(), mloginRespBean.getGroup_value(), type, startindex, count);
+        pendPresenter = new PendPresenter(this);
+        pendPresenter.loadData(alarmReqBean);
+    }
+
+    private void loadMoreData() {
+        startindex = startindex + responseBeanList.size();
+        AlarmReqBean alarmReqBean = new AlarmReqBean(Constant.PHONE, mloginRespBean.getUser_id(), mloginRespBean.getGroup_value(), type, startindex, count);
+        pendPresenter = new PendPresenter(this);
+        pendPresenter.loadMoreData(alarmReqBean);
     }
 
     @Override
@@ -104,11 +156,62 @@ public class StayPendingAlarmFragment extends BaseFragment {
         return R.layout.fragment_stay_pending;
     }
 
-    //Web视图
-    private class webViewClient extends WebViewClient {
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
+
+    @Override
+    public void onSuccess(AlarmRespBean bean) {
+
+        swipeRefreshLayout.finishRefresh();
+
+        if (bean != null & bean.getResponse() != null && !bean.getResponse().isEmpty()) {
+            responseBeanList.clear();
+            responseBeanList.addAll(bean.getResponse());
+            adapter.notifyDataSetChanged();
+        } else {
+            showToast("暂无数据");
         }
+
+
+    }
+
+    @Override
+    public void onFail() {
+        swipeRefreshLayout.finishRefresh();
+    }
+
+    @Override
+    public void onSuccessMore(AlarmRespBean bean) {
+
+        swipeRefreshLayout.finishLoadmore();
+
+        if (bean != null & bean.getResponse() != null && !bean.getResponse().isEmpty()) {
+            responseBeanList.addAll(bean.getResponse());
+            adapter.notifyDataSetChanged();
+        } else {
+            showToast("暂无数据");
+        }
+
+
+    }
+
+    @Override
+    public void onFailMore() {
+
+        swipeRefreshLayout.finishLoadmore();
+    }
+
+
+    @Override
+    public void showLoadingView(String msg) {
+
+    }
+
+    @Override
+    public void hideLoadingView() {
+
+    }
+
+    @Override
+    public void onError(String info) {
+
     }
 }

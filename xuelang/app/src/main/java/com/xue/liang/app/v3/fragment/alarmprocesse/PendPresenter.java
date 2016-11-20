@@ -1,12 +1,12 @@
-package com.xue.liang.app.v3.fragment.newinfo;
+package com.xue.liang.app.v3.fragment.alarmprocesse;
 
-import com.xue.liang.app.v3.bean.login.LoginRespBean;
-import com.xue.liang.app.v3.bean.notice.NoticeReqBean;
-import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
+import com.xue.liang.app.v3.bean.alarm.AlarmReqBean;
+
+import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
-import com.xue.liang.app.v3.httputils.retrofit2.service.NoticeService;
-import com.xue.liang.app.v3.httputils.retrofit2.service.RegisterService;
+import com.xue.liang.app.v3.httputils.retrofit2.service.GetAlarmListService;
+
 
 import retrofit2.Retrofit;
 import rx.Subscriber;
@@ -15,31 +15,31 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by jikun on 2016/11/5.
+ * Created by Administrator on 2016/10/26.
  */
+public class PendPresenter implements PendAlarmContract.Presenter {
 
-public class NewInfoPresenter implements NewInfoContract.Presenter {
-
-    private NewInfoContract.View mView;
+    private PendAlarmContract.View mView;
 
     public Subscription subscrip;
 
-    public NewInfoPresenter(NewInfoContract.View view) {
+    public PendPresenter(PendAlarmContract.View view) {
         mView = view;
     }
 
-    @Override
-    public void loadData(NoticeReqBean bean) {
 
+    @Override
+    public void loadData(AlarmReqBean bean) {
 
         String GET_API_URL = UriHelper.getStartUrl();
+
         mView.showLoadingView("");
         Retrofit retrofit = RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
-        NoticeService service = retrofit.create(NoticeService.class);
-        subscrip = service.getNoticeService(bean).subscribeOn(Schedulers.io())
+        GetAlarmListService service = retrofit.create(GetAlarmListService.class);
+        subscrip = service.getAlarmListService(bean).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<NoticeRespBean>() {
+                .subscribe(new Subscriber<AlarmRespBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -56,11 +56,15 @@ public class NewInfoPresenter implements NewInfoContract.Presenter {
 //                            // Catch the culprit who's causing this whole problem
 //                        }
                         mView.hideLoadingView();
+                        String errorinfo = "";
+                        if (e != null && e.toString() != null) {
+                            errorinfo = e.toString();
+                        }
                         mView.onFail();
                     }
 
                     @Override
-                    public void onNext(NoticeRespBean bean) {
+                    public void onNext(AlarmRespBean bean) {
                         mView.hideLoadingView();
                         if (bean.getRet_code() == 0) {
                             mView.onSuccess(bean);
@@ -73,17 +77,17 @@ public class NewInfoPresenter implements NewInfoContract.Presenter {
     }
 
     @Override
-    public void loadMoreData(NoticeReqBean bean) {
-
+    public void loadMoreData(AlarmReqBean bean) {
 
         String GET_API_URL = UriHelper.getStartUrl();
+
         mView.showLoadingView("");
         Retrofit retrofit = RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
-        NoticeService service = retrofit.create(NoticeService.class);
-        subscrip = service.getNoticeService(bean).subscribeOn(Schedulers.io())
+        GetAlarmListService service = retrofit.create(GetAlarmListService.class);
+        subscrip = service.getAlarmListService(bean).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<NoticeRespBean>() {
+                .subscribe(new Subscriber<AlarmRespBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -100,11 +104,15 @@ public class NewInfoPresenter implements NewInfoContract.Presenter {
 //                            // Catch the culprit who's causing this whole problem
 //                        }
                         mView.hideLoadingView();
+                        String errorinfo = "";
+                        if (e != null && e.toString() != null) {
+                            errorinfo = e.toString();
+                        }
                         mView.onFailMore();
                     }
 
                     @Override
-                    public void onNext(NoticeRespBean bean) {
+                    public void onNext(AlarmRespBean bean) {
                         mView.hideLoadingView();
                         if (bean.getRet_code() == 0) {
                             mView.onSuccessMore(bean);

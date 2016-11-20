@@ -142,14 +142,15 @@ public class MainActivity extends BaseActivity {
                 fragment = Fragment.instantiate(mContext, HelpFragment.class.getName());
 
             } else if (which == 3) {
-                fragment = Fragment.instantiate(mContext, NewInfoFragment.class.getName());
+                fragment = NewInfoFragment.newInstance(mLoginRespBean);
 
             } else if (which == 4) {
                 fragment = AlarmProcessFragment.newInstance(mLoginRespBean);
 
 
             } else if (which == 5) {
-                fragment = Fragment.instantiate(mContext, NewInfoFragment.class.getName());
+                fragment = NewInfoFragment.newInstance(mLoginRespBean);
+
             }
             mFragmentMap.put(which, fragment);
             fragmentTransaction.add(R.id.fragment_container, fragment);

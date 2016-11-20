@@ -238,7 +238,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
             postAlermReq.setUser_id(mloginRespBean.getUser_id());
             devicePresenter.postalarmType(postAlermReq);
         } else {
-            Toast.makeText(getActivity(), "请选择一个摄像头", Toast.LENGTH_SHORT).show();
+            showToast("请选择一个摄像头");
         }
 
     }
@@ -276,6 +276,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
             devicePresenter.startPtzCmd(sessionID, cameraID, cmdID, param1, 0);
 
+        } else {
+            showToast("请选择一个摄像头");
         }
 
 

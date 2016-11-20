@@ -30,7 +30,7 @@ public class UriHelper {
     public static String getUpdateFile() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getStartUrl());
-        stringBuilder.append("/mobileservice/uploadfiles.ashx");
+        stringBuilder.append("mobileservice/uploadfiles.ashx");
         return stringBuilder.toString();
     }
     public static String getStayPendingAlarmUrl(){

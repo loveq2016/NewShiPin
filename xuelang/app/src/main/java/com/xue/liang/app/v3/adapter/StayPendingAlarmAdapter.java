@@ -82,7 +82,9 @@ public class StayPendingAlarmAdapter extends SectionedRecyclerViewAdapter<EmptyV
 
     @Override
     protected void onBindItemViewHolder(PendAlarmViewHolder holder, int section, int position) {
-        holder.render(mResponseBeanList.get(position));
-
+        holder.render(mResponseBeanList.get(position), section, position);
+        if (mItemClickLister != null) {
+            holder.setRecyclerItemClickListener(mItemClickLister);
+        }
     }
 }

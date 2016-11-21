@@ -3,11 +3,14 @@ package com.xue.liang.app.v3.fragment.alarmprocesse;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout;
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.activity.alarmprocess.AlarmProcessDeatialActivity;
 import com.xue.liang.app.v3.adapter.StayPendingAlarmAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
+import com.xue.liang.app.v3.base.baseadapter.SectionedRecyclerViewAdapter;
 import com.xue.liang.app.v3.base.baseadapter.SectionedSpanSizeLookup;
 import com.xue.liang.app.v3.bean.alarm.AlarmReqBean;
 import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
@@ -97,6 +100,15 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
             adapter = new StayPendingAlarmAdapter(getActivity().getApplicationContext(), responseBeanList);
         }
         recyclerView.setAdapter(adapter);
+
+        adapter.setItemClickLister(new SectionedRecyclerViewAdapter.RecyclerItemClickListener<AlarmRespBean.ResponseBean>() {
+            @Override
+            public void onItemClick(View view, int section, int postion, AlarmRespBean.ResponseBean value) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("process", value);
+                readyGo(AlarmProcessDeatialActivity.class, bundle);
+            }
+        });
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
 

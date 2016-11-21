@@ -1,12 +1,15 @@
 package com.xue.liang.app.v3.bean.alarm;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/20.
  */
 
-public class AlarmRespBean {
+public class AlarmRespBean implements Parcelable {
 
     /**
      * response : [{"camera_info":{"camera_id":"","dev_platform_type":10},"file_list":[],"alarm_id":"0317031E-B114BAD-A547-45B95F475458","alarm_type":1,"alarm_type_name":"火灾","user_name":"xxxx","user_address":"xx村","user_tel":"13508112908","alarm_text":"","alarm_time":"2016/11/11 17:29:45","dev_name":"","rtsp_id":"","map_url":"/alarmpage.aspx?data=031114BAD-A547-45B95F475458&ip=192.168.1.11:9003&visit=0"},{"camera_info":{"camera_id":"","dev_platform_type":10},"file_list":[],"alarm_id":"06ACFBFA-329D-111195783","alarm_type":1,"alarm_type_name":"火灾","user_name":"张三","user_address":"x村五组","user_tel":"135135623383","alarm_text":"","alarm_time":"2016/3/18 13:36:58","dev_name":"","rtsp_id":"","map_url":"/alarmpage.aspx?data=06ACFBFA-311111154C79EA95783&ip=192.168.1.11:9003&visit=0"}]
@@ -68,7 +71,7 @@ public class AlarmRespBean {
         this.response = response;
     }
 
-    public static class ResponseBean {
+    public static class ResponseBean implements Parcelable {
         /**
          * camera_id :
          * dev_platform_type : 10
@@ -86,7 +89,9 @@ public class AlarmRespBean {
         private String dev_name;
         private String rtsp_id;
         private String map_url;
-        private List<?> file_list;
+        private List<String> file_list;
+
+
 
         public CameraInfoBean getCamera_info() {
             return camera_info;
@@ -184,15 +189,16 @@ public class AlarmRespBean {
             this.map_url = map_url;
         }
 
-        public List<?> getFile_list() {
+        public List<String> getFile_list() {
             return file_list;
         }
 
-        public void setFile_list(List<?> file_list) {
+        public void setFile_list(List<String> file_list) {
             this.file_list = file_list;
         }
 
-        public static class CameraInfoBean {
+        public static class CameraInfoBean implements Parcelable {
+
             private String camera_id;
             private int dev_platform_type;
 
@@ -211,6 +217,125 @@ public class AlarmRespBean {
             public void setDev_platform_type(int dev_platform_type) {
                 this.dev_platform_type = dev_platform_type;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.camera_id);
+                dest.writeInt(this.dev_platform_type);
+            }
+
+            public CameraInfoBean() {
+            }
+
+            protected CameraInfoBean(Parcel in) {
+                this.camera_id = in.readString();
+                this.dev_platform_type = in.readInt();
+            }
+
+            public static final Creator<CameraInfoBean> CREATOR = new Creator<CameraInfoBean>() {
+                @Override
+                public CameraInfoBean createFromParcel(Parcel source) {
+                    return new CameraInfoBean(source);
+                }
+
+                @Override
+                public CameraInfoBean[] newArray(int size) {
+                    return new CameraInfoBean[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeParcelable(this.camera_info, flags);
+            dest.writeString(this.alarm_id);
+            dest.writeInt(this.alarm_type);
+            dest.writeString(this.alarm_type_name);
+            dest.writeString(this.user_name);
+            dest.writeString(this.user_address);
+            dest.writeString(this.user_tel);
+            dest.writeString(this.alarm_text);
+            dest.writeString(this.alarm_time);
+            dest.writeString(this.dev_name);
+            dest.writeString(this.rtsp_id);
+            dest.writeString(this.map_url);
+            dest.writeStringList(this.file_list);
+        }
+
+        public ResponseBean() {
+        }
+
+        protected ResponseBean(Parcel in) {
+            this.camera_info = in.readParcelable(CameraInfoBean.class.getClassLoader());
+            this.alarm_id = in.readString();
+            this.alarm_type = in.readInt();
+            this.alarm_type_name = in.readString();
+            this.user_name = in.readString();
+            this.user_address = in.readString();
+            this.user_tel = in.readString();
+            this.alarm_text = in.readString();
+            this.alarm_time = in.readString();
+            this.dev_name = in.readString();
+            this.rtsp_id = in.readString();
+            this.map_url = in.readString();
+            this.file_list = in.createStringArrayList();
+        }
+
+        public static final Parcelable.Creator<ResponseBean> CREATOR = new Parcelable.Creator<ResponseBean>() {
+            @Override
+            public ResponseBean createFromParcel(Parcel source) {
+                return new ResponseBean(source);
+            }
+
+            @Override
+            public ResponseBean[] newArray(int size) {
+                return new ResponseBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.ret_code);
+        dest.writeString(this.ret_string);
+        dest.writeInt(this.alarm_count);
+        dest.writeTypedList(this.response);
+    }
+
+    public AlarmRespBean() {
+    }
+
+    protected AlarmRespBean(Parcel in) {
+        this.ret_code = in.readInt();
+        this.ret_string = in.readString();
+        this.alarm_count = in.readInt();
+        this.response = in.createTypedArrayList(ResponseBean.CREATOR);
+    }
+
+    public static final Parcelable.Creator<AlarmRespBean> CREATOR = new Parcelable.Creator<AlarmRespBean>() {
+        @Override
+        public AlarmRespBean createFromParcel(Parcel source) {
+            return new AlarmRespBean(source);
+        }
+
+        @Override
+        public AlarmRespBean[] newArray(int size) {
+            return new AlarmRespBean[size];
+        }
+    };
 }

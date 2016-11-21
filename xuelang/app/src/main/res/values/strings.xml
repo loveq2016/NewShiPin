@@ -7,4 +7,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="newinfodetail">公告详情</string>
+
+    <string name="alarm_process_deatial">报警处理详情</string>
 </resources>

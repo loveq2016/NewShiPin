@@ -74,6 +74,7 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         initViews();
+        initPrepare();
     }
 
     @Override

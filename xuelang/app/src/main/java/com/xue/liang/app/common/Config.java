@@ -99,6 +99,10 @@ public class Config {
         return stringBuilder.toString();
     }
 
+
+    public static  final String IP_6995="218.200.206.182";
+    public static  final String PORT_6995="8005";
+
     /**
      * 获取机顶盒报警Url
      *
@@ -107,7 +111,11 @@ public class Config {
     public static String getSendCallAlarmUrl() {
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("http://218.200.206.182:8005/Xlgc/MobileService.aspx");
+        stringBuilder.append("http://");
+        stringBuilder.append(IP_6995);
+        stringBuilder.append(PORT_6995);
+        stringBuilder.append("/Xlgc/MobileService.aspx");
+        //stringBuilder.append("http://218.200.206.182:8005/Xlgc/MobileService.aspx");
         return stringBuilder.toString();
 
     }
@@ -120,7 +128,11 @@ public class Config {
     public static String getGetGroupMemberUrl() {
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("http://218.200.206.182:8005/Xlgc/MobileService.aspx");
+        stringBuilder.append("http://");
+        stringBuilder.append(IP_6995);
+        stringBuilder.append(PORT_6995);
+        stringBuilder.append("/Xlgc/MobileService.aspx");
+        //stringBuilder.append("http://218.200.206.182:8005/Xlgc/MobileService.aspx");
         return stringBuilder.toString();
 
     }
@@ -133,7 +145,11 @@ public class Config {
     public static String getAddGroupMemberUrl() {
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("http://218.200.206.182:8005/Xlgc/MobileService.aspx");
+        stringBuilder.append("http://");
+        stringBuilder.append(IP_6995);
+        stringBuilder.append(PORT_6995);
+        stringBuilder.append("/Xlgc/MobileService.aspx");
+        //stringBuilder.append("http://218.200.206.182:8005/Xlgc/MobileService.aspx");
         return stringBuilder.toString();
 
     }

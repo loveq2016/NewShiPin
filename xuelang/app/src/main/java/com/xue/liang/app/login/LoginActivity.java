@@ -11,12 +11,14 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.common.Config;
 import com.xue.liang.app.data.reponse.RegisterResp;
 import com.xue.liang.app.data.request.RegisterReq;
+import com.xue.liang.app.dialog.SettingFragmentDialog;
 import com.xue.liang.app.http.manager.HttpManager;
 import com.xue.liang.app.http.manager.data.HttpReponse;
 import com.xue.liang.app.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.main.MainActivity_;
 import com.xue.liang.app.utils.DeviceUtil;
+import com.xue.liang.app.utils.MacUtil;
 import com.xue.liang.app.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.utils.SharedDB;
 
@@ -59,6 +61,7 @@ public class LoginActivity extends FragmentActivity {
         }
 
         Config.TEST_PHONE_NUMBER = phoneNum;
+        Config.TEST_MAC= MacUtil.getMacAddress(getApplicationContext());
 
 
         HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<RegisterResp>() {
@@ -112,10 +115,25 @@ public class LoginActivity extends FragmentActivity {
     }
 
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+
+    @Click(R.id.btn_setting)
+    public void toSettingDialog() {
+        SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
+        msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
+            @Override
+            public void onSuccess() {
+                finish();
+            }
+        });
+        msettingFragmentDialog.show(getSupportFragmentManager(),
+                "dialog");
     }
 
 

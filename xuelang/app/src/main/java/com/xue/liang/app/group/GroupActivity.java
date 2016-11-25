@@ -90,7 +90,8 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
 
     @Override
     public void onAddSuccess() {
-        
+        Toast.makeText(getApplicationContext(), "添加成员成功", Toast.LENGTH_SHORT).show();
+        groupPresenter.getGroupMemberList(mphoneNum);
 
     }
 }

@@ -93,7 +93,7 @@ public class XmlHttpManger {
             stringBuilder.append("&Password=Xlgc");
             stringBuilder.append("&UserNumber=" + phonenum);
             stringBuilder.append("&DestUserNumber=" + addPhonenum);
-            stringBuilder.append(addPhonenum+"|"+addName);
+            stringBuilder.append("|"+addName);
             String pamars = stringBuilder.toString();
             String encrypInfo = "";
             encrypInfo = Des3DesUtils.encryptThreeDESECB(pamars, Constant.KEY);

@@ -101,7 +101,7 @@ public class Config {
 
 
     public static  final String IP_6995="218.200.206.182";
-    public static  final String PORT_6995="8005";
+    public static  final String PORT_6995=":8005";
 
     /**
      * 获取机顶盒报警Url

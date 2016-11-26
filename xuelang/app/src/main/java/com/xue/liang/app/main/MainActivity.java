@@ -588,7 +588,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
             public void onClick(DialogInterface dialog, int which) {
 
 
-                switch (which) {
+                switch (chooseInt) {
                     case 0:
                         mainPresenter.sendCall(mphoneNum,1);//语音报警
                         break;
@@ -600,7 +600,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                         break;
                 }
                 sendAlarm(type.value(), getSupportFragmentManager());
-                Toast.makeText(MainActivity.this, "为：" + item[chooseInt], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "为：" + item[chooseInt], Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {

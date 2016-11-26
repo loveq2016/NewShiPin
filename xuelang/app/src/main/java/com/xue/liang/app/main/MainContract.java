@@ -15,7 +15,7 @@ public class MainContract {
 
     interface Presenter extends BasePresenter {
 
-        void sendCall(String phonenum);
+        void sendCall(String phonenum,int type);
 
     }
 }

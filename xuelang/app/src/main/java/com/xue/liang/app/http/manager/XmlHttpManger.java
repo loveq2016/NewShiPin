@@ -14,7 +14,7 @@ import okhttp3.MediaType;
 public class XmlHttpManger {
 
 
-    public void sendCall(String phonenum, StringCallback callback) {
+    public void sendCall(String phonenum,int type, StringCallback callback) {
 
         try {
             String url = Config.getSendCallAlarmUrl();
@@ -24,7 +24,7 @@ public class XmlHttpManger {
             stringBuilder.append("&Account=Xlgc");
             stringBuilder.append("&Password=Xlgc");
             stringBuilder.append("&SendTel=" + phonenum);
-            stringBuilder.append("&SendType=1");
+            stringBuilder.append("&SendType="+type);//1-语音、2-短信、3-多方通话
             stringBuilder.append("&Content=报警求助");
             String pamars = stringBuilder.toString();
             String encrypInfo = "";

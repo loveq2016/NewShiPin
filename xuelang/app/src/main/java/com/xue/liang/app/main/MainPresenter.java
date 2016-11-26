@@ -24,7 +24,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void sendCall(String phonenum) {
+    public void sendCall(String phonenum,int type) {
 
 
         StringCallback stringCallback = new StringCallback() {
@@ -60,7 +60,7 @@ public class MainPresenter implements MainContract.Presenter {
                 }
             }
         };
-        xmlHttpManger.sendCall(phonenum, stringCallback);
+        xmlHttpManger.sendCall(phonenum,type, stringCallback);
 
     }
 }

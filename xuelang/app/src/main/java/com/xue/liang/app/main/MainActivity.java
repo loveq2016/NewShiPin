@@ -141,7 +141,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     @Click(R.id.btn_group)
     public void toGroupActivity() {
         Intent intent = new Intent();
-        intent.putExtra("phonenum",mphoneNum);
+        intent.putExtra("phonenum", mphoneNum);
         intent.setClass(this, GroupActivity_.class);
         startActivity(intent);
     }
@@ -282,40 +282,41 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
 
     private void alarmDialog(final HttpType type) {
-        final ChoiceOnClickListener choiceListener =
-                new ChoiceOnClickListener();
-        String[] province = new String[]{"是否拨打6995"};
-        Dialog alertDialog = new AlertDialog.Builder(this).setTitle("确定报警？")
-                .setIcon(R.mipmap.ic_launcher).setMultiChoiceItems(province, new boolean[]{true}, choiceListener)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-
-                        if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
-
-                            if (DeviceUtil.isPhone(getApplicationContext())) {
-                                checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
-                               // mainPresenter.sendCall(mphoneNum);
-                            } else {
-                               //checkCallPermissions();
-                              mainPresenter.sendCall(mphoneNum);
-                            }
-
-
-                        }
-                        sendAlarm(type.value(), getSupportFragmentManager());
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                    }
-                }).create();
-        alertDialog.show();
+        showAlermDialog(type);
+//        final ChoiceOnClickListener choiceListener =
+//                new ChoiceOnClickListener();
+//        String[] province = new String[]{"是否拨打6995"};
+//        Dialog alertDialog = new AlertDialog.Builder(this).setTitle("确定报警？")
+//                .setIcon(R.mipmap.ic_launcher).setMultiChoiceItems(province, new boolean[]{true}, choiceListener)
+//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // TODO Auto-generated method stub
+//
+//                        if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
+//
+//                            if (DeviceUtil.isPhone(getApplicationContext())) {
+//                                checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
+//                               // mainPresenter.sendCall(mphoneNum);
+//                            } else {
+//                               //checkCallPermissions();
+//                              mainPresenter.sendCall(mphoneNum);
+//                            }
+//
+//
+//                        }
+//                        sendAlarm(type.value(), getSupportFragmentManager());
+//                    }
+//                })
+//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // TODO Auto-generated method stub
+//                    }
+//                }).create();
+//        alertDialog.show();
     }
 
 
@@ -560,6 +561,55 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         public void setWhich(int which) {
             this.which = which;
         }
+    }
+
+    int chooseInt = 0;
+
+    private void showAlermDialog(final HttpType type) {
+        chooseInt = 1;
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setTitle("是否通过6995");
+        final String[] item = {"语音求助", "短信求助", "电话求助"};
+        //    设置一个单项选择下拉框
+        /**
+         * 第一个参数指定我们要显示的一组下拉单选框的数据集合
+         * 第二个参数代表索引，指定默认哪一个单选框被勾选上，1表示默认'女' 会被勾选上
+         * 第三个参数给每一个单选项绑定一个监听器
+         */
+        builder.setSingleChoiceItems(item, 1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chooseInt = which;
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                switch (which) {
+                    case 0:
+                        mainPresenter.sendCall(mphoneNum,1);//语音报警
+                        break;
+                    case 1:
+                        mainPresenter.sendCall(mphoneNum,2);//短信报警
+                        break;
+                    case 2:
+                        checkCallPermissions();//拨打电话
+                        break;
+                }
+                sendAlarm(type.value(), getSupportFragmentManager());
+                Toast.makeText(MainActivity.this, "为：" + item[chooseInt], Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
 

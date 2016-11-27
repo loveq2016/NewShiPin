@@ -15,6 +15,7 @@
         android:id="@+id/ll_center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/title">
@@ -26,8 +27,8 @@
             android:layout_margin="16dp"
             android:layout_weight="1" />
 
-        <ImageView
-            android:id="@+id/iv_map"
+        <WebView
+            android:id="@+id/webview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
@@ -104,6 +105,16 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/grey"
                 tools:text="报警地址" />
+
+            <Button
+                android:id="@+id/bt_alarm_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_below="@+id/tv_alarm_address"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bt_login_selector"
+                android:text="报警处理"
+                android:textColor="@android:color/white" />
 
         </RelativeLayout>
 

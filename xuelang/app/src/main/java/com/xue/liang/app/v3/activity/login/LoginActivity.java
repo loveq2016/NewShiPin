@@ -11,6 +11,7 @@ import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.BundleConstant;
+import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.PhoneNumCheckUtils;
@@ -52,6 +53,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void onSuccess(LoginRespBean userInfo) {
         savePhoneNumber();
+        LoginInfoUtils.getInstance().setLoginRespBean(userInfo);
         toMainActivity(userInfo);
 
     }
@@ -66,7 +68,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void showLoadingView(String msg) {
-        showProgressDialog("登陆中","请稍后");
+        showProgressDialog("登陆中", "请稍后");
 
     }
 

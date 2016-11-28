@@ -22,13 +22,17 @@ import com.temobi.vcp.protocal.McpClientProtocalData.IPlayerStateCallback;
 import com.temobi.vcp.protocal.TmPlayerStatus;
 import com.temobi.vcp.sdk.data.CommInfo;
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.event.UrlEvent;
+import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 
 public class PlayerFragment extends Fragment {
+
+    private String msign = "";//用来判断是否播放视频
     private SurfaceView surfacev_player;
 
     private TextView text_promptmsg;
@@ -39,12 +43,19 @@ public class PlayerFragment extends Fragment {
 
     private McpClientProtocalData mcpClientProtocalData;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         mcpClientProtocalData = McpClientProtocalData.getInstance();
         EventBus.getDefault().register(this);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+
+            msign = bundle.getString(BundleConstant.BUNDLE_PLAYER_SIGN);
+
+        }
     }
 
     @Override
@@ -55,7 +66,16 @@ public class PlayerFragment extends Fragment {
         View view = inflater.inflate(R.layout.frament_player, container, false);
         initView(view);
         initHolder();
+
         return view;
+    }
+
+    public static PlayerFragment getInstance(String sign) {
+        PlayerFragment playerFragment = new PlayerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(BundleConstant.BUNDLE_PLAYER_SIGN, sign);
+        playerFragment.setArguments(bundle);
+        return playerFragment;
     }
 
     @Override
@@ -206,10 +226,16 @@ public class PlayerFragment extends Fragment {
 
     @Subscribe
     public void onEventMainThread(UrlEvent event) {
+        if(event.getTag().equals(DeviceFragment.TAG)){
+            surfacev_player.setBackgroundColor(getResources().getColor(
+                    android.R.color.black));
+            play(event.getUrl());
+        }else if(event.getTag().equals(DeviceFragment.TAG)){
+            surfacev_player.setBackgroundColor(getResources().getColor(
+                    android.R.color.black));
+            play(event.getUrl());
+        }
 
-        surfacev_player.setBackgroundColor(getResources().getColor(
-                android.R.color.black));
-        play(event.getUrl());
     }
 
 }

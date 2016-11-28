@@ -1,14 +1,13 @@
 package com.xue.liang.app.v3.activity.alarmprocess;
 
-import com.xue.liang.app.v3.activity.login.LoginContract;
 import com.xue.liang.app.v3.bean.alarmhandle.AlarmHandleReqBean;
 import com.xue.liang.app.v3.bean.alarmhandle.AlarmHandleRespBean;
-import com.xue.liang.app.v3.bean.login.LoginReqBean;
-import com.xue.liang.app.v3.bean.login.LoginRespBean;
+import com.xue.liang.app.v3.bean.alarmhandle.HandlerRtspReqBean;
+import com.xue.liang.app.v3.bean.alarmhandle.HandlerRtspRespBean;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
 import com.xue.liang.app.v3.httputils.retrofit2.service.AlarmHandleService;
-import com.xue.liang.app.v3.httputils.retrofit2.service.RegisterService;
+import com.xue.liang.app.v3.httputils.retrofit2.service.GetAlarmHandlerRtstpService;
 
 import retrofit2.Retrofit;
 import rx.Subscriber;
@@ -64,6 +63,42 @@ public class AlarmProcessDeatailPresenter implements AlarmProcessDeatailContract
                     }
                 });
 
+
+    }
+
+    @Override
+    public void getRtspUrl(HandlerRtspReqBean bean) {
+
+
+        String GET_API_URL = UriHelper.getStartUrl();
+        mView.showLoadingView("");
+        Retrofit retrofit = RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
+        GetAlarmHandlerRtstpService service = retrofit.create(GetAlarmHandlerRtstpService.class);
+        subscrip = service.getAlarmHandlerRtstpService(bean).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HandlerRtspRespBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.hideLoadingView();
+                        mView.getUrlError(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(HandlerRtspRespBean bean) {
+                        mView.hideLoadingView();
+                        if (bean.getStatus().equals("OK")) {
+                            mView.getUrlSuccess(bean);
+                        } else {
+                            mView.getUrlFail(bean);
+                        }
+                    }
+                });
 
     }
 }

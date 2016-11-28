@@ -15,4 +15,6 @@ public class BundleConstant {
     public static final String BUNDLE_STAY_PENDING_ALARM = "bundle_stay_pending_alarm";
 
     public static final String BUNDLE_NEW_INFO= "bundle_new_info";
+
+    public static final String BUNDLE_PLAYER_SIGN= "bundle_player_info";
 }

@@ -1,19 +1,30 @@
 package com.xue.liang.app.v3.event;
 
 public class UrlEvent {
-	private String url;
+    private String url;
 
-	public UrlEvent(String url) {
-		super();
-		this.url = url;
-	}
+    private String tag;
 
-	public String getUrl() {
-		return url;
-	}
+    public UrlEvent(String tag, String url) {
+        super();
+        this.tag = tag;
+        this.url = url;
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 }

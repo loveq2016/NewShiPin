@@ -1,10 +1,12 @@
 package com.xue.liang.app.v3.activity.alarmprocess;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,20 +16,28 @@ import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
 import com.xue.liang.app.v3.bean.alarmhandle.AlarmHandleReqBean;
 import com.xue.liang.app.v3.bean.alarmhandle.AlarmHandleRespBean;
+import com.xue.liang.app.v3.bean.alarmhandle.HandlerRtspReqBean;
+import com.xue.liang.app.v3.bean.alarmhandle.HandlerRtspRespBean;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
+import com.xue.liang.app.v3.event.UrlEvent;
+import com.xue.liang.app.v3.fragment.player.PlayerFragment;
 import com.xue.liang.app.v3.utils.Constant;
 
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmProcessDeatailContract.View {
+    public final String TAG = AlarmProcessDeatialActivity.class.getSimpleName();
+
+
     @BindView(R.id.tv_title)
     TextView tv_title;
 
-    @BindView(R.id.iv_image)
-    ImageView iv_image;
+    @BindView(R.id.playerFrament)
+    FrameLayout playerFrament;
 
 
     @BindView(R.id.webview)
@@ -66,8 +76,9 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
         setViewByData();
         String url = UriHelper.IP + ":" + UriHelper.PORT + bean.getMap_url();
         initWebView(url);
+        initPlayerFragment();
         alarmProcessDeatailPresenter = new AlarmProcessDeatailPresenter(this);
-
+        getRtsp();
     }
 
     /**
@@ -88,6 +99,16 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
         alarmHandleReqBean.setAlarm_type(bean.getAlarm_type() + "");
         alarmHandleReqBean.setTermi_type(Constant.PHONE);
         alarmProcessDeatailPresenter.loadData(alarmHandleReqBean);
+
+    }
+
+    private void getRtsp() {
+        HandlerRtspReqBean handlerRtspReqBean = new HandlerRtspReqBean();
+        handlerRtspReqBean.setMod("ipc");
+        handlerRtspReqBean.setGuid(bean.getRtsp_id());
+
+        alarmProcessDeatailPresenter.getRtspUrl(handlerRtspReqBean);
+
     }
 
     private void setViewByData() {
@@ -126,6 +147,15 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
         webview.setWebViewClient(new AlarmWebViewClient());
     }
 
+
+    private void initPlayerFragment() {
+        PlayerFragment playerFragment = PlayerFragment.getInstance(TAG);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.playerFrament, playerFragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
     @Override
     public void onSuccess(AlarmHandleRespBean alarmHandleRespBean) {
         Toast.makeText(getApplicationContext(), "处理报警成功", Toast.LENGTH_SHORT).show();
@@ -135,6 +165,22 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
     @Override
     public void onFail(AlarmHandleRespBean alarmHandleRespBean) {
         Toast.makeText(getApplicationContext(), "处理报警失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getUrlSuccess(HandlerRtspRespBean bean) {
+        showToast("获取播放地址成功");
+        EventBus.getDefault().post(new UrlEvent(TAG, bean.getUrl()));
+    }
+
+    @Override
+    public void getUrlFail(HandlerRtspRespBean bean) {
+        showToast("获取播放地址失败");
+    }
+
+    @Override
+    public void getUrlError(String info) {
+        showToast(info);
     }
 
     @Override

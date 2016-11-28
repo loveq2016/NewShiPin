@@ -1,5 +1,6 @@
 package com.xue.liang.app.v3.fragment.device;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -37,6 +38,9 @@ import de.greenrobot.event.EventBus;
  * Created by Administrator on 2016/11/2.
  */
 public class DeviceFragment extends BaseFragment implements DeviceContract.View {
+
+
+    public static final String TAG = DeviceFragment.class.getSimpleName();
 
     public static final String Bundle_Data = "LoginData";
     @BindView(R.id.listview)
@@ -129,7 +133,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
                 mCurrentCamerId = deviceid;
                 String devicename = dataList.get(position).getDev_name();
                 String url = dataList.get(position).getDev_url();
-                EventBus.getDefault().post(new UrlEvent(url));
+                EventBus.getDefault().post(new UrlEvent(TAG,url));
 
             }
         });
@@ -195,7 +199,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
     }
 
     private void initPlayerFragment() {
-        PlayerFragment playerFragment = new PlayerFragment();
+        PlayerFragment playerFragment = PlayerFragment.getInstance(TAG);
         FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(R.id.playerFrament, playerFragment);

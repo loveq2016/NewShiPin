@@ -87,4 +87,8 @@ public class StayPendingAlarmAdapter extends SectionedRecyclerViewAdapter<EmptyV
             holder.setRecyclerItemClickListener(mItemClickLister);
         }
     }
+
+    public List<AlarmRespBean.ResponseBean> getmResponseBeanList() {
+        return mResponseBeanList;
+    }
 }

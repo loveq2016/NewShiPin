@@ -128,6 +128,11 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
         alarmHandler(0);
     }
 
+    @OnClick(R.id.bt_alarm_update)
+    public void updateAlarm() {
+        alarmHandler(1);
+    }
+
     @OnClick(R.id.bt_back)
     public void back() {
         finish();

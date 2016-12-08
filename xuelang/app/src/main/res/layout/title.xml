@@ -60,23 +60,28 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/bt_sos"
                 android:layout_width="28dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="14dp"
                 android:layout_height="24dp"
                 android:background="@mipmap/icon_sos" />
             <Button
+                android:id="@+id/bt_video"
                 android:layout_width="28dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="14dp"
                 android:layout_height="24dp"
                 android:background="@mipmap/icon_camera_title" />
             <Button
+                android:id="@+id/bt_camera"
                 android:layout_width="28dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="14dp"
                 android:layout_height="24dp"
                 android:background="@mipmap/icon_video" />
             <Button
+                android:id="@+id/bt_setting"
                 android:layout_width="28dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="8dp"
                 android:layout_height="24dp"
                 android:background="@mipmap/icon_setting" />
 

@@ -1,12 +1,16 @@
 package com.xue.liang.app.v3.adapter.viewholder;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.application.MainApplication;
 import com.xue.liang.app.v3.base.baseadapter.SectionedRecyclerViewAdapter;
 import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
+import com.xue.liang.app.v3.utils.Constant;
+import com.xue.liang.app.v3.utils.SharedDB;
 
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
 
     private int mSection;
     private int mPosition;
+    private Context context;
 
     SectionedRecyclerViewAdapter.RecyclerItemClickListener recyclerItemClickListener;
 
@@ -41,12 +46,18 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
         super(itemView);
         this.itemView.setOnClickListener(this);
         ButterKnife.bind(this, itemView);
+        context = MainApplication.getInstance().getApplicationContext();
     }
 
-    public void render(AlarmRespBean.ResponseBean bean,int section, int position) {
-        mSection=section;
-        mPosition=position;
-        mBean=bean;
+    public void render(AlarmRespBean.ResponseBean bean, int section, int position) {
+        mSection = section;
+        mPosition = position;
+        mBean = bean;
+        if (SharedDB.getBooleanValue(context, bean.generateDistinguishId(), false)) {
+            setAllTextViewColor(context.getResources().getColor(R.color.grey));
+        } else {
+            setAllTextViewColor(context.getResources().getColor(R.color.black));
+        }
         tv_alarm_name.setText("报警人:" + bean.getUser_name());
         tv_alarm_type.setText("报警类型:" + bean.getAlarm_type());
         tv_alarm_time.setText("报警时间:" + bean.getAlarm_time());
@@ -56,10 +67,19 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
 
     }
 
+    public void setAllTextViewColor(int color) {
+        tv_alarm_name.setTextColor(color);
+        tv_alarm_type.setTextColor(color);
+        tv_alarm_time.setTextColor(color);
+        tv_alarm_phone.setTextColor(color);
+        tv_alarm_address.setTextColor(color);
+
+    }
+
     @Override
     public void onClick(View view) {
-        if(recyclerItemClickListener!=null){
-            recyclerItemClickListener.onItemClick(view,mSection,mPosition,mBean);
+        if (recyclerItemClickListener != null) {
+            recyclerItemClickListener.onItemClick(view, mSection, mPosition, mBean);
         }
 
     }

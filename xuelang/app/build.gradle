@@ -83,6 +83,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'//glide
 
 
+    compile 'com.lzy.widget:imagepicker:0.3.2'  //指定版本
+
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'com.jph.takephoto:takephoto_library:4.0.0'
 

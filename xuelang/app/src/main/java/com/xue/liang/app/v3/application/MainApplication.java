@@ -15,7 +15,13 @@ import okhttp3.OkHttpClient;
 /**
  * Created by Administrator on 2016/8/11.
  */
-public class MianApplication extends MultiDexApplication {
+public class MainApplication extends MultiDexApplication {
+
+
+    private static MainApplication instance;
+
+    public Context context;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -25,8 +31,8 @@ public class MianApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
-
+        context = getApplicationContext();
+        instance = this;
         initOkUtils();
         CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
         initJpushSdk();
@@ -45,9 +51,13 @@ public class MianApplication extends MultiDexApplication {
     }
 
 
-
     private void initJpushSdk() {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+    }
+
+
+    public static MainApplication getInstance() {
+        return instance;
     }
 }

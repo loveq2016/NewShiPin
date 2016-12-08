@@ -15,6 +15,7 @@ import com.xue.liang.app.v3.base.BaseTakePhotoFragment;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
 import com.xue.liang.app.v3.config.TestData;
+import com.xue.liang.app.v3.constant.LoginInfoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,7 +218,8 @@ public class HelpFragment extends BaseTakePhotoFragment implements HelpContract.
         AlarmForHelpReq bean = new AlarmForHelpReq();
         bean.setAlarm_text(text);
         bean.setTermi_type("2");
-        bean.setTermi_unique_code(TestData.termi_unique_code);
+        bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+
 
         List<String> filelist = new ArrayList<>();
         for (String data : mdata) {

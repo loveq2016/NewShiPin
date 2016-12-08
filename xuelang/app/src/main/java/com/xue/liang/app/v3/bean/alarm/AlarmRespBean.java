@@ -3,6 +3,9 @@ package com.xue.liang.app.v3.bean.alarm;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.temobi.cache.memory.MD5;
+import com.xue.liang.app.v3.utils.MD5Util;
+
 import java.util.List;
 
 /**
@@ -91,7 +94,27 @@ public class AlarmRespBean implements Parcelable {
         private String map_url;
         private List<String> file_list;
 
+        public String generateDistinguishId() {
+            String md5 = MD5Util.string2MD5(toString());
+            return md5;
+        }
 
+        @Override
+        public String toString() {
+            return "ResponseBean{" +
+                    "alarm_id='" + alarm_id + '\'' +
+                    ", alarm_type=" + alarm_type +
+                    ", alarm_type_name='" + alarm_type_name + '\'' +
+                    ", user_name='" + user_name + '\'' +
+                    ", user_address='" + user_address + '\'' +
+                    ", user_tel='" + user_tel + '\'' +
+                    ", alarm_text='" + alarm_text + '\'' +
+                    ", alarm_time='" + alarm_time + '\'' +
+                    ", dev_name='" + dev_name + '\'' +
+                    ", rtsp_id='" + rtsp_id + '\'' +
+                    ", map_url='" + map_url + '\'' +
+                    '}';
+        }
 
         public CameraInfoBean getCamera_info() {
             return camera_info;

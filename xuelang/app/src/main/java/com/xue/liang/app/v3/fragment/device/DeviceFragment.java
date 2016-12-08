@@ -1,9 +1,10 @@
 package com.xue.liang.app.v3.fragment.device;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,14 +19,20 @@ import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
+import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
+import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
 import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.CarmIdConstant;
+import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.event.UrlEvent;
+import com.xue.liang.app.v3.fragment.help.HelpContract;
+import com.xue.liang.app.v3.fragment.help.HelpPresenter;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
 import com.xue.liang.app.v3.utils.AlarmTypeConstant;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DateUtil;
 import com.xue.liang.app.v3.utils.DeviceUtil;
+import com.xue.liang.app.v3.widget.SettingFragmentDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +44,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Administrator on 2016/11/2.
  */
-public class DeviceFragment extends BaseFragment implements DeviceContract.View {
+public class DeviceFragment extends BaseFragment implements DeviceContract.View, HelpContract.View {
 
 
     public static final String TAG = DeviceFragment.class.getSimpleName();
@@ -49,6 +56,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
     private PlayerAdapter playerAdapter;
     private DevicePresenter devicePresenter;
+
+    private HelpPresenter helpPresenter;
 
     private List<DeviceRespBean.ResponseBean> dataList;
 
@@ -95,6 +104,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
         devicePresenter = new DevicePresenter(this);
 
+        helpPresenter = new HelpPresenter(this);
+
         setupListView();
         initPlayerFragment();
         mac = DeviceUtil.getMacAddress(getActivity().getApplicationContext());
@@ -133,7 +144,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
                 mCurrentCamerId = deviceid;
                 String devicename = dataList.get(position).getDev_name();
                 String url = dataList.get(position).getDev_url();
-                EventBus.getDefault().post(new UrlEvent(TAG,url));
+                EventBus.getDefault().post(new UrlEvent(TAG, url));
 
             }
         });
@@ -287,5 +298,66 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View 
 
     }
 
+    @OnClick(R.id.bt_sos)
+    public void sendAlarm() {
+        AlarmForHelpReq bean = new AlarmForHelpReq();
+        bean.setAlarm_text("");
+        bean.setTermi_type("2");
+        bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+        helpPresenter.doAlarmAfterUpdataFile(bean);
+    }
 
+    @OnClick(R.id.bt_setting)
+    public void showSettingDialog() {
+
+        SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
+        msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
+            @Override
+            public void onSuccess() {
+                getActivity().finish();
+            }
+        });
+        msettingFragmentDialog.show(getFragmentManager(),
+                "dialog");
+
+
+    }
+
+    private void finishNowActivity() {
+        getActivity().finish();
+    }
+
+
+    @Override
+    public void onUpdateStartFile() {
+
+    }
+
+    @Override
+    public void onUpdateProgressUpFile(float progress, long total, int id) {
+
+    }
+
+    @Override
+    public void onUpdateFileFail(String errorinfo) {
+
+    }
+
+    @Override
+    public void onUpdateFileSuccess(List<String> fileList) {
+
+    }
+
+    @Override
+    public void onAlarmSuccess(AlarmForHelpResp resp) {
+
+        Toast.makeText(getActivity(), "报警成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAlarmFail() {
+        Toast.makeText(getActivity(), "报警失败", Toast.LENGTH_SHORT).show();
+
+
+    }
 }

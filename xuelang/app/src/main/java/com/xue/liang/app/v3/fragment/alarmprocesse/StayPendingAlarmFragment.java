@@ -18,6 +18,7 @@ import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.utils.Constant;
+import com.xue.liang.app.v3.utils.SharedDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,8 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
             public void onItemClick(View view, int section, int postion, AlarmRespBean.ResponseBean value) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("process", value);
+                String key = value.generateDistinguishId();
+                SharedDB.putBooleanValue(getContext(), key, true);
                 //readyGo(AlarmProcessDeatialActivity.class, bundle);
                 readyGoForResult(AlarmProcessDeatialActivity.class, 0, bundle);
             }

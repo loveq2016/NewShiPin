@@ -137,4 +137,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         bundle.putParcelable(BundleConstant.BUNDLE_LOGIN_DATA, loginRespBean);
         readyGo(MainActivity.class, bundle);
     }
+
+    private void readIdFromShareDb() {
+
+    }
 }

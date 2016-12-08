@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HelpContract {
 
-    interface View extends BaseView {
+    public interface View extends BaseView {
 
 
         void onUpdateStartFile();

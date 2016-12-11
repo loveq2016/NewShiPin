@@ -1,6 +1,12 @@
 package com.xue.liang.app.v3.fragment.device;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -32,8 +38,11 @@ import com.xue.liang.app.v3.utils.AlarmTypeConstant;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DateUtil;
 import com.xue.liang.app.v3.utils.DeviceUtil;
+import com.xue.liang.app.v3.utils.FileUtils;
+import com.xue.liang.app.v3.utils.XPermissionUtils;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +58,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     public static final String TAG = DeviceFragment.class.getSimpleName();
 
+    public static final int CARMERA = 1;//拍照
+
     public static final String Bundle_Data = "LoginData";
     @BindView(R.id.listview)
     ListView listview;
@@ -58,6 +69,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     private DevicePresenter devicePresenter;
 
     private HelpPresenter helpPresenter;
+
+    private MaterialDialog updateFileMaterialDialog;
 
     private List<DeviceRespBean.ResponseBean> dataList;
 
@@ -298,6 +311,59 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
+    private String imageFilePath;
+
+    @OnClick(R.id.bt_camera)
+    public void openCamre() {
+        XPermissionUtils.requestPermissions(getActivity(), 1, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, new XPermissionUtils.OnPermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory() + "/Images");
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                imageFilePath = Environment.getExternalStorageDirectory() + "/Images/" +
+                        "cameraImg" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+                Uri mUri = Uri.fromFile(
+                        new File(imageFilePath));
+                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mUri);
+                cameraIntent.putExtra("return-data", true);
+                startActivityForResult(cameraIntent, CARMERA);
+
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                showToast("相机权限被禁止");
+
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CARMERA && resultCode == Activity.RESULT_OK) {
+            List<String> fileList = new ArrayList<>();
+            //Uri uri = data.getParcelableExtra(android.provider.MediaStore.EXTRA_OUTPUT);
+
+            fileList.add(imageFilePath);
+
+            AlarmForHelpReq bean = new AlarmForHelpReq();
+            bean.setAlarm_text("");
+            bean.setTermi_type("2");
+            bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+            helpPresenter.updateFileAndAlarm(fileList, bean);
+
+        }
+//        else if (requestCode == VIDEO) {
+//            setdataFromVideo(requestCode, resultCode, data);
+//        }
+    }
+
     @OnClick(R.id.bt_sos)
     public void sendAlarm() {
         AlarmForHelpReq bean = new AlarmForHelpReq();
@@ -323,28 +389,33 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
-    private void finishNowActivity() {
-        getActivity().finish();
-    }
-
 
     @Override
     public void onUpdateStartFile() {
+        showUpdateProgressDialog();
 
     }
 
     @Override
     public void onUpdateProgressUpFile(float progress, long total, int id) {
+        if (updateFileMaterialDialog != null) {
+            int p = (int) (progress * 100);
+            updateFileMaterialDialog.setProgress(p);
+        }
 
     }
 
     @Override
     public void onUpdateFileFail(String errorinfo) {
+        dimissUpdateProgressDialog();
+        Toast.makeText(getActivity(), "上传图片失败" + errorinfo, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onUpdateFileSuccess(List<String> fileList) {
+        dimissUpdateProgressDialog();
+        Toast.makeText(getActivity(), "上传图片成功", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -359,5 +430,22 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         Toast.makeText(getActivity(), "报警失败", Toast.LENGTH_SHORT).show();
 
 
+    }
+
+
+    protected void showUpdateProgressDialog() {
+        boolean showMinMax = true;
+        updateFileMaterialDialog = new MaterialDialog.Builder(getActivity())
+                .title("上传中")
+                .content("请等待")
+                .progress(false, 100, showMinMax)
+                .show();
+        updateFileMaterialDialog.setCancelable(false);
+    }
+
+    protected void dimissUpdateProgressDialog() {
+        if (updateFileMaterialDialog != null & updateFileMaterialDialog.isShowing()) {
+            updateFileMaterialDialog.dismiss();
+        }
     }
 }

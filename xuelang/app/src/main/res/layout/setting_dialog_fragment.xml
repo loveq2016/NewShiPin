@@ -88,8 +88,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_selector"
+                    android:layout_marginLeft="6dp"
                     android:text="获取本地MAC地址"
+                    android:background="@drawable/bt_login_selector"
                     android:textColor="@android:color/white"
                     android:visibility="invisible"></Button>
 
@@ -98,6 +99,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/bt_login_selector"
                     android:text="恢复默认值"
                     android:textColor="@android:color/white"></Button>
             </LinearLayout>
@@ -112,6 +114,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/bt_login_selector"
                     android:text="取消"
                     android:textColor="@android:color/white"></Button>
 
@@ -120,6 +123,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/bt_login_selector"
                     android:text="确定"
                     android:textColor="@android:color/white"></Button>
             </LinearLayout>

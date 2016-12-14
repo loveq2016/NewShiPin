@@ -96,16 +96,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         phoneNum = login_edittext.getText().toString();
 
-//        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
-//            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
+            Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
 
         String mac = DeviceUtil.getMacAddress(getApplicationContext());
-        mac = TestData.termi_unique_code;
-        phoneNum = TestData.phoneNum;
+//        mac = TestData.termi_unique_code;
+//        phoneNum = TestData.phoneNum;
 
         LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, mac);
         loginPresenter.loadData(loginReqBean);

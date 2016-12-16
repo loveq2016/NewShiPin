@@ -2,7 +2,12 @@ package com.xue.liang.app.v3.config;
 
 /**
  * Created by Administrator on 2016/10/26.
+ *
+ *
+ *     public static String phoneNum = "13000000002";
+ public static String termi_unique_code = "e1:5a:86:be:a6:aa";
  */
+//
 public class UriHelper {
 
 

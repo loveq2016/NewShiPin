@@ -1,7 +1,6 @@
 package com.xue.liang.app.v3.fragment.newinfo;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,14 +12,11 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.newinfo.NewInfoDetailActivity;
 import com.xue.liang.app.v3.adapter.NewInfoAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
-import com.xue.liang.app.v3.bean.alarm.AlarmReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.bean.notice.NoticeReqBean;
 import com.xue.liang.app.v3.bean.notice.NoticeRespBean;
-import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.BundleConstant;
-import com.xue.liang.app.v3.fragment.alarmprocesse.PendPresenter;
-import com.xue.liang.app.v3.fragment.alarmprocesse.StayPendingAlarmFragment;
+import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.utils.Constant;
 
 import java.util.ArrayList;
@@ -92,7 +88,7 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
     private void reshData() {
         NoticeReqBean noticeReqBean = new NoticeReqBean();
         noticeReqBean.setTermi_type(Constant.PHONE);
-        noticeReqBean.setTermi_unique_code(TestData.termi_unique_code);
+        noticeReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
         noticeReqBean.setCount(count);
         noticeReqBean.setStrat_index(startindex);
         noticeReqBean.setUser_id(mloginRespBean.getUser_id());
@@ -104,7 +100,7 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
         startindex = startindex + mListData.size();
         NoticeReqBean noticeReqBean = new NoticeReqBean();
         noticeReqBean.setTermi_type(Constant.PHONE);
-        noticeReqBean.setTermi_unique_code(TestData.termi_unique_code);
+        noticeReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
         noticeReqBean.setCount(count);
         noticeReqBean.setStrat_index(startindex);
         noticeReqBean.setUser_id(mloginRespBean.getUser_id());

@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
-import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -27,7 +24,6 @@ import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
-import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.CarmIdConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.event.UrlEvent;
@@ -38,7 +34,6 @@ import com.xue.liang.app.v3.utils.AlarmTypeConstant;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DateUtil;
 import com.xue.liang.app.v3.utils.DeviceUtil;
-import com.xue.liang.app.v3.utils.FileUtils;
 import com.xue.liang.app.v3.utils.XPermissionUtils;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
 
@@ -131,9 +126,9 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     private void onRefreshData() {
         String type = DeviceUtil.getWhickPhoneType(getContext());
         DeviceReqBean deviceReqBean = new DeviceReqBean();
-        deviceReqBean.setReg_tel(TestData.phoneNum);
+        deviceReqBean.setReg_tel(LoginInfoUtils.getInstance().getPhoneNum());
         deviceReqBean.setTermi_type(type);
-        deviceReqBean.setTermi_unique_code(TestData.termi_unique_code);
+        deviceReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
 
         devicePresenter.loadData(deviceReqBean);
 

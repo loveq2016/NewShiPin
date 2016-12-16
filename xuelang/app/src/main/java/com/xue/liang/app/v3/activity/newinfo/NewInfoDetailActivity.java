@@ -7,8 +7,8 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.noticedetail.NoticeDetailReqBean;
 import com.xue.liang.app.v3.bean.noticedetail.NoticeDetailRespBean;
-import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.BundleConstant;
+import com.xue.liang.app.v3.constant.LoginInfoUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,7 +43,7 @@ public class NewInfoDetailActivity extends BaseActivity implements NewInfoDetail
         newInfoDetailPresenter = new NewInfoDetailPresenter(this);
         NoticeDetailReqBean noticeDetailReqBean = new NoticeDetailReqBean();
         noticeDetailReqBean.setGuid(mGuidId);
-        noticeDetailReqBean.setTermi_unique_code(TestData.termi_unique_code);
+        noticeDetailReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
         noticeDetailReqBean.setUser_id("123");
         newInfoDetailPresenter.loadData(noticeDetailReqBean);
     }

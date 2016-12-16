@@ -10,6 +10,11 @@ public class LoginInfoUtils {
 
     private LoginRespBean loginRespBean;
 
+
+    private String phoneNum;
+
+    private String macAdrress;
+
     public static LoginInfoUtils instance;
 
     private LoginInfoUtils() {
@@ -30,5 +35,21 @@ public class LoginInfoUtils {
 
     public void setLoginRespBean(LoginRespBean loginRespBean) {
         this.loginRespBean = loginRespBean;
+    }
+
+    public String getMacAdrress() {
+        return macAdrress;
+    }
+
+    public void setMacAdrress(String macAdrress) {
+        this.macAdrress = macAdrress;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }

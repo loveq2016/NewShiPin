@@ -1,6 +1,7 @@
 package com.xue.liang.app.v3.activity.login;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -9,7 +10,6 @@ import com.xue.liang.app.v3.activity.main.MainActivity;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
-import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.utils.Constant;
@@ -33,6 +33,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private String phoneNum;
 
+    private String macAddress;
+
     @Override
     protected void getBundleExtras(Bundle extras) {
 
@@ -54,6 +56,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void onSuccess(LoginRespBean userInfo) {
         savePhoneNumber();
         LoginInfoUtils.getInstance().setLoginRespBean(userInfo);
+        LoginInfoUtils.getInstance().setPhoneNum(phoneNum);
+        LoginInfoUtils.getInstance().setMacAdrress(macAddress);
         toMainActivity(userInfo);
 
     }
@@ -62,7 +66,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void onFail(LoginRespBean userInfo) {
 //        Intent intent=new Intent(this, MainActivity.class);
 //        startActivity(intent);
-        showToast("登陆失败");
+        String info="";
+        if(null!=userInfo&&!TextUtils.isEmpty(userInfo.getRet_string())){
+            info=userInfo.getRet_string();
+        }
+        showToast(info);
 
     }
 
@@ -80,7 +88,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void onError(String info) {
-        showToast("登陆失败");
+        if (TextUtils.isEmpty(info)) {
+            info = "";
+        }
+        showToast(info);
 //        LoginRespBean loginRespBean = new LoginRespBean();
 //        loginRespBean.setUser_id("1234");
 //        loginRespBean.setAlias_id("123678");
@@ -103,11 +114,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
 
-        String mac = DeviceUtil.getMacAddress(getApplicationContext());
+        macAddress = DeviceUtil.getMacAddress(getApplicationContext());
 //        mac = TestData.termi_unique_code;
 //        phoneNum = TestData.phoneNum;
 
-        LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, mac);
+        LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, macAddress);
         loginPresenter.loadData(loginReqBean);
 
     }

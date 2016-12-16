@@ -14,7 +14,6 @@ import com.xue.liang.app.v3.adapter.AlarmAdapter;
 import com.xue.liang.app.v3.base.BaseTakePhotoFragment;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
-import com.xue.liang.app.v3.config.TestData;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
 
 import java.util.ArrayList;

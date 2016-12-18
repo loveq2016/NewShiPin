@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,12 +18,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.PlayerAdapter;
+import com.xue.liang.app.v3.adapter.RegionAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
+import com.xue.liang.app.v3.bean.region.RegionRespBean;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
 import com.xue.liang.app.v3.constant.CarmIdConstant;
@@ -58,6 +62,10 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public static final String Bundle_Data = "LoginData";
     @BindView(R.id.listview)
     ListView listview;
+
+
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
 
     private PlayerAdapter playerAdapter;
@@ -103,6 +111,15 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
+    private RegionAdapter regionAdapter;
+
+    public void setUpRecyclerView() {
+        regionAdapter = new RegionAdapter(getContext());
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 1);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(regionAdapter);
+    }
+
     @Override
     protected void initViews() {
         Bundle bundle = getArguments();
@@ -119,6 +136,9 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         mac = DeviceUtil.getMacAddress(getActivity().getApplicationContext());
 
         onRefreshData();
+
+        devicePresenter.getRegion(mloginRespBean.getUser_id());
+        setUpRecyclerView();
 
 
     }
@@ -199,6 +219,21 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     @Override
     public void onPtzCmdFail(String msg) {
         showToast("云台控制失败");
+    }
+
+    @Override
+    public void ongetRegionSuccess(RegionRespBean bean) {
+        regionAdapter.reshData(bean.getChildList());
+
+    }
+
+    @Override
+    public void ongetRegionFail(RegionRespBean bean) {
+        String msg = "";
+        if (bean != null && !TextUtils.isEmpty(bean.getRet_string())) {
+            msg = bean.getRet_string();
+        }
+        showToast(msg);
     }
 
     @Override
@@ -310,7 +345,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     @OnClick(R.id.bt_camera)
     public void openCamre() {
-        XPermissionUtils.requestPermissions(getActivity(), 1, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, new XPermissionUtils.OnPermissionListener() {
+        XPermissionUtils.requestPermissions(getActivity(), 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new XPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);

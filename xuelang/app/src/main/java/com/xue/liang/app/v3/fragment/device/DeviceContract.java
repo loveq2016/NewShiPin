@@ -6,6 +6,7 @@ import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
+import com.xue.liang.app.v3.bean.region.RegionRespBean;
 
 /**
  * Created by jikun on 2016/11/4.
@@ -13,7 +14,7 @@ import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 
 public class DeviceContract {
 
-    interface View extends BaseView {
+    public interface View extends BaseView {
 
         void onSuccess(DeviceRespBean userInfo);
 
@@ -26,6 +27,10 @@ public class DeviceContract {
         void onPtzCmdSuccess(String msg);
 
         void onPtzCmdFail(String msg);
+
+        void ongetRegionSuccess(RegionRespBean bean);
+
+        void ongetRegionFail(RegionRespBean bean);
 
 
     }

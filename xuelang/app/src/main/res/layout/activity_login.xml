@@ -6,14 +6,24 @@
     android:background="@mipmap/login_bg"
     android:orientation="vertical">
 
+
+    <Button
+        android:id="@+id/bt_setting"
+        android:layout_width="28dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@mipmap/icon_setting" />
+
     <EditText
         android:id="@+id/login_edittext"
         android:layout_width="200dp"
 
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginLeft="24dp"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="24dp"
+        android:gravity="center"
         android:hint="请输入手机号码"
         android:inputType="phone"
         android:maxLength="11" />
@@ -21,13 +31,13 @@
     <Button
         android:id="@+id/login_btn"
         android:layout_width="200dp"
-        android:layout_below="@+id/login_edittext"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="24dp"
+        android:layout_below="@+id/login_edittext"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/bt_login_selector"
         android:text="登   录"
         android:textColor="@android:color/white"
-        android:textSize="26sp"/>
+        android:textSize="26sp" />
 </RelativeLayout>

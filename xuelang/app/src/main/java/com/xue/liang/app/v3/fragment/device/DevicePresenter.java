@@ -5,9 +5,12 @@ import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
+import com.xue.liang.app.v3.bean.region.RegionReqBean;
+import com.xue.liang.app.v3.bean.region.RegionRespBean;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
 import com.xue.liang.app.v3.httputils.retrofit2.service.GetDeviceListService;
+import com.xue.liang.app.v3.httputils.retrofit2.service.GetRegionListService;
 import com.xue.liang.app.v3.httputils.retrofit2.service.PostAlermService;
 
 import retrofit2.Retrofit;
@@ -140,7 +143,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
 
         mView.showLoadingView("");
 
-        Observable.just(startPtz( sessionID,  cameraID,  cmdID,  param1,  param2)).subscribeOn(Schedulers.io())
+        Observable.just(startPtz(sessionID, cameraID, cmdID, param1, param2)).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<Boolean>() {
             @Override
@@ -157,10 +160,10 @@ public class DevicePresenter implements DeviceContract.Presenter {
             @Override
             public void onNext(Boolean issuccess) {
                 mView.hideLoadingView();
-                if(issuccess){
+                if (issuccess) {
                     mView.onPtzCmdFail("");
 
-                }else{
+                } else {
                     mView.onPtzCmdSuccess("");
                 }
 
@@ -181,9 +184,54 @@ public class DevicePresenter implements DeviceContract.Presenter {
      */
     private boolean startPtz(String sessionID, String cameraID, int cmdID, int param1, int param2) {
 
-        String servAddr =UriHelper.IP;  //camerainfo中的acsIP
+        String servAddr = UriHelper.IP;  //camerainfo中的acsIP
         int port = UriHelper.PORT;       //camerainfo中的acsPort
         boolean issuccess = VMSNetSDK.getInstance().sendStartPTZCmd(servAddr, port, sessionID, cameraID, cmdID, param1, param2);
         return issuccess;
+    }
+
+
+    /**
+     * @param userId 登陆的userId
+     */
+    public void getRegion(String userId) {
+        RegionReqBean bean = new RegionReqBean();
+        bean.setUser_id(userId);
+
+        String GET_API_URL = UriHelper.getStartUrl();
+
+        mView.showLoadingView("");
+        Retrofit retrofit = RetrofitFactory.creatorGsonRetrofit(GET_API_URL);
+        GetRegionListService service = retrofit.create(GetRegionListService.class);
+        subscrip = service.getRegionListService(bean).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RegionRespBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        mView.hideLoadingView();
+                        String errorinfo = "";
+                        if (e != null && e.toString() != null) {
+                            errorinfo = e.toString();
+                        }
+                        mView.onError(errorinfo);
+                    }
+
+                    @Override
+                    public void onNext(RegionRespBean bean) {
+                        mView.hideLoadingView();
+                        if (bean.getRet_code() == 0) {
+                            mView.ongetRegionSuccess(bean);
+                        } else {
+                            mView.ongetRegionFail(bean);
+                        }
+                    }
+                });
     }
 }

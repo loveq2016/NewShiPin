@@ -150,15 +150,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     protected void showProgressDialog() {
-        materialDialog = new MaterialDialog.Builder(this)
-                .title("加载中")
-                .content("请稍后")
-                .progress(true, 0)
-                .progressIndeterminateStyle(false).cancelable(false)
-                .show();
+        showProgressDialog("加载中", "请稍后");
     }
 
     protected void showProgressDialog(String title,String info) {
+        if (materialDialog != null && materialDialog.isShowing()) {
+            return;
+        }
         materialDialog = new MaterialDialog.Builder(this)
                 .title(title)
                 .content(info)

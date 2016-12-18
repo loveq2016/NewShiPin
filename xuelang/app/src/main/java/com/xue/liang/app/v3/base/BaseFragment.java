@@ -174,15 +174,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void showProgressDialog() {
-        materialDialog = new MaterialDialog.Builder(getActivity())
-                .title("加载中")
-                .content("请稍后")
-                .progress(true, 0)
-                .progressIndeterminateStyle(false).cancelable(false)
-                .show();
+
+        showProgressDialog("加载中", "请稍后");
     }
 
     protected void showProgressDialog(String title, String info) {
+        if (materialDialog != null && materialDialog.isShowing()) {
+            return;
+        }
         materialDialog = new MaterialDialog.Builder(getActivity())
                 .title(title)
                 .content(info)

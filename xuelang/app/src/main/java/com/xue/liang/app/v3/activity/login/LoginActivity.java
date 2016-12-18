@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.activity.TestActivity;
 import com.xue.liang.app.v3.activity.main.MainActivity;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
@@ -16,6 +17,7 @@ import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.v3.utils.SharedDB;
+import com.xue.liang.app.v3.widget.SettingFragmentDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,6 +53,20 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         loginPresenter = new LoginPresenter(this);
     }
 
+    @OnClick(R.id.bt_setting)
+    public void showSettingDialog() {
+
+        SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
+        msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
+            @Override
+            public void onSuccess() {
+
+            }
+        });
+        msettingFragmentDialog.show(getSupportFragmentManager(),
+                "dialog");
+    }
+
 
     @Override
     public void onSuccess(LoginRespBean userInfo) {
@@ -66,9 +82,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void onFail(LoginRespBean userInfo) {
 //        Intent intent=new Intent(this, MainActivity.class);
 //        startActivity(intent);
-        String info="";
-        if(null!=userInfo&&!TextUtils.isEmpty(userInfo.getRet_string())){
-            info=userInfo.getRet_string();
+        String info = "";
+        if (null != userInfo && !TextUtils.isEmpty(userInfo.getRet_string())) {
+            info = userInfo.getRet_string();
         }
         showToast(info);
 
@@ -146,7 +162,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private void toMainActivity(LoginRespBean loginRespBean) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BundleConstant.BUNDLE_LOGIN_DATA, loginRespBean);
-        readyGo(MainActivity.class, bundle);
+        readyGo(TestActivity.class, bundle);
     }
 
     private void readIdFromShareDb() {

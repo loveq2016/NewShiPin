@@ -18,11 +18,11 @@ public class ServerInfoBean implements Parcelable {
      * login_pass :
      */
 
-    private int server_type;
-    private String server_ip;
-    private int server_port;
-    private String login_name;
-    private String login_pass;
+    private int server_type;//Int	是	服务器类型10海康 11大华 12 宇视 13华为
+    private String server_ip;//Strig	是	服务器IP
+    private int server_port;//Int	是	服务器port
+    private String login_name;//是	服务器登录用户名
+    private String login_pass;//String	是	服务器登录密码
 
     public int getServer_type() {
         return server_type;

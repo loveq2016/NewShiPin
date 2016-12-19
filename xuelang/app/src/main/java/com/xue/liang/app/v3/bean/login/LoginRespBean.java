@@ -12,14 +12,14 @@ public class LoginRespBean implements Parcelable {
 
 
 
-    private int ret_code;
-    private String app_key;
+    private int ret_code;//是	响应码:0注册成功 -1注册出错
+    private String app_key;//是	推送appkey
 
-    private String ret_string;
-    private String alias_id;
-    private String user_id;
-    private int group_value;
-    private int user_type;
+    private String ret_string;//否	返回错误信息，只在注册出错是返回
+    private String alias_id;//是	推送别名
+    private String user_id;//user_id	String	是	用户id
+    private int group_value;//group_value	int	是	用户分组值 0 村 1 乡/镇 2 区/县 3市 4省
+    private int user_type;//user_type	int	是	用户类型  101普通用户   102 村镇管理员
     private ServerInfoBean server_info;
 
 

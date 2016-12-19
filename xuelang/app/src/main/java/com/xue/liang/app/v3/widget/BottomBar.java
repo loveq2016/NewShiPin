@@ -38,6 +38,23 @@ public class BottomBar extends LinearLayout {
         layoutInflater = LayoutInflater.from(context);
     }
 
+    public void showHideBadgeView(int index,boolean ishow) {
+        if(ishow){
+            if (null != itemViewList && index < itemViewList.size()-1) {
+                ImageView iv_badge = (ImageView) findViewById(R.id.iv_badge);
+                iv_badge.setVisibility(View.VISIBLE);
+            }
+
+        }else{
+            if (null != itemViewList && index < itemViewList.size()-1) {
+                ImageView iv_badge = (ImageView) findViewById(R.id.iv_badge);
+                iv_badge.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
+
+
 
     public void setMbottomBarItemList(List<BottomBarItem> bottomBarItemList) {
         this.mbottomBarItemList = bottomBarItemList;

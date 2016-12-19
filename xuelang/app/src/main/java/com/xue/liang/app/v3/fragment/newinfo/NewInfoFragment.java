@@ -2,12 +2,11 @@ package com.xue.liang.app.v3.fragment.newinfo;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.newinfo.NewInfoDetailActivity;
 import com.xue.liang.app.v3.adapter.NewInfoAdapter;
@@ -33,9 +32,8 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
     @BindView(R.id.tv_title)
     TextView tv_title;
     @BindView(R.id.recyclerView)
-    public RecyclerView mRecyclerView;
-    @BindView(R.id.swipeRefreshLayout)
-    public SHSwipeRefreshLayout swipeRefreshLayout;
+    public XRecyclerView mRecyclerView;
+
 
     private NewInfoAdapter adapter;
 
@@ -155,28 +153,15 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
         });
         mRecyclerView.setLayoutManager(layoutManager);
 
-
-        swipeRefreshLayout.setOnRefreshListener(new SHSwipeRefreshLayout.SHSOnRefreshListener() {
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 reshData();
-
             }
 
             @Override
-            public void onLoading() {
+            public void onLoadMore() {
                 loadMoreData();
-
-            }
-
-            @Override
-            public void onRefreshPulStateChange(float v, int i) {
-
-            }
-
-            @Override
-            public void onLoadmorePullStateChange(float v, int i) {
-
             }
         });
 
@@ -185,7 +170,7 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @Override
     public void onSuccess(NoticeRespBean noticeRespBean) {
-        swipeRefreshLayout.finishRefresh();
+        mRecyclerView.refreshComplete();
 
         if (noticeRespBean != null & noticeRespBean.getResponse() != null&&!noticeRespBean.getResponse().isEmpty()) {
             mListData.clear();
@@ -199,13 +184,14 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @Override
     public void onFail() {
-        swipeRefreshLayout.finishRefresh();
+        mRecyclerView.refreshComplete();
+
 
     }
 
     @Override
     public void onSuccessMore(NoticeRespBean noticeRespBean) {
-        swipeRefreshLayout.finishLoadmore();
+        mRecyclerView.loadMoreComplete();
 
         if (noticeRespBean != null & noticeRespBean.getResponse() != null&&!noticeRespBean.getResponse().isEmpty()) {
             mListData.addAll(noticeRespBean.getResponse());
@@ -218,7 +204,7 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @Override
     public void onFailMore() {
-        swipeRefreshLayout.finishLoadmore();
+        mRecyclerView.loadMoreComplete();
 
     }
 

@@ -7,20 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xue.liang.app.R;
-import com.xue.liang.app.v3.adapter.PlayerAdapter;
 import com.xue.liang.app.v3.adapter.RegionAdapter;
-import com.xue.liang.app.v3.adapter.viewholder.RegionViewHolder;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
@@ -32,6 +28,7 @@ import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
 import com.xue.liang.app.v3.constant.CarmIdConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
+import com.xue.liang.app.v3.constant.UserType;
 import com.xue.liang.app.v3.event.RegionAreasEvent;
 import com.xue.liang.app.v3.event.RegionCamraEvent;
 import com.xue.liang.app.v3.event.UrlEvent;
@@ -65,15 +62,15 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public static final int CARMERA = 1;//拍照
 
     public static final String Bundle_Data = "LoginData";
-    @BindView(R.id.listview)
-    ListView listview;
+
+    @BindView(R.id.rl_ptz)
+     RelativeLayout rl_ptz;
 
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
 
-    private PlayerAdapter playerAdapter;
     private DevicePresenter devicePresenter;
 
     private HelpPresenter helpPresenter;
@@ -120,6 +117,19 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     private RegionAdapter regionAdapter;
 
+    /**
+     * 初始化PTZ控制UI 只有管理用户才能显示云台控制按钮
+     */
+    private void setUpPztUi() {
+        if (mloginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL) {
+            rl_ptz.setVisibility(View.GONE);
+        } else {
+            rl_ptz.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
     public void setUpRecyclerView() {
         regionAdapter = new RegionAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -139,12 +149,13 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
         helpPresenter = new HelpPresenter(this);
 
-        setupListView();
+
         initPlayerFragment();
         mac = DeviceUtil.getMacAddress(getActivity().getApplicationContext());
 
 
         devicePresenter.getRegion(mloginRespBean.getUser_id());
+        setUpPztUi();
         setUpRecyclerView();
 
 
@@ -162,29 +173,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
-    private void setupListView() {
-        dataList = new ArrayList<>();
 
-        playerAdapter = new PlayerAdapter(getContext(), dataList);
-        listview.setAdapter(playerAdapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // TODO Auto-generated method stub
-
-                deviceInfo = dataList.get(position);
-                listview.setItemChecked(position, true);
-                String deviceid = dataList.get(position).getDev_id();
-                mCurrentCamerId = deviceid;
-                String devicename = dataList.get(position).getDev_name();
-                String url = dataList.get(position).getDev_url();
-                EventBus.getDefault().post(new UrlEvent(TAG, url));
-
-            }
-        });
-    }
 
     @Override
     protected int getContentViewLayoutID() {

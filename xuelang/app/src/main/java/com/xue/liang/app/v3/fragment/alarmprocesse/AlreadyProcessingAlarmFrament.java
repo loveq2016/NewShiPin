@@ -3,10 +3,9 @@ package com.xue.liang.app.v3.fragment.alarmprocesse;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.scu.miomin.shswiperefresh.core.SHSwipeRefreshLayout;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.alarmprocess.AlarmProcessDeatialActivity;
 import com.xue.liang.app.v3.adapter.StayPendingAlarmAdapter;
@@ -33,10 +32,8 @@ import butterknife.BindView;
 public class AlreadyProcessingAlarmFrament extends BaseFragment implements PendAlarmContract.View {
 
 
-    @BindView(R.id.swipeRefreshLayout)
-    SHSwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    XRecyclerView recyclerView;
 
     private PendPresenter pendPresenter;
 
@@ -123,28 +120,15 @@ public class AlreadyProcessingAlarmFrament extends BaseFragment implements PendA
         gridLayoutManager.setSpanSizeLookup(lookup);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-
-        swipeRefreshLayout.setOnRefreshListener(new SHSwipeRefreshLayout.SHSOnRefreshListener() {
+        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 reshData();
-
             }
 
             @Override
-            public void onLoading() {
+            public void onLoadMore() {
                 loadMoreData();
-
-            }
-
-            @Override
-            public void onRefreshPulStateChange(float v, int i) {
-
-            }
-
-            @Override
-            public void onLoadmorePullStateChange(float v, int i) {
-
             }
         });
 
@@ -175,7 +159,7 @@ public class AlreadyProcessingAlarmFrament extends BaseFragment implements PendA
     @Override
     public void onSuccess(AlarmRespBean bean) {
 
-        swipeRefreshLayout.finishRefresh();
+        recyclerView.refreshComplete();
 
         if (bean != null & bean.getResponse() != null && !bean.getResponse().isEmpty()) {
             responseBeanList.clear();
@@ -192,13 +176,13 @@ public class AlreadyProcessingAlarmFrament extends BaseFragment implements PendA
 
     @Override
     public void onFail() {
-        swipeRefreshLayout.finishRefresh();
+        recyclerView.refreshComplete();
     }
 
     @Override
     public void onSuccessMore(AlarmRespBean bean) {
 
-        swipeRefreshLayout.finishLoadmore();
+        recyclerView.loadMoreComplete();
 
         if (bean != null & bean.getResponse() != null && !bean.getResponse().isEmpty()) {
             responseBeanList.addAll(bean.getResponse());
@@ -213,7 +197,7 @@ public class AlreadyProcessingAlarmFrament extends BaseFragment implements PendA
     @Override
     public void onFailMore() {
 
-        swipeRefreshLayout.finishLoadmore();
+        recyclerView.loadMoreComplete();
     }
 
 

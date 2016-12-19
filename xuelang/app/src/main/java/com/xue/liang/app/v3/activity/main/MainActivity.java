@@ -12,6 +12,9 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.constant.BundleConstant;
+import com.xue.liang.app.v3.event.JpushEvent;
+import com.xue.liang.app.v3.event.RegionCamraEvent;
+import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
 import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
@@ -25,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * Created by Administrator on 2016/11/1.
@@ -73,7 +78,7 @@ public class MainActivity extends BaseActivity {
 
         mContext = getApplicationContext();
         //  setUpBottomBar();
-
+        EventBus.getDefault().register(this);
 
         initFragment();
 
@@ -99,6 +104,12 @@ public class MainActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     /**
      * 初始化Fragment in MainActivy
@@ -146,6 +157,7 @@ public class MainActivity extends BaseActivity {
 
             } else if (which == 4) {
                 fragment = AlarmProcessFragment.newInstance(mLoginRespBean);
+                bottom_weight_bar.showHideBadgeView(4,false);
 
 
             } else if (which == 5) {
@@ -172,4 +184,9 @@ public class MainActivity extends BaseActivity {
         invalidateOptionsMenu();
     }
 
+    @Subscribe
+    public void onEventMainThread(JpushEvent event) {
+
+        bottom_weight_bar.showHideBadgeView(4,true);
+    }
 }

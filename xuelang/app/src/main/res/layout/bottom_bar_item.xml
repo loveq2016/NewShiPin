@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:gravity="center"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_height="wrap_content">
+    android:gravity="center">
 
 
     <RelativeLayout
@@ -13,19 +13,29 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
+
         <ImageView
             android:id="@+id/iv_item"
             android:layout_width="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            tools:background="@mipmap/icon_theft_alarm" />
+            android:layout_centerHorizontal="true"
+            tools:background="@drawable/icon_camra_check" />
+
+        <ImageView
+            android:id="@+id/iv_badge"
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:layout_alignRight="@+id/iv_item"
+            android:background="@android:color/holo_red_dark"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/iv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/iv_item"
             android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            tools:text="12312"
-            android:layout_height="wrap_content" />
+            tools:text="12312" />
 
     </RelativeLayout>
 

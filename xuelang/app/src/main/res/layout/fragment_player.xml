@@ -23,18 +23,7 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="158dp"
-            android:layout_height="match_parent"
-            android:background="@mipmap/list"
-            android:choiceMode="singleChoice"
-            android:listSelector="@drawable/bt_selector"
-            android:padding="6dp"
-            android:visibility="gone"
-            tools:listitem="@layout/player_item">
 
-        </ListView>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -105,6 +94,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_ptz"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentBottom="true"

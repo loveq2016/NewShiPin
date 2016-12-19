@@ -10,6 +10,8 @@ public class DeviceReqBean {
 
     private String termi_unique_code;
 
+    private String region_id;
+
 
     public String getTermi_type() {
         return termi_type;
@@ -33,5 +35,13 @@ public class DeviceReqBean {
 
     public void setTermi_unique_code(String termi_unique_code) {
         this.termi_unique_code = termi_unique_code;
+    }
+
+    public String getRegion_id() {
+        return region_id;
+    }
+
+    public void setRegion_id(String region_id) {
+        this.region_id = region_id;
     }
 }

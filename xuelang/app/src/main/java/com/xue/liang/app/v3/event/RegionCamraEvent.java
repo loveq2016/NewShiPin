@@ -9,14 +9,17 @@ import java.util.List;
  */
 
 public class RegionCamraEvent {
+    private DeviceRespBean.ResponseBean responseBean;
 
-    List<DeviceRespBean.ResponseBean> responseBeanList;
-
-    public List<DeviceRespBean.ResponseBean> getResponseBeanList() {
-        return responseBeanList;
+    public RegionCamraEvent(DeviceRespBean.ResponseBean responseBean) {
+        this.responseBean = responseBean;
     }
 
-    public void setResponseBeanList(List<DeviceRespBean.ResponseBean> responseBeanList) {
-        this.responseBeanList = responseBeanList;
+    public DeviceRespBean.ResponseBean getResponseBean() {
+        return responseBean;
+    }
+
+    public void setResponseBean(DeviceRespBean.ResponseBean responseBean) {
+        this.responseBean = responseBean;
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.PlayerAdapter;
 import com.xue.liang.app.v3.adapter.RegionAdapter;
+import com.xue.liang.app.v3.adapter.viewholder.RegionViewHolder;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
@@ -30,6 +32,8 @@ import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
 import com.xue.liang.app.v3.constant.CarmIdConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
+import com.xue.liang.app.v3.event.RegionAreasEvent;
+import com.xue.liang.app.v3.event.RegionCamraEvent;
 import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.help.HelpContract;
 import com.xue.liang.app.v3.fragment.help.HelpPresenter;
@@ -48,6 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * Created by Administrator on 2016/11/2.
@@ -85,6 +90,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     private String mac = "";
 
+    private RegionAreasEvent regionAreasEvent;
+
     @Override
     protected void onFirstUserVisible() {
 
@@ -115,13 +122,14 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     public void setUpRecyclerView() {
         regionAdapter = new RegionAdapter(getContext());
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(regionAdapter);
     }
 
     @Override
     protected void initViews() {
+        EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
         if (null != bundle) {
             mloginRespBean = bundle.getParcelable(Bundle_Data);
@@ -135,7 +143,6 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         initPlayerFragment();
         mac = DeviceUtil.getMacAddress(getActivity().getApplicationContext());
 
-        onRefreshData();
 
         devicePresenter.getRegion(mloginRespBean.getUser_id());
         setUpRecyclerView();
@@ -143,11 +150,12 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
-    private void onRefreshData() {
+    private void onRefreshData(String region_id) {
         String type = DeviceUtil.getWhickPhoneType(getContext());
         DeviceReqBean deviceReqBean = new DeviceReqBean();
         deviceReqBean.setReg_tel(LoginInfoUtils.getInstance().getPhoneNum());
         deviceReqBean.setTermi_type(type);
+        deviceReqBean.setRegion_id(region_id);
         deviceReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
 
         devicePresenter.loadData(deviceReqBean);
@@ -188,7 +196,10 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
         if (deviceRespBean != null) {
             dataList = deviceRespBean.getResponse();
-            playerAdapter.reshData(dataList);
+            regionAreasEvent.getViewHolder().reshCamreData(dataList);
+
+        } else {
+            showToast("视频列表为空");
         }
 
 
@@ -196,6 +207,13 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     @Override
     public void onFail(DeviceRespBean userInfo) {
+        String info = "";
+        if (null != userInfo && !TextUtils.isEmpty(userInfo.getRet_string())) {
+            info = userInfo.getRet_string();
+        } else {
+            info = "获取视频列表失败";
+        }
+        showToast(info);
 
     }
 
@@ -462,6 +480,11 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     protected void showUpdateProgressDialog() {
         boolean showMinMax = true;
@@ -478,4 +501,24 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             updateFileMaterialDialog.dismiss();
         }
     }
+
+    @Subscribe
+    public void onEventMainThread(RegionAreasEvent event) {
+        regionAreasEvent = event;
+        onRefreshData(event.getRegionAreas().getRegion_id());
+
+    }
+
+    @Subscribe
+    public void onEventMainThread(RegionCamraEvent event) {
+        deviceInfo = event.getResponseBean();
+
+        mCurrentCamerId = deviceInfo.getDev_id();
+        String devicename = deviceInfo.getDev_name();
+        String url = deviceInfo.getDev_url();
+        EventBus.getDefault().post(new UrlEvent(TAG, url));
+
+    }
+
+
 }

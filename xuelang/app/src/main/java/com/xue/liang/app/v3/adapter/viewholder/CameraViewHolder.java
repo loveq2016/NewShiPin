@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
+import com.xue.liang.app.v3.event.RegionAreasEvent;
+import com.xue.liang.app.v3.event.RegionCamraEvent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +36,7 @@ public class CameraViewHolder extends RecyclerView.ViewHolder implements View.On
     @Override
     public void onClick(View view) {
 
-        EventBus.getDefault().post(responseBean);
+        EventBus.getDefault().post(new RegionCamraEvent(responseBean));
 
     }
 

@@ -10,8 +10,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+
         android:layout_below="@+id/title">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="158dp"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
+            >
+
+        </android.support.v7.widget.RecyclerView>
 
         <ListView
             android:id="@+id/listview"
@@ -21,6 +31,7 @@
             android:choiceMode="singleChoice"
             android:listSelector="@drawable/bt_selector"
             android:padding="6dp"
+            android:visibility="gone"
             tools:listitem="@layout/player_item">
 
         </ListView>
@@ -105,7 +116,7 @@
                     android:id="@+id/btn_ptz_left"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                 android:layout_centerVertical="true"
+                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/center_view"
                     android:background="@mipmap/btn_left" />
 
@@ -121,8 +132,7 @@
                     android:id="@+id/center_view"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_centerInParent="true"
-                    />
+                    android:layout_centerInParent="true" />
 
                 <Button
                     android:id="@+id/btn_ptz_right"
@@ -145,11 +155,6 @@
 
         </RelativeLayout>
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
 
 </RelativeLayout>

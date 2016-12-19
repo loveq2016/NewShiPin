@@ -12,6 +12,8 @@ public class DeviceRespBean {
     private int ret_code;
     private String user_tel;
 
+    private String ret_string;
+
 
     private List<ResponseBean> response;
 
@@ -29,6 +31,14 @@ public class DeviceRespBean {
 
     public void setUser_tel(String user_tel) {
         this.user_tel = user_tel;
+    }
+
+    public String getRet_string() {
+        return ret_string;
+    }
+
+    public void setRet_string(String ret_string) {
+        this.ret_string = ret_string;
     }
 
     public List<ResponseBean> getResponse() {

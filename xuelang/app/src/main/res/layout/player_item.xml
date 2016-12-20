@@ -7,8 +7,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:layout_height="32dp"
           android:layout_centerVertical="true" >
 
         <ImageView
@@ -17,7 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="12dp"
             android:background="@mipmap/camera" />
 
         <TextView

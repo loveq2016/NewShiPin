@@ -26,8 +26,11 @@ import com.xue.liang.app.v3.widget.BottomBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 
@@ -76,6 +79,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViews() {
 
+
+        setupAliasId(mLoginRespBean);
+
         mContext = getApplicationContext();
         //  setUpBottomBar();
         EventBus.getDefault().register(this);
@@ -97,6 +103,9 @@ public class MainActivity extends BaseActivity {
         bottom_weight_bar.setOnBottomItemOnListener(new BottomBar.OnBottomItemOnListener() {
             @Override
             public void onItemSelected(int i, View view) {
+                if(i==4){
+                    bottom_weight_bar.showHideBadgeView(4,false);
+                }
                 setFragmentIndicator(i);
             }
         });
@@ -157,7 +166,7 @@ public class MainActivity extends BaseActivity {
 
             } else if (which == 4) {
                 fragment = AlarmProcessFragment.newInstance(mLoginRespBean);
-                bottom_weight_bar.showHideBadgeView(4,false);
+
 
 
             } else if (which == 5) {
@@ -169,6 +178,8 @@ public class MainActivity extends BaseActivity {
         } else {
 
         }
+
+
 
         fragmentTransaction.hide(mCurrentFragement).show(fragment);
         mCurrentFragement.setUserVisibleHint(false);
@@ -188,5 +199,18 @@ public class MainActivity extends BaseActivity {
     public void onEventMainThread(JpushEvent event) {
 
         bottom_weight_bar.showHideBadgeView(4,true);
+    }
+
+    private void setupAliasId( LoginRespBean loginRespBean){
+        JPushInterface.setAlias(getApplicationContext(), loginRespBean.getAlias_id(), new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+               if(i==0){
+                   showToast("设置极光别名成功");
+               }else{
+                   showToast("设置极光别名成功="+s);
+               }
+            }
+        });
     }
 }

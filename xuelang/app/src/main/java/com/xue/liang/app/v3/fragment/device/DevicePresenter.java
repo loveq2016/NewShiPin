@@ -186,7 +186,12 @@ public class DevicePresenter implements DeviceContract.Presenter {
 
         String servAddr = UriHelper.IP;  //camerainfo中的acsIP
         int port = UriHelper.PORT;       //camerainfo中的acsPort
-        boolean issuccess = VMSNetSDK.getInstance().sendStartPTZCmd(servAddr, port, sessionID, cameraID, cmdID, param1, param2);
+
+        String testservAddr ="182.150.56.73";  //camerainfo中的acsIP
+        int testport = 81;       //camerainfo中的acsPort
+        String testsessionID="";
+        String testcameraID="12732084001310000050";
+        boolean issuccess = VMSNetSDK.getInstance().sendStartPTZCmd(testservAddr, testport, testsessionID, testcameraID, cmdID, param1, param2);
         return issuccess;
     }
 

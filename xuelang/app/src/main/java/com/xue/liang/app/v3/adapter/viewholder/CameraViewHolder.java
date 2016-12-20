@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.adapter.CameraAdapter;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.event.RegionAreasEvent;
 import com.xue.liang.app.v3.event.RegionCamraEvent;
@@ -26,6 +27,10 @@ public class CameraViewHolder extends RecyclerView.ViewHolder implements View.On
     @BindView(R.id.play_item_url_tv)
     protected TextView play_item_url_tv;
 
+    private OnCameraclickListener onCameraclickListener;
+
+    private int mposition;
+
     public CameraViewHolder(View itemView, Context context) {
         super(itemView);
         mcontext = context;
@@ -35,13 +40,33 @@ public class CameraViewHolder extends RecyclerView.ViewHolder implements View.On
 
     @Override
     public void onClick(View view) {
-
         EventBus.getDefault().post(new RegionCamraEvent(responseBean));
+        if(onCameraclickListener!=null){
+            onCameraclickListener.onItem(mposition);
+        }
 
     }
 
-    public void bindView(DeviceRespBean.ResponseBean responseBean) {
+    public void bindView(DeviceRespBean.ResponseBean responseBean,int position) {
+        mposition=position;
         this.responseBean = responseBean;
+        if(responseBean.ischoose()){
+            this.itemView.setBackgroundColor(mcontext.getResources().getColor(R.color.blue));
+        }else{
+            this.itemView.setBackgroundColor(mcontext.getResources().getColor(R.color.md_divider_white));
+        }
+
         play_item_url_tv.setText(responseBean.getDev_name());
     }
+
+
+
+    public void setOnCameraclickListener(OnCameraclickListener onCameraclickListener) {
+        this.onCameraclickListener = onCameraclickListener;
+    }
+
+    public interface OnCameraclickListener {
+        void onItem(int index);
+    }
 }
+

@@ -53,6 +53,7 @@ public class DeviceRespBean {
         private String dev_url;
         private String dev_name;
         private String dev_id;
+        private boolean ischoose=false;
 
         public String getDev_url() {
             return dev_url;
@@ -76,6 +77,14 @@ public class DeviceRespBean {
 
         public void setDev_id(String dev_id) {
             this.dev_id = dev_id;
+        }
+
+        public boolean ischoose() {
+            return ischoose;
+        }
+
+        public void setIschoose(boolean ischoose) {
+            this.ischoose = ischoose;
         }
     }
 }

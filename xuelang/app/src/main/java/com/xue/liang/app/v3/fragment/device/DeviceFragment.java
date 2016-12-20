@@ -2,16 +2,23 @@ package com.xue.liang.app.v3.fragment.device;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,10 +48,15 @@ import com.xue.liang.app.v3.utils.DateUtil;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.XPermissionUtils;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
+import com.xue.liang.app.v3.widget.UpdateFileFragmentDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -64,8 +76,11 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public static final String Bundle_Data = "LoginData";
 
     @BindView(R.id.rl_ptz)
-     RelativeLayout rl_ptz;
+    RelativeLayout rl_ptz;
 
+
+    @BindView(R.id.little_title_tv)
+    TextView little_title_tv;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -158,6 +173,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         setUpPztUi();
         setUpRecyclerView();
 
+        little_title_tv.setText(mloginRespBean.getGroup_name());
+
 
     }
 
@@ -172,7 +189,6 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         devicePresenter.loadData(deviceReqBean);
 
     }
-
 
 
     @Override
@@ -272,16 +288,18 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
         switch (view.getId()) {
             case R.id.bt_other_alarm:
-                sendAlarm(AlarmTypeConstant.OTHER);
+                showAlermDialog(AlarmTypeConstant.OTHER);
                 break;
             case R.id.bt_hurt_alarm:
-                sendAlarm(AlarmTypeConstant.DANGEROUS_DAMAGE);
+                showAlermDialog(AlarmTypeConstant.DANGEROUS_DAMAGE);
+
                 break;
             case R.id.bt_theft_alarm:
-                sendAlarm(AlarmTypeConstant.STOLEN_ROB);
+                showAlermDialog(AlarmTypeConstant.STOLEN_ROB);
+
                 break;
             case R.id.bt_fire_alarm:
-                sendAlarm(AlarmTypeConstant.FIFE);
+                showAlermDialog(AlarmTypeConstant.FIFE);
                 break;
         }
 
@@ -403,11 +421,16 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     @OnClick(R.id.bt_sos)
     public void sendAlarm() {
-        AlarmForHelpReq bean = new AlarmForHelpReq();
-        bean.setAlarm_text("");
-        bean.setTermi_type("2");
-        bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
-        helpPresenter.doAlarmAfterUpdataFile(bean);
+
+        UpdateFileFragmentDialog updateFileFragmentDialog=new UpdateFileFragmentDialog();
+        updateFileFragmentDialog.show(getFragmentManager(),UpdateFileFragmentDialog.class.getSimpleName());
+
+
+//        AlarmForHelpReq bean = new AlarmForHelpReq();
+//        bean.setAlarm_text("");
+//        bean.setTermi_type("2");
+//        bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+//        helpPresenter.doAlarmAfterUpdataFile(bean);
     }
 
     @OnClick(R.id.bt_setting)
@@ -510,4 +533,146 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     }
 
 
+    private Map<String, Boolean> map;
+
+    boolean[] testboolean = {true, true, true};
+    String[] teststring = {"电话求助", "短信求助", "语音求助"};
+
+    boolean ischose = true;
+
+    private void showAlermDialog(final int type) {
+        if (null==deviceInfo) {
+            showToast("请选择一个摄像头");
+            return;
+        }
+
+        String[] titles = {"电话求助"};
+        boolean[] chooses = {true};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setTitle("是否通过6995");
+
+
+        builder.setMultiChoiceItems(titles, chooses, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                ischose = isChecked;
+            }
+
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.e("测试代码", "测试代码确定---which=" + which);
+
+
+                if (ischose) {
+                    checkCallPermissions();//拨打电话
+                }
+                sendAlarm(type);
+//                if (map.get("电话求助")) {
+//                    checkCallPermissions();//拨打电话
+//                }
+//                if (map.get("短信求助")) {
+//                    //mainPresenter.sendCall(mphoneNum,2);//短信报警
+//                }
+//                if (map.get("语音求助")) {
+//                    //mainPresenter.sendCall(mphoneNum,1);//语音报警
+//                }
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+
+
+        //    设置一个单项选择下拉框
+//        /**
+//         * 第一个参数指定我们要显示的一组下拉单选框的数据集合
+//         * 第二个参数代表索引，指定默认哪一个单选框被勾选上，0表示默认'语音求助' 会被勾选上
+//         * 第三个参数给每一个单选项绑定一个监听器
+//         */
+//        builder.setSingleChoiceItems(item, 0, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                chooseInt = which;
+//            }
+//        });
+//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                if (item[which].equals("电话求助")) {
+//                    checkCallPermissions();//拨打电话
+//                } else if (item[which].equals("短信求助")) {
+//                    //mainPresenter.sendCall(mphoneNum,2);//短信报警
+//
+//                } else if (item[which].equals("语音求助")) {
+//                    //mainPresenter.sendCall(mphoneNum,1);//语音报警
+//                }
+//
+//                sendAlarm(type);
+//                //Toast.makeText(MainActivity.this, "为：" + item[chooseInt], Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//            }
+//        });
+//        builder.show();
+    }
+
+
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+
+    /**
+     * API23 6.0需要检测权限
+     */
+    private void checkCallPermissions() {
+
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CALL_PHONE)) {
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+            }
+
+
+        } else {
+
+            doCall6995();
+
+        }
+
+    }
+
+    private void doCall6995() {
+        String number = "6995";
+        //用intent启动拨打电话
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+        startActivity(intent);
+
+    }
 }

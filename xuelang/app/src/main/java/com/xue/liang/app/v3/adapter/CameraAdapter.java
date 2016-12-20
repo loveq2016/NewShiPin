@@ -16,13 +16,14 @@ import java.util.List;
  * Created by Administrator on 2016/12/18.
  */
 
-public class CameraAdapter extends RecyclerView.Adapter<CameraViewHolder> {
+public class CameraAdapter extends RecyclerView.Adapter<CameraViewHolder> implements CameraViewHolder.OnCameraclickListener {
 
     private LayoutInflater layoutInflater;
 
     private Context mcontext;
 
     private List<DeviceRespBean.ResponseBean> data;
+
 
     public CameraAdapter(Context context) {
         mcontext = context;
@@ -38,7 +39,8 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraViewHolder> {
 
     @Override
     public void onBindViewHolder(CameraViewHolder holder, int position) {
-        holder.bindView(data.get(position));
+        holder.bindView(data.get(position), position);
+        holder.setOnCameraclickListener(this);
 
     }
 
@@ -57,6 +59,21 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraViewHolder> {
     public List<DeviceRespBean.ResponseBean> getData() {
         return data;
     }
+
+    @Override
+    public void onItem(int index) {
+        if (null != data && data.size() > 0) {
+            for (int i = 0; i < data.size(); i++) {
+                if (index == i) {
+                    data.get(index).setIschoose(true);
+                } else {
+                    data.get(index).setIschoose(false);
+                }
+            }
+            notifyDataSetChanged();
+        }
+    }
+
 
 
 }

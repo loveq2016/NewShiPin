@@ -19,8 +19,12 @@ import com.xue.liang.app.v3.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.v3.utils.SharedDB;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
 
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * Created by Administrator on 2016/10/26.
@@ -160,6 +164,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     private void toMainActivity(LoginRespBean loginRespBean) {
+
         Bundle bundle = new Bundle();
         bundle.putParcelable(BundleConstant.BUNDLE_LOGIN_DATA, loginRespBean);
         readyGo(MainActivity.class, bundle);

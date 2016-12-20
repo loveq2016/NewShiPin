@@ -41,14 +41,16 @@ public class BottomBar extends LinearLayout {
     public void showHideBadgeView(int index,boolean ishow) {
         if(ishow){
             if (null != itemViewList && index < itemViewList.size()-1) {
-                ImageView iv_badge = (ImageView) findViewById(R.id.iv_badge);
+               View view= itemViewList.get(index);
+                ImageView iv_badge = (ImageView) view.findViewById(R.id.iv_badge);
                 iv_badge.setVisibility(View.VISIBLE);
             }
 
         }else{
             if (null != itemViewList && index < itemViewList.size()-1) {
-                ImageView iv_badge = (ImageView) findViewById(R.id.iv_badge);
-                iv_badge.setVisibility(View.VISIBLE);
+                View view= itemViewList.get(index);
+                ImageView iv_badge = (ImageView) view.findViewById(R.id.iv_badge);
+                iv_badge.setVisibility(View.GONE);
             }
         }
 

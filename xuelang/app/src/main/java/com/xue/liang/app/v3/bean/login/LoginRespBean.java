@@ -20,6 +20,7 @@ public class LoginRespBean implements Parcelable {
     private String user_id;//user_id	String	是	用户id
     private int group_value;//group_value	int	是	用户分组值 0 村 1 乡/镇 2 区/县 3市 4省
     private int user_type;//user_type	int	是	用户类型  101普通用户   102 村镇管理员
+    private String group_name;
     private ServerInfoBean server_info;
 
 
@@ -91,6 +92,14 @@ public class LoginRespBean implements Parcelable {
     }
 
 
+    public String getGroup_name() {
+        return group_name;
+    }
+
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
+    }
+
     public LoginRespBean() {
     }
 
@@ -108,6 +117,7 @@ public class LoginRespBean implements Parcelable {
         dest.writeString(this.user_id);
         dest.writeInt(this.group_value);
         dest.writeInt(this.user_type);
+        dest.writeString(this.group_name);
         dest.writeParcelable(this.server_info, flags);
     }
 
@@ -119,6 +129,7 @@ public class LoginRespBean implements Parcelable {
         this.user_id = in.readString();
         this.group_value = in.readInt();
         this.user_type = in.readInt();
+        this.group_name = in.readString();
         this.server_info = in.readParcelable(ServerInfoBean.class.getClassLoader());
     }
 

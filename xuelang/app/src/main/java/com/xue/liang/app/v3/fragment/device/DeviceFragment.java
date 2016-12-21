@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -72,6 +73,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public static final String TAG = DeviceFragment.class.getSimpleName();
 
     public static final int CARMERA = 1;//拍照
+
+    public static final int VIDEO = 2;//录像
 
     public static final String Bundle_Data = "LoginData";
 
@@ -398,6 +401,37 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     }
 
 
+    private String videoFilePath;
+
+    @OnClick(R.id.bt_video)
+    public void openVideo(){
+        XPermissionUtils.requestPermissions(getActivity(), 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new XPermissionUtils.OnPermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Intent videoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory() + "/Video");
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                videoFilePath = Environment.getExternalStorageDirectory() + "/Video/" +
+                        "VideoImg" + String.valueOf(System.currentTimeMillis()) + ".mp4";
+                Uri mUri = Uri.fromFile(
+                        new File(videoFilePath));
+                videoIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mUri);
+                videoIntent.putExtra("return-data", true);
+                startActivityForResult(videoIntent, VIDEO);
+
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                showToast("相机权限被禁止");
+
+            }
+        });
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -414,9 +448,18 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             helpPresenter.updateFileAndAlarm(fileList, bean);
 
         }
-//        else if (requestCode == VIDEO) {
-//            setdataFromVideo(requestCode, resultCode, data);
-//        }
+       else if (requestCode == VIDEO&& resultCode == Activity.RESULT_OK) {
+            List<String> fileList = new ArrayList<>();
+            //Uri uri = data.getParcelableExtra(android.provider.MediaStore.EXTRA_OUTPUT);
+
+            fileList.add(videoFilePath);
+
+            AlarmForHelpReq bean = new AlarmForHelpReq();
+            bean.setAlarm_text("");
+            bean.setTermi_type("2");
+            bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+            helpPresenter.updateFileAndAlarm(fileList, bean);
+        }
     }
 
     @OnClick(R.id.bt_sos)

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.xue.liang.app.v3.activity.alarmprocess.AlarmProcessDeatialActivity">
+>
 
     <include
         android:id="@+id/title"

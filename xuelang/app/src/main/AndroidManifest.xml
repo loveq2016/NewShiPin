@@ -182,6 +182,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".v3.activity.alarmprocess.AlreadyProcessingAlarmDetialActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
         <activity android:name=".v3.activity.TestActivity"></activity>
     </application>
 

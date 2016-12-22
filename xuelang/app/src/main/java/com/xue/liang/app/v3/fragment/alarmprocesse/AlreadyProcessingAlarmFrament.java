@@ -8,6 +8,7 @@ import android.view.View;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.alarmprocess.AlarmProcessDeatialActivity;
+import com.xue.liang.app.v3.activity.alarmprocess.AlreadyProcessingAlarmDetialActivity;
 import com.xue.liang.app.v3.adapter.StayPendingAlarmAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.base.baseadapter.SectionedRecyclerViewAdapter;
@@ -106,7 +107,7 @@ public class AlreadyProcessingAlarmFrament extends BaseFragment implements PendA
                 String key = value.generateDistinguishId();
                 SharedDB.putBooleanValue(getContext(), key, true);
                 //readyGo(AlarmProcessDeatialActivity.class, bundle);
-                readyGoForResult(AlarmProcessDeatialActivity.class, 0, bundle);
+                readyGoForResult(AlreadyProcessingAlarmDetialActivity.class, 0, bundle);
 
             }
         });

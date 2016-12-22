@@ -26,6 +26,7 @@ public class AlarmProcessDeatailContract {
         void getUrlError(String info);
 
 
+
     }
 
     interface Presenter extends BasePresenter {

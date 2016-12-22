@@ -82,6 +82,8 @@ public class AlarmRespBean implements Parcelable {
 
         private CameraInfoBean camera_info;
         private String alarm_id;
+        private int alarm_state;
+        private String alarm_state_name;
         private int alarm_type;
         private String alarm_type_name;
         private String user_name;
@@ -134,6 +136,22 @@ public class AlarmRespBean implements Parcelable {
 
         public int getAlarm_type() {
             return alarm_type;
+        }
+
+        public int getAlarm_state() {
+            return alarm_state;
+        }
+
+        public void setAlarm_state(int alarm_state) {
+            this.alarm_state = alarm_state;
+        }
+
+        public String getAlarm_state_name() {
+            return alarm_state_name;
+        }
+
+        public void setAlarm_state_name(String alarm_state_name) {
+            this.alarm_state_name = alarm_state_name;
         }
 
         public void setAlarm_type(int alarm_type) {
@@ -273,6 +291,9 @@ public class AlarmRespBean implements Parcelable {
             };
         }
 
+        public ResponseBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -282,6 +303,8 @@ public class AlarmRespBean implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeParcelable(this.camera_info, flags);
             dest.writeString(this.alarm_id);
+            dest.writeInt(this.alarm_state);
+            dest.writeString(this.alarm_state_name);
             dest.writeInt(this.alarm_type);
             dest.writeString(this.alarm_type_name);
             dest.writeString(this.user_name);
@@ -295,12 +318,11 @@ public class AlarmRespBean implements Parcelable {
             dest.writeStringList(this.file_list);
         }
 
-        public ResponseBean() {
-        }
-
         protected ResponseBean(Parcel in) {
             this.camera_info = in.readParcelable(CameraInfoBean.class.getClassLoader());
             this.alarm_id = in.readString();
+            this.alarm_state = in.readInt();
+            this.alarm_state_name = in.readString();
             this.alarm_type = in.readInt();
             this.alarm_type_name = in.readString();
             this.user_name = in.readString();
@@ -314,7 +336,7 @@ public class AlarmRespBean implements Parcelable {
             this.file_list = in.createStringArrayList();
         }
 
-        public static final Parcelable.Creator<ResponseBean> CREATOR = new Parcelable.Creator<ResponseBean>() {
+        public static final Creator<ResponseBean> CREATOR = new Creator<ResponseBean>() {
             @Override
             public ResponseBean createFromParcel(Parcel source) {
                 return new ResponseBean(source);

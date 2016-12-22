@@ -23,6 +23,7 @@ import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
 import com.xue.liang.app.v3.utils.Constant;
+import com.xue.liang.app.v3.utils.DeviceUtil;
 
 
 import butterknife.BindView;
@@ -103,9 +104,12 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
     }
 
     private void getRtsp() {
+       String macAddress = DeviceUtil.getMacAddress(getApplicationContext());
         HandlerRtspReqBean handlerRtspReqBean = new HandlerRtspReqBean();
         handlerRtspReqBean.setMod("ipc");
         handlerRtspReqBean.setGuid(bean.getRtsp_id());
+        handlerRtspReqBean.setStb_type(Integer.valueOf(Constant.PHONE));
+        handlerRtspReqBean.setStb_id(macAddress);
 
         alarmProcessDeatailPresenter.getRtspUrl(handlerRtspReqBean);
 

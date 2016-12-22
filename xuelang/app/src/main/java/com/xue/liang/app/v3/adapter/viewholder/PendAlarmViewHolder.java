@@ -32,6 +32,8 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
     TextView tv_alarm_phone;
     @BindView(R.id.tv_alarm_address)
     TextView tv_alarm_address;
+    @BindView(R.id.tv_alarm_staus_name)
+    TextView tv_alarm_staus_name;
 
 
     private AlarmRespBean.ResponseBean mBean;
@@ -63,7 +65,7 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
         tv_alarm_time.setText("报警时间:" + bean.getAlarm_time());
         tv_alarm_phone.setText("联系电话:" + bean.getUser_tel());
         tv_alarm_address.setText("报警地址:" + bean.getUser_address());
-
+        tv_alarm_staus_name.setText("报警状态:"+bean.getAlarm_state_name());
 
     }
 
@@ -73,6 +75,7 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
         tv_alarm_time.setTextColor(color);
         tv_alarm_phone.setTextColor(color);
         tv_alarm_address.setTextColor(color);
+        tv_alarm_staus_name.setTextColor(color);
 
     }
 

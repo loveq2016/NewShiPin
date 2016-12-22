@@ -15,6 +15,7 @@ import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DeviceUtil;
+import com.xue.liang.app.v3.utils.IpAndPortUtils;
 import com.xue.liang.app.v3.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.v3.utils.SharedDB;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
@@ -53,6 +54,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     protected void initViews() {
+        readIpAndPortFromShareDb();
         getShareDbNumber();
         loginPresenter = new LoginPresenter(this);
     }
@@ -170,7 +172,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         readyGo(MainActivity.class, bundle);
     }
 
-    private void readIdFromShareDb() {
+    /**
+     * 从SP文件中读取IP和端口
+     */
+    private void readIpAndPortFromShareDb() {
+        IpAndPortUtils.setUpIpAndPort(getApplicationContext());
 
     }
 }

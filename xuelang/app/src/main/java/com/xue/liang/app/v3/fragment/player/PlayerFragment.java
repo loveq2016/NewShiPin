@@ -22,6 +22,7 @@ import com.temobi.vcp.protocal.McpClientProtocalData.IPlayerStateCallback;
 import com.temobi.vcp.protocal.TmPlayerStatus;
 import com.temobi.vcp.sdk.data.CommInfo;
 import com.xue.liang.app.R;
+import com.xue.liang.app.v3.activity.alarmprocess.AlarmProcessDeatialActivity;
 import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.device.DeviceFragment;
@@ -230,7 +231,7 @@ public class PlayerFragment extends Fragment {
             surfacev_player.setBackgroundColor(getResources().getColor(
                     android.R.color.black));
             play(event.getUrl());
-        }else if(event.getTag().equals(DeviceFragment.TAG)){
+        }else if(event.getTag().equals(AlarmProcessDeatialActivity.TAG)){
             surfacev_player.setBackgroundColor(getResources().getColor(
                     android.R.color.black));
             play(event.getUrl());

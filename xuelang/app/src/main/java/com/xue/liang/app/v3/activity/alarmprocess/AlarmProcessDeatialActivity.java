@@ -31,7 +31,7 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmProcessDeatailContract.View {
-    public final String TAG = AlarmProcessDeatialActivity.class.getSimpleName();
+    public static final String TAG = AlarmProcessDeatialActivity.class.getSimpleName();
 
 
     @BindView(R.id.tv_title)

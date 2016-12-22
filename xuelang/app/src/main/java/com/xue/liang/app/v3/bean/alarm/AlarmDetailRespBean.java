@@ -17,17 +17,17 @@ public class AlarmDetailRespBean {
      * ret_string :
      */
 
-    private TestBean.CallInfoBean call_info;
+    private CallInfoBean call_info;
     private String alarm_text;// string 是 备注
     private int ret_code;//int 是 响应码:0 请求成功 -1 请求失败
     private String ret_string;//string 是 错误返回信息，只在出错时返回
-    private List<TestBean.ReceivBean> receiv_list;
+    private List<ReceivBean> receiv_list;
 
-    public TestBean.CallInfoBean getCall_info() {
+    public CallInfoBean getCall_info() {
         return call_info;
     }
 
-    public void setCall_info(TestBean.CallInfoBean call_info) {
+    public void setCall_info(CallInfoBean call_info) {
         this.call_info = call_info;
     }
 
@@ -55,11 +55,11 @@ public class AlarmDetailRespBean {
         this.ret_string = ret_string;
     }
 
-    public List<TestBean.ReceivBean> getReceiv_list() {
+    public List<ReceivBean> getReceiv_list() {
         return receiv_list;
     }
 
-    public void setReceiv_list(List<TestBean.ReceivBean> receiv_list) {
+    public void setReceiv_list(List<ReceivBean> receiv_list) {
         this.receiv_list = receiv_list;
     }
 

@@ -12,6 +12,7 @@ import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.constant.BundleConstant;
+import com.xue.liang.app.v3.constant.UserType;
 import com.xue.liang.app.v3.event.JpushEvent;
 import com.xue.liang.app.v3.event.RegionCamraEvent;
 import com.xue.liang.app.v3.event.UrlEvent;
@@ -103,8 +104,17 @@ public class MainActivity extends BaseActivity {
         bottom_weight_bar.setOnBottomItemOnListener(new BottomBar.OnBottomItemOnListener() {
             @Override
             public void onItemSelected(int i, View view) {
-                if(i==4){
-                    bottom_weight_bar.showHideBadgeView(4,false);
+
+                if (mLoginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL && i == 4) {
+                    showToast("您没有权限访问该功能");
+                    return;
+
+                } else if (mLoginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL && i == 5) {
+                    showToast("您没有权限访问该功能");
+                    return;
+                }
+                if (i == 4) {
+                    bottom_weight_bar.showHideBadgeView(4, false);
                 }
                 setFragmentIndicator(i);
             }
@@ -168,7 +178,6 @@ public class MainActivity extends BaseActivity {
                 fragment = AlarmProcessFragment.newInstance(mLoginRespBean);
 
 
-
             } else if (which == 5) {
                 fragment = NewInfoFragment.newInstance(mLoginRespBean);
 
@@ -178,7 +187,6 @@ public class MainActivity extends BaseActivity {
         } else {
 
         }
-
 
 
         fragmentTransaction.hide(mCurrentFragement).show(fragment);
@@ -198,18 +206,18 @@ public class MainActivity extends BaseActivity {
     @Subscribe
     public void onEventMainThread(JpushEvent event) {
 
-        bottom_weight_bar.showHideBadgeView(4,true);
+        bottom_weight_bar.showHideBadgeView(4, true);
     }
 
-    private void setupAliasId( LoginRespBean loginRespBean){
+    private void setupAliasId(LoginRespBean loginRespBean) {
         JPushInterface.setAlias(getApplicationContext(), loginRespBean.getAlias_id(), new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
-               if(i==0){
-                   showToast("设置极光别名成功");
-               }else{
-                   showToast("设置极光别名成功="+s);
-               }
+                if (i == 0) {
+                    showToast("设置极光别名成功");
+                } else {
+                    showToast("设置极光别名成功=" + s);
+                }
             }
         });
     }

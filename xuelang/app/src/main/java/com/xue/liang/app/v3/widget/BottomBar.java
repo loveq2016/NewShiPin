@@ -28,6 +28,8 @@ public class BottomBar extends LinearLayout {
 
     private OnBottomItemOnListener onBottomItemOnListener;
 
+    private List<Integer> unIndexList;
+
 
     public void setOnBottomItemOnListener(OnBottomItemOnListener onBottomItemOnListener) {
         this.onBottomItemOnListener = onBottomItemOnListener;
@@ -35,27 +37,27 @@ public class BottomBar extends LinearLayout {
 
     public BottomBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        unIndexList = new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
     }
 
-    public void showHideBadgeView(int index,boolean ishow) {
-        if(ishow){
-            if (null != itemViewList && index < itemViewList.size()-1) {
-               View view= itemViewList.get(index);
+    public void showHideBadgeView(int index, boolean ishow) {
+        if (ishow) {
+            if (null != itemViewList && index < itemViewList.size() - 1) {
+                View view = itemViewList.get(index);
                 ImageView iv_badge = (ImageView) view.findViewById(R.id.iv_badge);
                 iv_badge.setVisibility(View.VISIBLE);
             }
 
-        }else{
-            if (null != itemViewList && index < itemViewList.size()-1) {
-                View view= itemViewList.get(index);
+        } else {
+            if (null != itemViewList && index < itemViewList.size() - 1) {
+                View view = itemViewList.get(index);
                 ImageView iv_badge = (ImageView) view.findViewById(R.id.iv_badge);
                 iv_badge.setVisibility(View.GONE);
             }
         }
 
     }
-
 
 
     public void setMbottomBarItemList(List<BottomBarItem> bottomBarItemList) {
@@ -169,6 +171,25 @@ public class BottomBar extends LinearLayout {
     public interface OnBottomItemOnListener {
 
         void onItemSelected(int i, View view);
+    }
+
+    public void setUnUseItem(int postion) {
+
+        for (int i = 0; i < itemViewList.size(); i++) {
+            if (postion == i) {
+                setSelectedView(itemViewList.get(i), true);
+            }
+        }
+
+
+
+
+    }
+    private void setEnableView(View view, boolean isselected) {
+        ImageView iv_item = (ImageView) view.findViewById(R.id.iv_item);
+        TextView iv_text = (TextView) view.findViewById(R.id.iv_text);
+        iv_item.setSelected(isselected);
+        iv_text.setSelected(isselected);
     }
 
 }

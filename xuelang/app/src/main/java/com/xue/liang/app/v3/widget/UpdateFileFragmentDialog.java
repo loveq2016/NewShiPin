@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
+import com.xue.liang.app.v3.fragment.help.HelpPictureFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +57,7 @@ public class UpdateFileFragmentDialog extends DialogFragment {
     }
 
     private void initFragment() {
-        Fragment fragment = Fragment.instantiate(getContext(), HelpFragment.class.getName());
+        Fragment fragment = Fragment.instantiate(getContext(), HelpPictureFragment.class.getName());
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_containers, fragment).commit();
     }
 }

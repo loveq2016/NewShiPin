@@ -20,6 +20,7 @@ import com.xue.liang.app.v3.fragment.alarmprocesse.AlarmProcessFragment;
 import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
+import com.xue.liang.app.v3.fragment.help.HelpPictureFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.SharedDB;

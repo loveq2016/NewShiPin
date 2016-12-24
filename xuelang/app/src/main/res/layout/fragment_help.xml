@@ -13,93 +13,18 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:id="@+id/rl_content_pic"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/ll_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                   android:background="@mipmap/icon_dot" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="求助内容" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/et_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="top"
-                android:layout_below="@+id/ll_info"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp" />
-        </RelativeLayout>
-
+            android:layout_weight="1"
+            android:layout_height="match_parent"></RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rl_content_video"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_height="match_parent"></RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_take"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@mipmap/icon_dot" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="添加图片最多6张" />
-            </LinearLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ll_take"
-                android:orientation="horizontal">
-
-            </android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="74dp">
 
-        <Button
-            android:id="@+id/bt_now_alarm"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/bt_login_selector"
-            android:layout_centerInParent="true"
-            android:text="立即报警" />
-    </RelativeLayout>
 
 </LinearLayout>

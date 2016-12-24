@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_selected="false" android:drawable="@mipmap/icon_alarm_use"></item>
+    <item android:drawable="@mipmap/icon_alarm_use_unenable" android:state_enabled="false"></item>
+    <item android:drawable="@mipmap/icon_alarm_use" android:state_enabled="true" android:state_selected="false"></item>
 
-    <item android:state_selected="true" android:drawable="@mipmap/icon_alarm_use_seclected"></item>
+    <item android:drawable="@mipmap/icon_alarm_use_seclected" android:state_enabled="true" android:state_selected="true"></item>
 </selector>

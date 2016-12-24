@@ -102,18 +102,26 @@ public class MainActivity extends BaseActivity {
 
         bottom_weight_bar.setMbottomBarItemList(bottomBarItemList);
 
+
+        if (mLoginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL) {
+
+            bottom_weight_bar.setUnUseItem(4, false);
+            bottom_weight_bar.setUnUseItem(5, false);
+
+        } else if (mLoginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL) {
+
+        }
+
+
         bottom_weight_bar.setOnBottomItemOnListener(new BottomBar.OnBottomItemOnListener() {
             @Override
-            public void onItemSelected(int i, View view) {
+            public void onItemSelected(int i, View view, boolean isenable) {
 
-                if (mLoginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL && i == 4) {
-                    showToast("您没有权限访问该功能");
-                    return;
-
-                } else if (mLoginRespBean.getUser_type() == UserType.USER_TYPE_NOMAL && i == 5) {
-                    showToast("您没有权限访问该功能");
+                if (!isenable) {
+                    showToast("没有权限");
                     return;
                 }
+
                 if (i == 4) {
                     bottom_weight_bar.showHideBadgeView(4, false);
                 }
@@ -215,9 +223,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
                 if (i == 0) {
-                    showToast("设置极光别名成功");
+                    // showToast("设置极光别名成功");
                 } else {
-                    showToast("设置极光别名成功=" + s);
+                    // showToast("设置极光别名成功=" + s);
                 }
             }
         });

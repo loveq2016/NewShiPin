@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -34,7 +35,8 @@ public class MainApplication extends MultiDexApplication {
         context = getApplicationContext();
         instance = this;
         initOkUtils();
-        CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
+        Bugly.init(getApplicationContext(), "e1b4f29d14", false);
+       // CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
         initJpushSdk();
 
     }

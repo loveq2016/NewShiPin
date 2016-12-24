@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_selected="false" android:drawable="@mipmap/icon_ring"></item>
 
-    <item android:state_selected="true" android:drawable="@mipmap/icon_ring_seclected"></item>
+    <item android:drawable="@mipmap/icon_ring_unenable" android:state_enabled="false"></item>
+    <item android:drawable="@mipmap/icon_ring" android:state_enabled="true" android:state_selected="false"></item>
+
+    <item android:drawable="@mipmap/icon_ring_seclected" android:state_enabled="true" android:state_selected="true"></item>
 </selector>

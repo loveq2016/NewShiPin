@@ -44,6 +44,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -134,6 +135,11 @@
                 <category android:name="com.xue.liang.app" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
         <!-- Required SDK核心功能 -->
         <service
             android:name="cn.jpush.android.service.DownloadService"

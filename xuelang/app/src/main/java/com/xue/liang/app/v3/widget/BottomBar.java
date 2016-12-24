@@ -152,16 +152,25 @@ public class BottomBar extends LinearLayout {
         @Override
         public void onClick(View view) {
 
-            for (int i = 0; i < itemViewList.size(); i++) {
-                if (postion == i) {
-                    setSelectedView(itemViewList.get(i), true);
-                } else {
-                    setSelectedView(itemViewList.get(i), false);
+            boolean isisEnable = isEnableView(itemViewList.get(postion));
+
+            if (isisEnable) {
+
+
+                for (int i = 0; i < itemViewList.size(); i++) {
+                    if (postion == i) {
+                        setSelectedView(itemViewList.get(i), true);
+                    } else {
+                        setSelectedView(itemViewList.get(i), false);
+                    }
                 }
+            } else {
+
             }
 
+
             if (onBottomItemOnListener != null) {
-                onBottomItemOnListener.onItemSelected(postion, view);
+                onBottomItemOnListener.onItemSelected(postion, view, isisEnable);
             }
 
 
@@ -170,26 +179,28 @@ public class BottomBar extends LinearLayout {
 
     public interface OnBottomItemOnListener {
 
-        void onItemSelected(int i, View view);
+        void onItemSelected(int i, View view, boolean isEnable);
     }
 
-    public void setUnUseItem(int postion) {
+    public void setUnUseItem(int postion, boolean isEnabled) {
 
         for (int i = 0; i < itemViewList.size(); i++) {
             if (postion == i) {
-                setSelectedView(itemViewList.get(i), true);
+                setEnableView(itemViewList.get(i), isEnabled);
             }
         }
-
-
-
-
     }
-    private void setEnableView(View view, boolean isselected) {
+
+    private void setEnableView(View view, boolean isEnabled) {
         ImageView iv_item = (ImageView) view.findViewById(R.id.iv_item);
         TextView iv_text = (TextView) view.findViewById(R.id.iv_text);
-        iv_item.setSelected(isselected);
-        iv_text.setSelected(isselected);
+        iv_item.setEnabled(isEnabled);
+        iv_text.setSelected(isEnabled);
+    }
+
+    private boolean isEnableView(View view) {
+        ImageView iv_item = (ImageView) view.findViewById(R.id.iv_item);
+        return iv_item.isEnabled();
     }
 
 }

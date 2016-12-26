@@ -23,8 +23,8 @@ android {
         minSdkVersion 14
         multiDexEnabled true
         targetSdkVersion 24
-        versionCode 11
-        versionName "3.1.1"
+        versionCode 12
+        versionName "3.1.2"
 
         ndk {
             //选择要添加的对应cpu类型的.so库。

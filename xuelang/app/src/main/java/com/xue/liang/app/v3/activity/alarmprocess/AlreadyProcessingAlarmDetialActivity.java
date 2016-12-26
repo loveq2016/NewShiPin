@@ -61,7 +61,7 @@ public class AlreadyProcessingAlarmDetialActivity extends BaseActivity implement
     }
 
     @Override
-    protected void initViews() {
+    protected void initViews(Bundle savedInstanceState) {
         tv_title.setText(getResources().getString(R.string.already_alarm_process_deatial));
 
         setupAlarm_people_recyclerView();

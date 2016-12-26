@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.amap.api.location.AMapLocation;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.RegionAdapter;
 import com.xue.liang.app.v3.base.BaseFragment;
@@ -43,6 +44,7 @@ import com.xue.liang.app.v3.event.UrlEvent;
 import com.xue.liang.app.v3.fragment.help.HelpContract;
 import com.xue.liang.app.v3.fragment.help.HelpPresenter;
 import com.xue.liang.app.v3.fragment.player.PlayerFragment;
+import com.xue.liang.app.v3.location.AMapLocationHelper;
 import com.xue.liang.app.v3.utils.AlarmTypeConstant;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DateUtil;
@@ -67,7 +69,7 @@ import de.greenrobot.event.Subscribe;
 /**
  * Created by Administrator on 2016/11/2.
  */
-public class DeviceFragment extends BaseFragment implements DeviceContract.View, HelpContract.View {
+public class DeviceFragment extends BaseFragment implements DeviceContract.View, HelpContract.View, AMapLocationHelper.OnLocationGetListener {
 
 
     public static final String TAG = DeviceFragment.class.getSimpleName();
@@ -106,6 +108,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     private String mac = "";
 
     private RegionAreasEvent regionAreasEvent;
+
+    private AMapLocationHelper aMapLocationHelper;
 
     @Override
     protected void onFirstUserVisible() {
@@ -157,6 +161,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     @Override
     protected void initViews() {
+
+        setUpLocation();
         EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
         if (null != bundle) {
@@ -179,6 +185,14 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         little_title_tv.setText(mloginRespBean.getGroup_name());
 
 
+    }
+
+
+    private void setUpLocation() {
+        int time = 60 * 1000;
+        aMapLocationHelper = new AMapLocationHelper(getContext());
+        aMapLocationHelper.setOnLocationGetListener(this);
+        aMapLocationHelper.startLocation(time);
     }
 
     private void onRefreshData(String region_id) {
@@ -322,6 +336,10 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             postAlermReq.setStb_type(Integer.valueOf(Constant.PHONE));
             postAlermReq.setUpdate_time(DateUtil.getCurrentTime());
             postAlermReq.setUser_id(mloginRespBean.getUser_id());
+            if (aMapLocationHelper.getLastKnownLocation() != null) {
+                postAlermReq.setLatitude(aMapLocationHelper.getLastKnownLocation().getLatitude());
+                postAlermReq.setLongitude(aMapLocationHelper.getLastKnownLocation().getLongitude());
+            }
             devicePresenter.postalarmType(postAlermReq);
         } else {
             showToast("请选择一个摄像头");
@@ -404,7 +422,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     private String videoFilePath;
 
     @OnClick(R.id.bt_video)
-    public void openVideo(){
+    public void openVideo() {
         XPermissionUtils.requestPermissions(getActivity(), 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new XPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -447,8 +465,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
             helpPresenter.updateFileAndAlarm(fileList, bean);
 
-        }
-       else if (requestCode == VIDEO&& resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == VIDEO && resultCode == Activity.RESULT_OK) {
             List<String> fileList = new ArrayList<>();
             //Uri uri = data.getParcelableExtra(android.provider.MediaStore.EXTRA_OUTPUT);
 
@@ -463,17 +480,10 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     }
 
     @OnClick(R.id.bt_sos)
-    public void sendAlarm() {
+    public void sendSosAlarm() {
 
-        UpdateFileFragmentDialog updateFileFragmentDialog=new UpdateFileFragmentDialog();
-        updateFileFragmentDialog.show(getFragmentManager(),UpdateFileFragmentDialog.class.getSimpleName());
-
-
-//        AlarmForHelpReq bean = new AlarmForHelpReq();
-//        bean.setAlarm_text("");
-//        bean.setTermi_type("2");
-//        bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
-//        helpPresenter.doAlarmAfterUpdataFile(bean);
+        UpdateFileFragmentDialog updateFileFragmentDialog = new UpdateFileFragmentDialog();
+        updateFileFragmentDialog.show(getFragmentManager(), UpdateFileFragmentDialog.class.getSimpleName());
     }
 
     @OnClick(R.id.bt_setting)
@@ -539,6 +549,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        aMapLocationHelper.destroyLocation();
     }
 
     protected void showUpdateProgressDialog() {
@@ -584,7 +595,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     boolean ischose = true;
 
     private void showAlermDialog(final int type) {
-        if (null==deviceInfo) {
+        if (null == deviceInfo) {
             showToast("请选择一个摄像头");
             return;
         }
@@ -717,5 +728,15 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onLocationGetSuccess(AMapLocation loc) {
+        Log.e("测试代码", "测试代码onLocationGetSuccess" + "Latitude=" + loc.getLatitude() + "Longitude=" + loc.getLongitude());
+    }
+
+    @Override
+    public void onLocationGetFail(AMapLocation loc) {
+        Log.e("测试代码", "测试代码onLocationGetFail" + "Latitude=");
     }
 }

@@ -35,7 +35,7 @@ public class TestActivity extends BaseActivity implements DeviceContract.View {
     }
 
     @Override
-    protected void initViews() {
+    protected void initViews(Bundle savedInstanceState) {
         devicePresenter = new DevicePresenter(this);
         setUpRecyclerView();
     }

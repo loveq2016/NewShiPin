@@ -38,7 +38,7 @@ public class NewInfoDetailActivity extends BaseActivity implements NewInfoDetail
     }
 
     @Override
-    protected void initViews() {
+    protected void initViews(Bundle savedInstanceState) {
         tv_title.setText(getResources().getString(R.string.newinfodetail));
         newInfoDetailPresenter = new NewInfoDetailPresenter(this);
         NoticeDetailReqBean noticeDetailReqBean = new NoticeDetailReqBean();

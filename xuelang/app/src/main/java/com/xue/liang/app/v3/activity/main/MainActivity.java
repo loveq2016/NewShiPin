@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.amap.api.location.AMapLocation;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
@@ -22,6 +23,7 @@ import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.help.HelpPictureFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
+import com.xue.liang.app.v3.location.AMapLocationHelper;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.SharedDB;
 import com.xue.liang.app.v3.widget.BottomBar;
@@ -39,12 +41,12 @@ import de.greenrobot.event.Subscribe;
 /**
  * Created by Administrator on 2016/11/1.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AMapLocationHelper.OnLocationGetListener {
 
 
     @BindView(R.id.bottom_weight_bar)
     BottomBar bottom_weight_bar;
-
+    private AMapLocationHelper aMapLocationHelper;
 
     private int nIndex = 0;
 
@@ -79,8 +81,9 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void initViews() {
+    protected void initViews(Bundle savedInstanceState) {
 
+        setUpLocation();
 
         setupAliasId(mLoginRespBean);
 
@@ -132,11 +135,20 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * 初始化定位信息
+     */
+    private void setUpLocation() {
+        aMapLocationHelper = new AMapLocationHelper(getApplicationContext());
+        aMapLocationHelper.setOnLocationGetListener(this);
+        aMapLocationHelper.startSingleLocate();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        aMapLocationHelper.destroyLocation();
     }
 
     /**
@@ -229,5 +241,16 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onLocationGetSuccess(AMapLocation loc) {
+
+    }
+
+    @Override
+    public void onLocationGetFail(AMapLocation loc) {
+
+
     }
 }

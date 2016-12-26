@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.maps.MapView;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.base.BaseActivity;
+import com.xue.liang.app.v3.base.BaseMapViewActivity;
 import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
 import com.xue.liang.app.v3.bean.alarmhandle.AlarmHandleReqBean;
 import com.xue.liang.app.v3.bean.alarmhandle.AlarmHandleRespBean;
@@ -30,7 +32,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmProcessDeatailContract.View {
+public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements AlarmProcessDeatailContract.View {
     public static final String TAG = AlarmProcessDeatialActivity.class.getSimpleName();
 
 
@@ -41,8 +43,8 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
     FrameLayout playerFrament;
 
 
-    @BindView(R.id.webview)
-    WebView webview;
+    @BindView(R.id.mapview)
+    MapView mapview;
 
     @BindView(R.id.tv_alarm_name)
     TextView tv_alarm_name;
@@ -72,15 +74,31 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
     }
 
     @Override
-    protected void initViews() {
+    protected void initViews(Bundle savedInstanceState) {
         tv_title.setText(getResources().getString(R.string.alarm_process_deatial));
         setViewByData();
         String url = UriHelper.IP + ":" + UriHelper.PORT + bean.getMap_url();
-        initWebView(url);
+        initMapView(savedInstanceState);
+        addMarkersToMap(39.761, 116.434);
         initPlayerFragment();
         alarmProcessDeatailPresenter = new AlarmProcessDeatailPresenter(this);
         getRtsp();
+
     }
+
+//    private void initWebView(String url) {
+//        WebSettings webSettings = webview.getSettings();
+//        //设置WebView属性，能够执行Javascript脚本
+//        webSettings.setJavaScriptEnabled(true);
+//        //设置可以访问文件
+//        webSettings.setAllowFileAccess(true);
+//        //设置支持缩放
+//        webSettings.setBuiltInZoomControls(true);
+//        //加载需要显示的网页
+//        webview.loadUrl(url);
+//        //设置Web视图
+//        webview.setWebViewClient(new AlarmWebViewClient());
+//    }
 
     /**
      * 上报报警  	0 完成  1 上报
@@ -142,19 +160,7 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
         finish();
     }
 
-    private void initWebView(String url) {
-        WebSettings webSettings = webview.getSettings();
-        //设置WebView属性，能够执行Javascript脚本
-        webSettings.setJavaScriptEnabled(true);
-        //设置可以访问文件
-        webSettings.setAllowFileAccess(true);
-        //设置支持缩放
-        webSettings.setBuiltInZoomControls(true);
-        //加载需要显示的网页
-        webview.loadUrl(url);
-        //设置Web视图
-        webview.setWebViewClient(new AlarmWebViewClient());
-    }
+
 
 
     private void initPlayerFragment() {
@@ -212,6 +218,11 @@ public class AlarmProcessDeatialActivity extends BaseActivity implements AlarmPr
         }
         Toast.makeText(getApplicationContext(), "处理报警失败" + info, Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public MapView getMapView() {
+        return mapview;
     }
 
     //Web视图

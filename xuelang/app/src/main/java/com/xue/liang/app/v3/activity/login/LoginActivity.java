@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     @Override
-    protected void initViews() {
+    protected void initViews(Bundle savedInstanceState) {
         readIpAndPortFromShareDb();
         getShareDbNumber();
         loginPresenter = new LoginPresenter(this);

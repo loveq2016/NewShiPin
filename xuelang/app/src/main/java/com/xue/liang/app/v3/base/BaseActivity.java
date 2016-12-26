@@ -34,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             throw new IllegalArgumentException("You must return a right contentView layout resource Id");
         }
         ButterKnife.bind(this);
-        initViews();
+        initViews(savedInstanceState);
     }
 
     /**
@@ -55,7 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * init all views and add events
      */
-    protected abstract void initViews();
+    protected abstract void initViews(Bundle savedInstanceState);
 
 
     /**

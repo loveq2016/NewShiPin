@@ -55,7 +55,7 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
     @Override
     protected void onFirstUserVisible() {
         recyclerView.refresh();
-        reshData();
+        //reshData();
     }
 
     @Override

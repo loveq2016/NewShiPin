@@ -2,6 +2,7 @@ package com.xue.liang.app.v3.activity.alarmprocess;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -56,6 +57,8 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     TextView tv_alarm_phone;
     @BindView(R.id.tv_alarm_address)
     TextView tv_alarm_address;
+    @BindView(R.id.tv_urlinfo)
+    TextView tv_urlinfo;
 
     private AlarmRespBean.ResponseBean bean;
 
@@ -79,7 +82,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
         setViewByData();
         String url = UriHelper.IP + ":" + UriHelper.PORT + bean.getMap_url();
         initMapView(savedInstanceState);
-        addMarkersToMap(39.761, 116.434);
+        addMarkersToMap(bean.getUser_latitude(), bean.getUser_longitude());
         initPlayerFragment();
         alarmProcessDeatailPresenter = new AlarmProcessDeatailPresenter(this);
         getRtsp();
@@ -122,7 +125,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     }
 
     private void getRtsp() {
-       String macAddress = DeviceUtil.getMacAddress(getApplicationContext());
+        String macAddress = DeviceUtil.getMacAddress(getApplicationContext());
         HandlerRtspReqBean handlerRtspReqBean = new HandlerRtspReqBean();
         handlerRtspReqBean.setMod("ipc");
         handlerRtspReqBean.setGuid(bean.getRtsp_id());
@@ -161,8 +164,6 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     }
 
 
-
-
     private void initPlayerFragment() {
         PlayerFragment playerFragment = PlayerFragment.getInstance(TAG);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -185,17 +186,22 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     @Override
     public void getUrlSuccess(HandlerRtspRespBean bean) {
         showToast("获取播放地址成功");
+        tv_urlinfo.setVisibility(View.GONE);
         EventBus.getDefault().post(new UrlEvent(TAG, bean.getUrl()));
     }
 
     @Override
     public void getUrlFail(HandlerRtspRespBean bean) {
         showToast("获取播放地址失败");
+        tv_urlinfo.setText("获取播放地址失败");
+        tv_urlinfo.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void getUrlError(String info) {
         showToast(info);
+        tv_urlinfo.setText(info);
+        tv_urlinfo.setVisibility(View.VISIBLE);
     }
 
     @Override

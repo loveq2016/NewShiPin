@@ -94,6 +94,9 @@ public class AlarmRespBean implements Parcelable {
         private String dev_name;
         private String rtsp_id;
         private String map_url;
+        double user_longitude;
+        double user_latitude;
+        int    map_scale;
         private List<String> file_list;
 
         public String generateDistinguishId() {
@@ -116,6 +119,30 @@ public class AlarmRespBean implements Parcelable {
                     ", rtsp_id='" + rtsp_id + '\'' +
                     ", map_url='" + map_url + '\'' +
                     '}';
+        }
+
+        public double getUser_longitude() {
+            return user_longitude;
+        }
+
+        public void setUser_longitude(double user_longitude) {
+            this.user_longitude = user_longitude;
+        }
+
+        public double getUser_latitude() {
+            return user_latitude;
+        }
+
+        public void setUser_latitude(double user_latitude) {
+            this.user_latitude = user_latitude;
+        }
+
+        public int getMap_scale() {
+            return map_scale;
+        }
+
+        public void setMap_scale(int map_scale) {
+            this.map_scale = map_scale;
         }
 
         public CameraInfoBean getCamera_info() {
@@ -315,6 +342,9 @@ public class AlarmRespBean implements Parcelable {
             dest.writeString(this.dev_name);
             dest.writeString(this.rtsp_id);
             dest.writeString(this.map_url);
+            dest.writeDouble(this.user_longitude);
+            dest.writeDouble(this.user_latitude);
+            dest.writeInt(this.map_scale);
             dest.writeStringList(this.file_list);
         }
 
@@ -333,6 +363,9 @@ public class AlarmRespBean implements Parcelable {
             this.dev_name = in.readString();
             this.rtsp_id = in.readString();
             this.map_url = in.readString();
+            this.user_longitude = in.readDouble();
+            this.user_latitude = in.readDouble();
+            this.map_scale = in.readInt();
             this.file_list = in.createStringArrayList();
         }
 

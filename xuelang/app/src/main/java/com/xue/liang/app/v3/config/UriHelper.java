@@ -44,7 +44,7 @@ public class UriHelper {
     public static String getUpdateFile() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getStartUrl());
-        stringBuilder.append("api/mobileservice/uploadfiles");
+        stringBuilder.append("api/mobileservice/uploadFiles");
         return stringBuilder.toString();
     }
 

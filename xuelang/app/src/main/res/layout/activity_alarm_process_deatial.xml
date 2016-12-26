@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
->
+    >
 
     <include
         android:id="@+id/title"
@@ -21,12 +21,26 @@
         android:layout_below="@+id/title">
 
 
-        <FrameLayout
-            android:id="@+id/playerFrament"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
-            android:layout_weight="1"></FrameLayout>
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_urlinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_centerInParent="true" />
+
+            <FrameLayout
+                android:id="@+id/playerFrament"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+
+        </RelativeLayout>
 
 
         <com.amap.api.maps.MapView
@@ -111,28 +125,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/tv_alarm_address">
+                android:layout_below="@+id/tv_alarm_address"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/bt_alarm_progress"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginLeft="4dp"
                     android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bt_login_selector"
                     android:text="报警处理"
                     android:textColor="@android:color/white" />
+
                 <Button
                     android:id="@+id/bt_alarm_update"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="24dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginLeft="4dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bt_login_selector"
                     android:text="报警上报"
                     android:textColor="@android:color/white" />

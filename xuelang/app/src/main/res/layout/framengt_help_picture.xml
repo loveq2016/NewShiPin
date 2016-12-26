@@ -34,7 +34,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_take"
@@ -50,7 +50,9 @@
         android:layout_height="74dp">
         <Button
             android:id="@+id/bt_now_alarm"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:layout_height="40dp"
             android:textColor="@android:color/white"
             android:background="@drawable/bt_login_selector"

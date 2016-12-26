@@ -65,12 +65,12 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraViewHolder> implem
         if (null != data && data.size() > 0) {
             for (int i = 0; i < data.size(); i++) {
                 if (index == i) {
-                    data.get(index).setIschoose(true);
+                    data.get(i).setIschoose(true);
                 } else {
-                    data.get(index).setIschoose(false);
+                    data.get(i).setIschoose(false);
                 }
             }
-            notifyDataSetChanged();
+            reshData(data);
         }
     }
 

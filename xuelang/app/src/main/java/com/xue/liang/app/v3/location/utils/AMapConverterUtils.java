@@ -15,13 +15,13 @@ public class AMapConverterUtils {
      * 坐标转换  如果
      *
      * @param context
-     * @param var1
-     * @param var3
+     * @param latitude
+     * @param longitude
      * @return 返回null那么转换失败  不为null则成功
      */
-    public static DPoint convert(Context context, double var1, double var3) {
+    public static DPoint convert(Context context, double latitude, double longitude) {
         try {
-            DPoint examplePoint = new DPoint(39.911127, 116.433608);
+            DPoint examplePoint = new DPoint(latitude, longitude);
             //初始化坐标转换类
             CoordinateConverter converter = new CoordinateConverter(
                     context);

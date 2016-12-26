@@ -2,6 +2,7 @@ package com.xue.liang.app.v3.base;
 
 import android.os.Bundle;
 
+import com.amap.api.location.DPoint;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -10,6 +11,7 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
+import com.xue.liang.app.v3.location.utils.AMapConverterUtils;
 
 /**
  * Created by jikun on 2016/12/26.
@@ -74,17 +76,24 @@ public abstract class BaseMapViewActivity extends BaseActivity {
      * 在地图上添加marker
      */
     protected void addMarkersToMap(double latitude, double longitude) {
-        LatLng latlng = new LatLng(latitude, longitude);
+
+        DPoint curentDPoint = AMapConverterUtils.convert(getApplicationContext(), latitude, longitude);
+        if (null == curentDPoint) {
+            return;
+        }
+
+        LatLng latlng = new LatLng(curentDPoint.getLatitude(), curentDPoint.getLongitude());
 
         changeCamera(
                 CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                        latlng, 18, 30, 30)));
+                        latlng, 8, 30, 30)));
         markerOption = new MarkerOptions().icon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .position(latlng)
                 .draggable(true);
         aMap.addMarker(markerOption);
     }
+
     /**
      * 根据动画按钮状态，调用函数animateCamera或moveCamera来改变可视区域
      */

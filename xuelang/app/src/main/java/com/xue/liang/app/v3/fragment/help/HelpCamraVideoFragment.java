@@ -180,13 +180,13 @@ public class HelpCamraVideoFragment extends BaseFragment implements HelpContract
     @Override
     public void onUpdateFileFail(String errorinfo) {
         dimissUpdateProgressDialog();
-        Toast.makeText(getActivity(), "上传图片失败" + errorinfo, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "上传文件失败" + errorinfo, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpdateFileSuccess(List<String> fileList) {
         dimissUpdateProgressDialog();
-        Toast.makeText(getActivity(), "上传图片成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "上传文件成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override

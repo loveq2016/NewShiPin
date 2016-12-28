@@ -51,6 +51,7 @@ public class HelpPresenter implements HelpContract.Presenter {
             File file = new File(path);
             String filename = file.getName();
             postFormBuilder.addFile(FORM_HEADER_NAME, filename, file);
+            postFormBuilder.addHeader("Content-Type","application/octet-stream");
         }
         postFormBuilder.url(UriHelper.getUpdateFile());
 

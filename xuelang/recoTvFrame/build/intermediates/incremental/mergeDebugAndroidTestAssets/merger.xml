@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="debug"><source path="G:\github\xueliangv2meili\NewShiPin\xuelang\recoTvFrame\build\intermediates\bundles\debug\assets"/></dataSet><dataSet config="main"><source path="G:\github\xueliangv2meili\NewShiPin\xuelang\recoTvFrame\src\androidTest\assets"/><source path="G:\github\xueliangv2meili\NewShiPin\xuelang\recoTvFrame\build\generated\assets\shaders\androidTest\debug"/></dataSet></merger>

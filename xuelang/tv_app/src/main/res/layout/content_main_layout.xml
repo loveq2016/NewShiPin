@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<reco.frame.tv.view.TvRelativeLayoutAsGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tv="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="true"
+    android:clipToPadding="false"
+    android:id="@+id/layout"
+    android:gravity="center"
+    android:background="@mipmap/background"
+    tv:animationType="TRANSLATE"
+    tv:durationTranslate="11"
+    tv:boarderInt="2"
+    tv:cursorRes="@drawable/cursor_rectangle_boarder_orange">
+
+
+
+    <Button
+        android:id="@+id/pinganjiayuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/fsb_gabage"
+        android:background="@mipmap/pinganjiayuan" />
+    <Button
+        android:id="@+id/yangguansifa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+         android:layout_below="@id/pinganjiayuan"
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/yangguangsifa" />
+
+    <Button
+        android:id="@+id/yangguangduanwu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+
+
+        android:layout_toRightOf="@id/pinganjiayuan"
+
+        android:background="@mipmap/yangguangdangwu" />
+    <Button
+        android:id="@+id/mingshengfuwu"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+
+
+        android:layout_toRightOf="@id/yangguangduanwu"
+
+        android:background="@mipmap/mingshengfuwu" />
+    <Button
+        android:id="@+id/jiankong"
+        android:layout_below="@id/mingshengfuwu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@id/yangguangduanwu"
+
+
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/xueliangjiankong" />
+
+    <Button
+        android:id="@+id/dianshijiemu"
+        android:layout_below="@id/yangguansifa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/dianshijiemu" />
+    <Button
+        android:id="@+id/jiatinyinyuan"
+        android:layout_toRightOf="@id/dianshijiemu"
+        android:layout_below="@id/yangguansifa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+
+
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/jiatingyingyuan"
+    />
+    <Button
+        android:id="@+id/dianzishangcheng"
+        android:layout_below="@id/yangguansifa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/jiatinyinyuan"
+
+
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/dianzishangcheng" />
+
+    <Button
+        android:id="@+id/wendatoupiao"
+        android:layout_below="@id/yangguansifa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@id/dianzishangcheng"
+
+
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/wendatoupiao" />
+    <Button
+        android:id="@+id/wenxinbobao"
+        android:layout_below="@id/yangguansifa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@id/wendatoupiao"
+
+
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/wenxinbobao"></Button>
+
+</reco.frame.tv.view.TvRelativeLayoutAsGroup>

@@ -22,8 +22,8 @@ android {
         minSdkVersion 14
         multiDexEnabled true
         targetSdkVersion 23
-        versionCode 4
-        versionName "2.1.0"
+        versionCode 11
+        versionName "2.17.1"
     }
     buildTypes {
         release {
@@ -48,6 +48,7 @@ dependencies {
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.android.support:multidex:1.0.0'
     compile project(path: ':vcpSdk')
+    compile project(path: ':tv_app')
 }
 
 apt {

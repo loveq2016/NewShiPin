@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <View
+        android:layout_width="match_parent"
+        android:background="@mipmap/yangguandanwu_top"
+        android:layout_height="110px"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.ysh.tv.app.MyListView
+            android:id="@+id/listView"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#f3faff"
+            android:divider="#00000000"
+            android:listSelector="@color/select_bg"
+            android:descendantFocusability="beforeDescendants"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="8dp"
+            android:scrollbars="none"
+
+
+            >
+        </com.ysh.tv.app.MyListView>
+
+
+        <View
+            android:layout_width="1dp"
+            android:background="@mipmap/line"
+            android:layout_height="match_parent"></View>
+
+
+
+        <com.ysh.tv.app.MyListView
+            android:id="@+id/subListView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:divider="@color/black"
+            android:dividerHeight="0.5dp"
+
+            android:background="@color/white"
+
+            android:listSelector="@drawable/listview_press_selector"
+            android:layout_weight="2"
+            android:scrollbars="none"
+
+
+
+            >
+
+        </com.ysh.tv.app.MyListView>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

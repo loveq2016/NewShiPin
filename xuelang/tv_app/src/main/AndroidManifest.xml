@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ysh.tv.app">
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="22" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".TestActivity">
+
+
+
+        </activity>
+
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".yangguangduanwu.YangGuanDangWuMainActivity"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name=".ReadFileActivity"/>
+        <activity android:name=".wendatoupiao.WenDaTouPiaoMyActivity"/>
+        <activity android:name=".pinganjiayuan.PingAnJiaYuanMyActivity"/>
+        <activity android:name=".wenxinbobao.WenXinBoBaoMyActivity"/>
+        <activity android:name=".sifayangguan.SiFaYangGuanMyActivity"/>
+        <activity android:name=".mingshengfuwu.MingShengFuWuMyActivity"/>
+    </application>
+
+</manifest>

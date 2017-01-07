@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.bean.alarm.AlarmDetailRespBean;
+import com.xue.liang.app.v3.utils.NumberChangeToChinese;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,13 +40,15 @@ public class ReceiveAlarmDetailViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindView(AlarmDetailRespBean.ReceivBean bean){
-        tv_receiv_name.setText("接警人姓名:"+bean.getReceiv_name());
-        tv_receiv_tel.setText("接警人电话"+bean.getReceiv_tel());
+    public void bindView(AlarmDetailRespBean.ReceivBean bean,int position){
+        NumberChangeToChinese numToChinese = new NumberChangeToChinese();
+        String index=numToChinese.numberToChinese(position+1);
+        tv_receiv_name.setText("第"+index+"接警人姓名:"+bean.getReceiv_name());
+        tv_receiv_tel.setText("电话:"+bean.getReceiv_tel());
         tv_receiv_type.setText("");
         tv_receiv_group_name.setText("接警人所属"+bean.getReceiv_group_name());
-        tv_receiv_detail.setText("接警人地址"+bean.getReceiv_detail());
-        tv_receiv_time.setText("接警人时间"+bean.getReceiv_time());
+        tv_receiv_detail.setText("地址:"+bean.getReceiv_detail());
+        tv_receiv_time.setText("接警时间"+bean.getReceiv_time());
 
 
 

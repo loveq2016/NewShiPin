@@ -644,45 +644,6 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             }
         });
         builder.show();
-
-
-        //    设置一个单项选择下拉框
-//        /**
-//         * 第一个参数指定我们要显示的一组下拉单选框的数据集合
-//         * 第二个参数代表索引，指定默认哪一个单选框被勾选上，0表示默认'语音求助' 会被勾选上
-//         * 第三个参数给每一个单选项绑定一个监听器
-//         */
-//        builder.setSingleChoiceItems(item, 0, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                chooseInt = which;
-//            }
-//        });
-//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//
-//                if (item[which].equals("电话求助")) {
-//                    checkCallPermissions();//拨打电话
-//                } else if (item[which].equals("短信求助")) {
-//                    //mainPresenter.sendCall(mphoneNum,2);//短信报警
-//
-//                } else if (item[which].equals("语音求助")) {
-//                    //mainPresenter.sendCall(mphoneNum,1);//语音报警
-//                }
-//
-//                sendAlarm(type);
-//                //Toast.makeText(MainActivity.this, "为：" + item[chooseInt], Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//        builder.show();
     }
 
 

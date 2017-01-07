@@ -13,6 +13,6 @@
         android:lines="1"
         android:padding="4dp"
         android:background="@drawable/tv_alarm_deatail_selector"
-        android:textColor="@color/black" />
+        android:textColor="@android:color/holo_red_dark" />
 
 </LinearLayout>

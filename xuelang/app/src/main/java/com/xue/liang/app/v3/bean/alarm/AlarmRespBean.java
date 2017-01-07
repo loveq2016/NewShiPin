@@ -83,6 +83,7 @@ public class AlarmRespBean implements Parcelable {
         private CameraInfoBean camera_info;
         private String alarm_id;
         private int alarm_state;
+        private int alarm_state_value;//0  完成  1  待处理  2  上报  3  已自动上报
         private String alarm_state_name;
         private int alarm_type;
         private String alarm_type_name;
@@ -119,6 +120,14 @@ public class AlarmRespBean implements Parcelable {
                     ", rtsp_id='" + rtsp_id + '\'' +
                     ", map_url='" + map_url + '\'' +
                     '}';
+        }
+
+        public int getAlarm_state_value() {
+            return alarm_state_value;
+        }
+
+        public void setAlarm_state_value(int alarm_state_value) {
+            this.alarm_state_value = alarm_state_value;
         }
 
         public double getUser_longitude() {
@@ -331,6 +340,7 @@ public class AlarmRespBean implements Parcelable {
             dest.writeParcelable(this.camera_info, flags);
             dest.writeString(this.alarm_id);
             dest.writeInt(this.alarm_state);
+            dest.writeInt(this.alarm_state_value);
             dest.writeString(this.alarm_state_name);
             dest.writeInt(this.alarm_type);
             dest.writeString(this.alarm_type_name);
@@ -352,6 +362,7 @@ public class AlarmRespBean implements Parcelable {
             this.camera_info = in.readParcelable(CameraInfoBean.class.getClassLoader());
             this.alarm_id = in.readString();
             this.alarm_state = in.readInt();
+            this.alarm_state_value = in.readInt();
             this.alarm_state_name = in.readString();
             this.alarm_type = in.readInt();
             this.alarm_type_name = in.readString();

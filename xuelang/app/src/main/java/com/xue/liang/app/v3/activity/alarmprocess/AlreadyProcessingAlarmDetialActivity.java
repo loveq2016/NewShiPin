@@ -145,10 +145,10 @@ public class AlreadyProcessingAlarmDetialActivity extends BaseActivity implement
         if (callInfoBean != null) {
 
             data.add("报警人姓名:" + callInfoBean.getCall_user_name());
-            data.add("报警人电话:" + callInfoBean.getCall_user_tel());
-            data.add("报警人类型:" + callInfoBean.getCall_alarm_type());
+            data.add("电话:" + callInfoBean.getCall_user_tel());
+            data.add("报警类型:" + callInfoBean.getCall_alarm_type());
             data.add("报警人所属:" + callInfoBean.getCall_group_name());
-            data.add("报警人地址:" + callInfoBean.getCall_user_detail());
+            data.add("地址:" + callInfoBean.getCall_user_detail());
             data.add("报警时间:" + callInfoBean.getCall_alarm_time());
         }
         return data;

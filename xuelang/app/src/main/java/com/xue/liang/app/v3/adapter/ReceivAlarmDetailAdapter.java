@@ -75,7 +75,7 @@ public class ReceivAlarmDetailAdapter extends SectionedRecyclerViewAdapter<Heade
 
     @Override
     protected void onBindItemViewHolder(ReceiveAlarmDetailViewHolder holder, int section, int position) {
-        holder.bindView(data.get(position));
+        holder.bindView(data.get(position),position);
 
     }
 

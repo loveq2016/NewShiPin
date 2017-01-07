@@ -61,7 +61,7 @@ public class PendAlarmViewHolder extends RecyclerView.ViewHolder implements View
             setAllTextViewColor(context.getResources().getColor(R.color.black));
         }
         tv_alarm_name.setText("报警人:" + bean.getUser_name());
-        tv_alarm_type.setText("报警类型:" + bean.getAlarm_type());
+        tv_alarm_type.setText("报警类型:" + bean.getAlarm_type_name());
         tv_alarm_time.setText("报警时间:" + bean.getAlarm_time());
         tv_alarm_phone.setText("联系电话:" + bean.getUser_tel());
         tv_alarm_address.setText("报警地址:" + bean.getUser_address());

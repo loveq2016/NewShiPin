@@ -7,6 +7,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +61,12 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     @BindView(R.id.tv_urlinfo)
     TextView tv_urlinfo;
 
+    @BindView(R.id.bt_alarm_progress)
+    Button bt_alarm_progress;
+
+    @BindView(R.id.bt_alarm_update)
+    Button bt_alarm_update;
+
     private AlarmRespBean.ResponseBean bean;
 
 
@@ -80,6 +87,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     protected void initViews(Bundle savedInstanceState) {
         tv_title.setText(getResources().getString(R.string.alarm_process_deatial));
         setViewByData();
+        setupViewByStaus();
         String url = UriHelper.IP + ":" + UriHelper.PORT + bean.getMap_url();
         initMapView(savedInstanceState);
         addMarkersToMap(bean.getUser_latitude(), bean.getUser_longitude());
@@ -87,6 +95,17 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
         alarmProcessDeatailPresenter = new AlarmProcessDeatailPresenter(this);
         getRtsp();
 
+    }
+
+    private void setupViewByStaus(){
+       if(bean!=null&&bean.getAlarm_state_value()  ==3){
+           //为自动上报
+           bt_alarm_update.setEnabled(false);
+           bt_alarm_progress.setEnabled(false);
+       }else {
+           bt_alarm_update.setEnabled(true);
+           bt_alarm_progress.setEnabled(true);
+       }
     }
 
 //    private void initWebView(String url) {

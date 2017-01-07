@@ -71,7 +71,7 @@
             android:id="@+id/tv_receiv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="接警人时间"
+            tools:text="接警时间"
             android:lines="1"
             android:layout_weight="1"
             android:padding="4dp"

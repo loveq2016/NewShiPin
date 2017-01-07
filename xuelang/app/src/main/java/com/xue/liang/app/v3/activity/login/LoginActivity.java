@@ -3,6 +3,7 @@ package com.xue.liang.app.v3.activity.login;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
@@ -13,6 +14,8 @@ import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.constant.BundleConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
+import com.xue.liang.app.v3.util.AppUtils;
+import com.xue.liang.app.v3.util.StringUtils;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.IpAndPortUtils;
@@ -38,6 +41,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.login_edittext)
     EditText login_edittext;
 
+    @BindView(R.id.tv_app_version)
+    TextView tv_app_version;
+
     private String phoneNum;
 
     private String macAddress;
@@ -57,6 +63,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         readIpAndPortFromShareDb();
         getShareDbNumber();
         loginPresenter = new LoginPresenter(this);
+       String tempVersionName= AppUtils.getAppVersionName(getApplicationContext());
+        if(!StringUtils.isEmpty(tempVersionName)){
+
+            tv_app_version.setText("版本号:"+tempVersionName);
+        }
     }
 
     @OnClick(R.id.bt_setting)

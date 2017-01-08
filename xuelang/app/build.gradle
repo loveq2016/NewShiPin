@@ -23,8 +23,8 @@ android {
         minSdkVersion 14
         multiDexEnabled true
         targetSdkVersion 24
-        versionCode 14
-        versionName "3.1.4"
+        versionCode 15
+        versionName "3.1.5"
 
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -96,9 +96,9 @@ dependencies {
 
     compile 'com.afollestad.material-dialogs:core:0.9.0.2'
 
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.7@aar'
 
-
-    compile 'com.jcodecraeer:xrecyclerview:1.3.2'
+    //compile 'com.jcodecraeer:xrecyclerview:1.3.2'
 
     compile project(path: ':vcpSdk')
 }

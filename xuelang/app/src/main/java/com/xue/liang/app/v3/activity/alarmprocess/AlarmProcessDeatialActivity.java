@@ -160,7 +160,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
             return;
         }
         tv_alarm_name.setText("报警人:" + bean.getUser_name());
-        tv_alarm_type.setText("报警类型:" + bean.getAlarm_type());
+        tv_alarm_type.setText("报警类型:" + bean.getAlarm_type_name());
         tv_alarm_time.setText("报警时间:" + bean.getAlarm_time());
         tv_alarm_phone.setText("联系电话:" + bean.getUser_tel());
         tv_alarm_address.setText("报警地址:" + bean.getUser_address());
@@ -179,6 +179,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
 
     @OnClick(R.id.bt_back)
     public void back() {
+        setResult(1);
         finish();
     }
 
@@ -194,6 +195,8 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     @Override
     public void onSuccess(AlarmHandleRespBean alarmHandleRespBean) {
         Toast.makeText(getApplicationContext(), "处理报警成功", Toast.LENGTH_SHORT).show();
+        setResult(0);
+        finish();
 
     }
 

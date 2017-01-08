@@ -1,5 +1,6 @@
 package com.xue.liang.app.v3.activity.alarmprocess;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -123,6 +124,7 @@ public class AlreadyProcessingAlarmDetialActivity extends BaseActivity implement
 
     @OnClick(R.id.bt_back)
     public void back() {
+        setResult(1);
         finish();
     }
 

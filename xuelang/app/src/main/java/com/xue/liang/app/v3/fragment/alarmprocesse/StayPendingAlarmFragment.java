@@ -3,9 +3,11 @@ package com.xue.liang.app.v3.fragment.alarmprocesse;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.alarmprocess.AlarmProcessDeatialActivity;
@@ -24,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 
 /**
  * Created by jikun on 2016/11/18.
@@ -33,8 +38,11 @@ import butterknife.BindView;
 public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmContract.View {
 
 
+    @BindView(R.id.mRefreshLayout)
+    BGARefreshLayout mRefreshLayout;
+
     @BindView(R.id.recyclerView)
-    XRecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     private PendPresenter pendPresenter;
 
@@ -54,7 +62,7 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
 
     @Override
     protected void onFirstUserVisible() {
-        recyclerView.refresh();
+        mRefreshLayout.beginRefreshing();
         //reshData();
     }
 
@@ -90,7 +98,30 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
 
 
         setupRecycler();
+        setupRefreshLayoutView();
 
+
+    }
+
+    private void setupRefreshLayoutView(){
+        // 为BGARefreshLayout 设置代理
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate(){
+
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                reshData();
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                loadMoreData();
+                return false;
+            }
+        });
+        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
+        BGARefreshViewHolder refreshViewHolder =  new BGANormalRefreshViewHolder(getContext(), true);
+        // 设置下拉刷新和上拉加载更多的风格
+        mRefreshLayout.setRefreshViewHolder(refreshViewHolder);
 
     }
 
@@ -124,17 +155,17 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
         recyclerView.setLayoutManager(gridLayoutManager);
 
 
-        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                reshData();
-            }
-
-            @Override
-            public void onLoadMore() {
-                loadMoreData();
-            }
-        });
+//        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+//            @Override
+//            public void onRefresh() {
+//                reshData();
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//                loadMoreData();
+//            }
+//        });
 
 
     }
@@ -163,7 +194,7 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
     @Override
     public void onSuccess(AlarmRespBean bean) {
 
-        recyclerView.refreshComplete();
+        mRefreshLayout.endRefreshing();
 
         if (bean != null & bean.getResponse() != null && !bean.getResponse().isEmpty()) {
             responseBeanList.clear();
@@ -180,13 +211,13 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
 
     @Override
     public void onFail() {
-        recyclerView.refreshComplete();
+        mRefreshLayout.endRefreshing();
     }
 
     @Override
     public void onSuccessMore(AlarmRespBean bean) {
 
-        recyclerView.loadMoreComplete();
+        mRefreshLayout.endLoadingMore();
 
         if (bean != null & bean.getResponse() != null && !bean.getResponse().isEmpty()) {
             responseBeanList.addAll(bean.getResponse());
@@ -201,7 +232,7 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
     @Override
     public void onFailMore() {
 
-        recyclerView.loadMoreComplete();
+        mRefreshLayout.endLoadingMore();
     }
 
 
@@ -225,7 +256,8 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
+        if (resultCode == 0) {
+            Log.e("待处理报警","待处理报警");
             reshData();
         }
     }

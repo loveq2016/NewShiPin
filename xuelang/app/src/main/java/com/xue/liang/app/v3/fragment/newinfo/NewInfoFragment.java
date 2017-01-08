@@ -2,11 +2,12 @@ package com.xue.liang.app.v3.fragment.newinfo;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.newinfo.NewInfoDetailActivity;
 import com.xue.liang.app.v3.adapter.NewInfoAdapter;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 
 /**
  * Created by Administrator on 2016/11/2.
@@ -31,8 +35,11 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @BindView(R.id.tv_title)
     TextView tv_title;
+    @BindView(R.id.mRefreshLayout)
+    BGARefreshLayout mRefreshLayout;
     @BindView(R.id.recyclerView)
-    public XRecyclerView mRecyclerView;
+    public RecyclerView mRecyclerView;
+
 
 
     private NewInfoAdapter adapter;
@@ -78,8 +85,31 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
         }
 
         setupRecyclerView();
+        setupRefreshLayoutView();
 
         reshData();
+
+    }
+
+    private void setupRefreshLayoutView(){
+        // 为BGARefreshLayout 设置代理
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate(){
+
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                reshData();
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                loadMoreData();
+                return false;
+            }
+        });
+        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
+        BGARefreshViewHolder refreshViewHolder =  new BGANormalRefreshViewHolder(getContext(), true);
+        // 设置下拉刷新和上拉加载更多的风格
+        mRefreshLayout.setRefreshViewHolder(refreshViewHolder);
 
     }
 
@@ -153,24 +183,24 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
         });
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                reshData();
-            }
-
-            @Override
-            public void onLoadMore() {
-                loadMoreData();
-            }
-        });
+//        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+//            @Override
+//            public void onRefresh() {
+//                reshData();
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//                loadMoreData();
+//            }
+//        });
 
 
     }
 
     @Override
     public void onSuccess(NoticeRespBean noticeRespBean) {
-        mRecyclerView.refreshComplete();
+        mRefreshLayout.endRefreshing();
 
         if (noticeRespBean != null & noticeRespBean.getResponse() != null&&!noticeRespBean.getResponse().isEmpty()) {
             mListData.clear();
@@ -184,14 +214,14 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @Override
     public void onFail() {
-        mRecyclerView.refreshComplete();
+        mRefreshLayout.endRefreshing();
 
 
     }
 
     @Override
     public void onSuccessMore(NoticeRespBean noticeRespBean) {
-        mRecyclerView.loadMoreComplete();
+        mRefreshLayout.endLoadingMore();
 
         if (noticeRespBean != null & noticeRespBean.getResponse() != null&&!noticeRespBean.getResponse().isEmpty()) {
             mListData.addAll(noticeRespBean.getResponse());
@@ -204,7 +234,7 @@ public class NewInfoFragment extends BaseFragment implements NewInfoContract.Vie
 
     @Override
     public void onFailMore() {
-        mRecyclerView.loadMoreComplete();
+        mRefreshLayout.endLoadingMore();
 
     }
 

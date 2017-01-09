@@ -19,6 +19,7 @@ import com.xue.liang.app.v3.bean.alarm.AlarmReqBean;
 import com.xue.liang.app.v3.bean.alarm.AlarmRespBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.constant.BundleConstant;
+import com.xue.liang.app.v3.event.JpushEvent;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.SharedDB;
 
@@ -29,6 +30,7 @@ import butterknife.BindView;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
+import de.greenrobot.event.Subscribe;
 
 /**
  * Created by jikun on 2016/11/18.
@@ -68,7 +70,7 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
 
     @Override
     protected void onUserVisible() {
-
+        mRefreshLayout.beginRefreshing();
     }
 
     @Override
@@ -260,5 +262,11 @@ public class StayPendingAlarmFragment extends BaseFragment implements PendAlarmC
             Log.e("待处理报警","待处理报警");
             reshData();
         }
+    }
+
+    @Subscribe
+    public void onEventMainThread(JpushEvent event) {
+
+
     }
 }

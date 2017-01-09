@@ -130,7 +130,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
     public void alarmHandler(int state) {
         AlarmHandleReqBean alarmHandleReqBean = new AlarmHandleReqBean();
         alarmHandleReqBean.setAlarm_id(bean.getAlarm_id());
-        alarmHandleReqBean.setAlarm_state(0);  // //是	0 完成  1 上报
+        alarmHandleReqBean.setAlarm_state(state);  // //是	0 完成  1 上报
         String userid = "";
         if (LoginInfoUtils.getInstance().getLoginRespBean() != null) {
             userid = LoginInfoUtils.getInstance().getLoginRespBean().getUser_id();

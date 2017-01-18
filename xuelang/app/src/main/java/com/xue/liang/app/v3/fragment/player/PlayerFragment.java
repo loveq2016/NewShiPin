@@ -12,6 +12,8 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xue.liang.app.R;
@@ -40,8 +42,10 @@ public class PlayerFragment extends BaseFragment {
 
     public static final String TAG=PlayerFragment.class.getSimpleName();
 
+    //private String path="rtsp://119.164.59.39:1554/iptv/Tvod/iptv/001/001/ch15050914035980594154.rsc/27191_Uni.sdp";
 
-    private String path="rtsp://119.164.59.39:1554/iptv/Tvod/iptv/001/001/ch15050914035980594154.rsc/27191_Uni.sdp";
+
+    private String path="http://vod1.fangyan.tv/baf9a54d78113b54.mp4";
 
     private Uri mUri;
 
@@ -53,8 +57,12 @@ public class PlayerFragment extends BaseFragment {
     private Surface surface;
 
 
+    @BindView(R.id.progress_bar)
+    protected ProgressBar progress_bar;
+
+
     @BindView(R.id.tv_info)
-    protected TextView tv_info;
+    protected  TextView tv_info;
 
 
     @BindView(R.id.playerView)
@@ -147,6 +155,7 @@ public class PlayerFragment extends BaseFragment {
 
     @TargetApi(Build.VERSION_CODES.M)
     private void openVideo() {
+        showLoadingView();
         if (mUri == null ) {
             // not ready for playback just yet, will try again later
             return;
@@ -161,10 +170,17 @@ public class PlayerFragment extends BaseFragment {
         try {
             mMediaPlayer = new IjkMediaPlayer();
 
-            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max_cached_duration", 3000);
-            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 1);  //unlimited
-            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0);
+
+
+            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 0);//48 to 0
+            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "probesize", "524288");  //for first display fast, but maybe can not play succ
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "rtsp_transport", "tcp");
+
+
+//            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max_cached_duration", 3000);
+//            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 1);  //unlimited
+//            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0);
+//            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "rtsp_transport", "tcp");
 
             // TODO: create SubtitleController in MediaPlayer, but we need
             // a context for the subtitle renderers
@@ -239,7 +255,8 @@ public class PlayerFragment extends BaseFragment {
         public void onCompletion(IMediaPlayer mp) {
 
             Log.e(TAG,TAG+"--onCompletion");
-            tv_info.setText("onCompletion");
+            showCompetionView("播放完成");
+
 
         }
     };
@@ -249,7 +266,8 @@ public class PlayerFragment extends BaseFragment {
         @Override
         public boolean onError(IMediaPlayer mp, int what, int extra) {
             Log.e(TAG,TAG+"--onError:"+what);
-            tv_info.setText("onError:"+what);
+            showErrorView(what+"");
+
             return false;
         }
     };
@@ -257,8 +275,56 @@ public class PlayerFragment extends BaseFragment {
     IMediaPlayer.OnInfoListener onInfoListener= new IMediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(IMediaPlayer mp, int what, int extra) {
-            Log.e(TAG,TAG+"--onInfo:"+what);
-            tv_info.setText("onInfo:"+what);
+
+            switch (what) {
+                case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
+                    Log.d(TAG, "MEDIA_INFO_VIDEO_TRACK_LAGGING:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                    Log.d(TAG, "MEDIA_INFO_VIDEO_RENDERING_START:");
+                    Log.e(TAG, "XUELIANG____视频开始渲染:");
+                    showSuccessView();
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    //开始接收流
+                    Log.d(TAG, "MEDIA_INFO_BUFFERING_START:");
+                    Log.e(TAG, "XUELIANG____开始接收流:");
+                    showLoadingView();
+
+
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    //接受流完成
+                    Log.e(TAG, "XUELIANG____接收流完成:");
+                    showSuccessView();
+                    //开始出画面
+
+                    break;
+                case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
+                    Log.d(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH: " + extra);
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
+                    Log.d(TAG, "MEDIA_INFO_BAD_INTERLEAVING:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                    Log.d(TAG, "MEDIA_INFO_NOT_SEEKABLE:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_METADATA_UPDATE:
+                    Log.d(TAG, "MEDIA_INFO_METADATA_UPDATE:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
+                    Log.d(TAG, "MEDIA_INFO_UNSUPPORTED_SUBTITLE:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
+                    Log.d(TAG, "MEDIA_INFO_SUBTITLE_TIMED_OUT:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
+                    Log.d(TAG, "MEDIA_INFO_VIDEO_ROTATION_CHANGED: " + extra);
+                    break;
+                case IMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
+                    Log.d(TAG, "MEDIA_INFO_AUDIO_RENDERING_START:");
+                    break;
+            }
             return false;
         }
     };
@@ -266,9 +332,8 @@ public class PlayerFragment extends BaseFragment {
     IMediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener= new IMediaPlayer.OnBufferingUpdateListener() {
         @Override
         public void onBufferingUpdate(IMediaPlayer mp, int percent) {
-            Log.e(TAG,TAG+"--onBufferingUpdate:"+percent);
-            Log.e(TAG,"测试代码-onBufferingUpdate:"+percent);
-            tv_info.setText("onBufferingUpdate:"+percent);
+
+
         }
     };
 
@@ -276,7 +341,7 @@ public class PlayerFragment extends BaseFragment {
         @Override
         public void onSeekComplete(IMediaPlayer mp) {
             Log.e(TAG,TAG+"--onSeekComplete:");
-            tv_info.setText("onSeekComplete");
+
         }
     };
 
@@ -303,6 +368,31 @@ public class PlayerFragment extends BaseFragment {
             openVideo();
         }
 
+    }
+
+    private void showLoadingView(){
+         progress_bar.setVisibility(View.VISIBLE);
+
+         tv_info.setVisibility(View.GONE);
+
+    }
+
+    private void showSuccessView(){
+        progress_bar.setVisibility(View.GONE);
+
+        tv_info.setVisibility(View.GONE);
+    }
+
+    private void showErrorView(String info){
+        progress_bar.setVisibility(View.GONE);
+        tv_info.setVisibility(View.VISIBLE);
+        tv_info.setText(info);
+    }
+
+    private void showCompetionView(String info){
+        progress_bar.setVisibility(View.GONE);
+        tv_info.setVisibility(View.VISIBLE);
+        tv_info.setText(info);
     }
 
 }

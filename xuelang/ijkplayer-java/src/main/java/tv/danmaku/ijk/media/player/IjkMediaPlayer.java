@@ -903,7 +903,6 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
         @Override
         public void handleMessage(Message msg) {
-            Log.e(TAG,"测试代码what="+msg.what);
             IjkMediaPlayer player = mWeakPlayer.get();
             if (player == null || player.mNativeMediaPlayer == 0) {
                 DebugLog.w(TAG,
@@ -936,7 +935,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
                     percent = 100;
                 }
 
-                Log.e(TAG,"测试代码:"+percent);
+
                 // DebugLog.efmt(TAG, "Buffer (%d%%) %d/%d",  percent, bufferPosition, duration);
                 player.notifyOnBufferingUpdate((int)percent);
                 return;

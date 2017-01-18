@@ -26,6 +26,7 @@ import com.xue.liang.app.v3.fragment.device.DeviceFragment;
 import java.io.IOException;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
@@ -88,6 +89,12 @@ public class PlayerFragment extends BaseFragment {
 
 
 
+
+    @OnClick(R.id.play)
+    public void playUrl(){
+        mUri=Uri.parse(path);
+        openVideo();
+    }
 
 
     public static PlayerFragment newInstance() {

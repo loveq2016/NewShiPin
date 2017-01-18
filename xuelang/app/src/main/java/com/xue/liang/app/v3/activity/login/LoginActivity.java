@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.TestActivity;
 import com.xue.liang.app.v3.activity.main.MainActivity;
+import com.xue.liang.app.v3.activity.player.IjkPlayerActivity;
 import com.xue.liang.app.v3.base.BaseActivity;
 import com.xue.liang.app.v3.bean.login.LoginReqBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
@@ -153,6 +154,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, macAddress);
         loginPresenter.loadData(loginReqBean);
+
+    }
+
+    @OnClick(R.id.bt_to_testPlayerActivity)
+    public void toTestActivty(){
+        readyGo(IjkPlayerActivity.class);
 
     }
 

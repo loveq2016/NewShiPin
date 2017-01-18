@@ -260,6 +260,7 @@ public class PlayerFragment extends BaseFragment {
         @Override
         public void onBufferingUpdate(IMediaPlayer mp, int percent) {
             Log.e(TAG,TAG+"--onBufferingUpdate:"+percent);
+            Log.e(TAG,"测试代码-onBufferingUpdate:"+percent);
             tv_info.setText("onBufferingUpdate:"+percent);
         }
     };

@@ -1,3 +1,2 @@
-include ':app'
-include ':vcpSdk'
+include ':app', ':ijkplayer-exo', ':ijkplayer-armv7a', ':ijkplayer-java'
 

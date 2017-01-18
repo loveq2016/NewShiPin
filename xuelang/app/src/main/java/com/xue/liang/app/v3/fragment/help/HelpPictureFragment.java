@@ -6,14 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jph.takephoto.model.TResult;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.AlarmAdapter;
-import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.base.BaseTakePhotoFragment;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
@@ -77,7 +75,7 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
 
     @Override
     protected int getContentViewLayoutID() {
-        return R.layout.framengt_help_picture;
+        return R.layout.fragment_help_picture;
     }
 
     private AlarmAdapter.OnItemClickListener<String> onItemClickListener = new AlarmAdapter.OnItemClickListener<String>() {

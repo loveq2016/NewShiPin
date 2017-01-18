@@ -7,6 +7,16 @@
         android:name="com.xue.liang.app.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!-- for umeng -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <!-- Required -->
     <uses-permission android:name="com.xue.liang.app.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -58,11 +68,15 @@
             android:name="com.amap.api.v2.apikey"
             android:value="076019eeab04f99b24851927689f6bd9"></meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
+
+
         <activity
-            android:name=".v3.activity.main.MainActivity"
+            android:name=".v3.activity.player.IjkPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".v3.activity.login.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -73,7 +87,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity
+            android:name=".v3.activity.main.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".v3.activity.newinfo.NewInfoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

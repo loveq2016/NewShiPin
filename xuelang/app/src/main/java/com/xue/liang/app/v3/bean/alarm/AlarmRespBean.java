@@ -3,7 +3,7 @@ package com.xue.liang.app.v3.bean.alarm;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.temobi.cache.memory.MD5;
+
 import com.xue.liang.app.v3.utils.MD5Util;
 
 import java.util.List;

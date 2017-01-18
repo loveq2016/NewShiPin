@@ -210,7 +210,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     @Override
     protected int getContentViewLayoutID() {
-        return R.layout.fragment_player;
+        return R.layout.fragment_device;
     }
 
     @Override
@@ -293,7 +293,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     }
 
     private void initPlayerFragment() {
-        PlayerFragment playerFragment = PlayerFragment.getInstance(TAG);
+        PlayerFragment playerFragment = PlayerFragment.newInstance();
         FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(R.id.playerFrament, playerFragment);

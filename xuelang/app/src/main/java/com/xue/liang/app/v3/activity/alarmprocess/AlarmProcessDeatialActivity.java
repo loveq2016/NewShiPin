@@ -185,7 +185,7 @@ public class AlarmProcessDeatialActivity extends BaseMapViewActivity implements 
 
 
     private void initPlayerFragment() {
-        PlayerFragment playerFragment = PlayerFragment.getInstance(TAG);
+        PlayerFragment playerFragment = PlayerFragment.newInstance();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(R.id.playerFrament, playerFragment);

@@ -97,12 +97,12 @@ public class PlayerFragment extends BaseFragment {
 
 
 
-
-    @OnClick(R.id.play)
-    public void playUrl(){
-        mUri=Uri.parse(path);
-        openVideo();
-    }
+//
+//    @OnClick(R.id.play)
+//    public void playUrl(){
+//        mUri=Uri.parse(path);
+//        openVideo();
+//    }
 
 
     public static PlayerFragment newInstance() {

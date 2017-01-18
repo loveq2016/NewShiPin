@@ -126,13 +126,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             info = "";
         }
         showToast(info);
-//        LoginRespBean loginRespBean = new LoginRespBean();
-//        loginRespBean.setUser_id("1234");
-//        loginRespBean.setAlias_id("123678");
-//        loginRespBean.setApp_key("22222");
-//        loginRespBean.setRet_code(200);
-//        loginRespBean.setRet_string("222");
-//        toMainActivity(loginRespBean);
+
     }
 
 
@@ -149,19 +143,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         String type = DeviceUtil.getWhickPhoneType(getApplicationContext());
 
         macAddress = DeviceUtil.getMacAddress(getApplicationContext());
-//        mac = TestData.termi_unique_code;
-//        phoneNum = TestData.phoneNum;
+
 
         LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, macAddress);
         loginPresenter.loadData(loginReqBean);
 
     }
 
-    @OnClick(R.id.bt_to_testPlayerActivity)
-    public void toTestActivty(){
-        readyGo(IjkPlayerActivity.class);
-
-    }
 
     private LoginReqBean generateLoginReqBean(String termi_type, String reg_tel, String mac) {
         LoginReqBean loginReqBean = new LoginReqBean();

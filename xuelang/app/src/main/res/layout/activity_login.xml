@@ -60,16 +60,5 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_to_testPlayerActivity"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bt_login_selector"
-        android:text="测试界面"
-        android:layout_alignParentRight="true"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+
 </RelativeLayout>

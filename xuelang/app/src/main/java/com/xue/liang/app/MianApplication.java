@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xue.liang.app.utils.CrashHandler;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -34,8 +35,8 @@ public class MianApplication extends MultiDexApplication {
 
         initImageLoader(getApplicationContext());
         initOkUtils();
-        CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
 
+        Bugly.init(getApplicationContext(), "e88fe7825f", false);
 
     }
 

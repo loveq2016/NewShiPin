@@ -70,6 +70,8 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
+    private boolean is6995=false;
+
     @ViewById(R.id.title_main)
     protected View title_main;
 
@@ -282,7 +284,13 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
 
     private void alarmDialog(final HttpType type) {
-        showAlermDialog(type);
+        if(is6995){
+            showAlermDialog(type);
+        }else{
+            checkCallPermissions();//拨打电话
+            sendAlarm(type.value(), getSupportFragmentManager());
+        }
+
 //        final ChoiceOnClickListener choiceListener =
 //                new ChoiceOnClickListener();
 //        String[] province = new String[]{"是否拨打6995"};

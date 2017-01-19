@@ -29,7 +29,7 @@ public class MacUtil {
     /**
      * 判断设备是否是手机
      */
-    private static boolean isPhone(Context context) {
+    public static boolean isPhone(Context context) {
         TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return telephony.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
     }
@@ -224,7 +224,7 @@ public class MacUtil {
          *
          * @return MAC地址
          */
-        private static String getMacAddressByFile() {
+        public static String getMacAddressByFile() {
             ShellUtils.CommandResult result = ShellUtils.execCmd("getprop wifi.interface", false);
             if (result.result == 0) {
                 String name = result.successMsg;
@@ -341,6 +341,7 @@ public class MacUtil {
         public static void reboot2Bootloader() {
             ShellUtils.execCmd("reboot bootloader", true);
         }
+
 
 
 

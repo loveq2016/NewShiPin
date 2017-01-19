@@ -33,8 +33,11 @@ public class LoginActivity extends FragmentActivity {
     @ViewById(R.id.login_edittext)
     public EditText login_edittext;
     private String phoneNum;
+    private String mac;
 
     private String key = "PHONENUM";
+
+    private String key_mac="MAC_KEY";
 
     @AfterViews
     protected void initView() {
@@ -61,7 +64,23 @@ public class LoginActivity extends FragmentActivity {
         }
 
         Config.TEST_PHONE_NUMBER = phoneNum;
-        Config.TEST_MAC= MacUtil.getMacAddress(getApplicationContext());
+
+
+
+        mac=SharedDB.getStringValue(getApplicationContext(),key_mac,"123");
+        if(mac.equals("123")){
+            if(MacUtil.isPhone(getApplicationContext())){
+                mac= MacUtil.getMacAddress(getApplicationContext());
+
+            }else{
+                mac= MacUtil.getMacAddressByFile();
+            }
+        }
+
+
+        Config.TEST_MAC=mac;
+
+
 
 
         HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<RegisterResp>() {
@@ -77,6 +96,7 @@ public class LoginActivity extends FragmentActivity {
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getRet_code() != null) {
                     if (httpReponse.getData().getRet_code() == 0) {
                         SharedDB.putStringValue(getApplicationContext(), key, phoneNum);
+                        SharedDB.putStringValue(getApplicationContext(), key_mac,mac);
                         toMainAcitivty();
 
                     } else {

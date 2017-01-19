@@ -149,7 +149,7 @@ public class LoginActivity extends FragmentActivity {
         msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
             @Override
             public void onSuccess() {
-                finish();
+               // finish();
             }
         });
         msettingFragmentDialog.show(getSupportFragmentManager(),

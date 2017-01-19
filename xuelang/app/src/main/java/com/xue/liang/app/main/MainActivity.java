@@ -52,6 +52,8 @@ import com.xue.liang.app.main.adapter.PlayerAdapter;
 import com.xue.liang.app.player.PlayerFragment;
 import com.xue.liang.app.type.HttpType;
 import com.xue.liang.app.utils.DeviceUtil;
+import com.xue.liang.app.utils.ShareKey;
+import com.xue.liang.app.utils.SharedDB;
 import com.xue.liang.app.utils.ToastUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -123,6 +125,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     @AfterViews
     public void initView() {
 
+        is6995= SharedDB.getBooleanValue(getApplicationContext(), ShareKey.IS_6995_KEY,false);
         mainPresenter = new MainPresenter(this);
         initFragment();
         initAdapter();

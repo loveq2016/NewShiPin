@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class SettingFragmentDialog extends DialogFragment {
     private Button bt_rest;
     private Button bt_confim;
     private Button bt_cancle;
+    private CheckBox cb_6995;
 
     private String ip;
     private String port;
@@ -46,6 +49,8 @@ public class SettingFragmentDialog extends DialogFragment {
     private Context mContext;
 
     private onCofimLister onCofimLister;
+
+    private boolean is6995Open=false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,11 +95,18 @@ public class SettingFragmentDialog extends DialogFragment {
         bt_rest = (Button) view.findViewById(R.id.bt_rest);
         bt_confim = (Button) view.findViewById(R.id.bt_confim);
         bt_cancle = (Button) view.findViewById(R.id.bt_cancle);
+        cb_6995= (CheckBox) view.findViewById(R.id.cb_6995);
 
         bt_mac.setOnClickListener(clickListener);
         bt_rest.setOnClickListener(clickListener);
         bt_confim.setOnClickListener(clickListener);
         bt_cancle.setOnClickListener(clickListener);
+        cb_6995.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                is6995Open=b;
+            }
+        });
 
     }
 
@@ -105,10 +117,14 @@ public class SettingFragmentDialog extends DialogFragment {
                 DefaultData.Default_Port);
         mac = SharedDB.getStringValue(mContext, ShareKey.MAC_KEY,
                 DefaultData.Default_Mac);
+
+        is6995Open=SharedDB.getBooleanValue(mContext, ShareKey.IS_6995_KEY,
+                false);
         Log.d("测试代码", "测试代码initViewData()===" + ip);
         et_ip.setText(ip);
         et_port.setText(port);
         et_mac.setText(mac);
+        cb_6995.setChecked(is6995Open);
     }
 
     /**
@@ -121,10 +137,13 @@ public class SettingFragmentDialog extends DialogFragment {
                 DefaultData.Default_Port);
         SharedDB.putStringValue(mContext, ShareKey.MAC_KEY,
                 DefaultData.Default_Mac);
+        SharedDB.putBooleanValue(mContext, ShareKey.IS_6995_KEY,
+                DefaultData.Default_IS_6995_FALSE);
         Log.d("测试代码", "测试代码restData()===" + ip);
         et_ip.setText(DefaultData.Default_IP);
         et_port.setText(DefaultData.Default_Port);
         et_mac.setText(DefaultData.Default_Mac);
+        cb_6995.setChecked(DefaultData.Default_IS_6995_FALSE);
 
     }
 
@@ -148,6 +167,7 @@ public class SettingFragmentDialog extends DialogFragment {
         SharedDB.putStringValue(mContext, ShareKey.IP_KEY, ip);
         SharedDB.putStringValue(mContext, ShareKey.PORT_KEY, port);
         SharedDB.putStringValue(mContext, ShareKey.MAC_KEY, mac);
+        SharedDB.putBooleanValue(mContext, ShareKey.IS_6995_KEY, is6995Open);
         Config.IP = ip;
         Config.PORT = port;
         //Config.Mac = mac;

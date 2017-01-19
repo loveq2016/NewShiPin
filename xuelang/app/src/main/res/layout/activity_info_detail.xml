@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.xue.liang.app.info.InfoDetailActivity">
+    tools:context="com.xue.liang.v2.info.InfoDetailActivity">
 
     <include
         android:id="@+id/title"

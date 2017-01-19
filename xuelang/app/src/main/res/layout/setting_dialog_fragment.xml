@@ -63,11 +63,21 @@
                     android:layout_height="48dp"
                     android:inputType="number" />
             </LinearLayout>
-            <CheckBox
-                android:id="@+id/cb_6995"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:text="使用6995"
-                android:layout_height="32dp" />
+                android:layout_height="32dp">
+                <CheckBox
+                    android:id="@+id/cb_6995"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
+                <TextView
+                    android:layout_marginLeft="6dp"
+                    android:layout_width="match_parent"
+                    android:text="使用6995"
+                    android:gravity="center_vertical"
+                    android:layout_height="32dp" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -21,8 +21,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         multiDexEnabled true
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "3.1.6"
+        versionCode 18
+        versionName "3.1.7"
 
         ndk {
             //选择要添加的对应cpu类型的.so库。

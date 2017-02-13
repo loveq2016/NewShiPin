@@ -221,6 +221,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity android:name=".v3.activity.TestActivity"></activity>
+
     </application>
 
 </manifest>

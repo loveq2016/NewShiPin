@@ -255,7 +255,7 @@ public class PlayerFragment extends BaseFragment {
         public void onCompletion(IMediaPlayer mp) {
 
             Log.e(TAG,TAG+"--onCompletion");
-            showCompetionView("播放完成");
+            //showCompetionView("播放完成");
 
 
         }
@@ -266,7 +266,7 @@ public class PlayerFragment extends BaseFragment {
         @Override
         public boolean onError(IMediaPlayer mp, int what, int extra) {
             Log.e(TAG,TAG+"--onError:"+what);
-            showErrorView(what+"");
+            showErrorView("错误代码:"+what+"");
 
             return false;
         }

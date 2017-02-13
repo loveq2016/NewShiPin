@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.temobi.cache.memory.MD5;
+
 import com.xue.liang.app.v2.R;
 import com.xue.liang.app.v2.common.Config;
 import com.xue.liang.app.v2.data.reponse.UpdateAlarmResp;
@@ -39,6 +39,7 @@ import com.xue.liang.app.v2.http.manager.data.HttpReponse;
 import com.xue.liang.app.v2.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.v2.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.v2.update.PostFile;
+import com.xue.liang.app.v2.utils.MD5Tools;
 import com.xue.liang.app.v2.utils.Pathutil;
 import com.xue.liang.app.v2.utils.ToastUtil;
 
@@ -283,7 +284,7 @@ public class AlarmActivity extends FragmentActivity {
         pd.setMessage("正在上传...");
         pd.setCancelable(false);
         pd.show();
-        String t = MD5.toMD5(System.currentTimeMillis() + "");
+        String t = MD5Tools.toMD5(System.currentTimeMillis() + "");
         File file = new File(path);
         String filename = file.getName();
         params = new HashMap<String, String>();
@@ -319,7 +320,7 @@ public class AlarmActivity extends FragmentActivity {
         files = new HashMap<String, File>();
 
         for (String path : paths) {
-            String md5 = MD5.toMD5(System.currentTimeMillis() + "");
+            String md5 = MD5Tools.toMD5(System.currentTimeMillis() + "");
             File file = new File(path);
             String filename = file.getName();
             params.put(md5, filename);

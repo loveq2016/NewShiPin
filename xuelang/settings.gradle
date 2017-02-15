@@ -1,2 +1,2 @@
-include ':app', ':ijkplayer-exo', ':ijkplayer-armv7a', ':ijkplayer-java'
+include ':app', ':ijkplayer-exo', ':ijkplayer-armv7a', ':ijkplayer-java', ':takephoto_library'
 

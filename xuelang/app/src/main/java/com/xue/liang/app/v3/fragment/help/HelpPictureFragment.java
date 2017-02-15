@@ -109,7 +109,7 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
             if (TextUtils.isEmpty(mdata.get(currentChoose)) && mdata.size() < 6) {
                 mdata.add(emptyString);
             }
-            mdata.set(currentChoose, result.getImage().getPath());
+            mdata.set(currentChoose, result.getImage().getOriginalPath());
 
             alarmAdapter.setData(mdata);
             alarmAdapter.notifyDataSetChanged();

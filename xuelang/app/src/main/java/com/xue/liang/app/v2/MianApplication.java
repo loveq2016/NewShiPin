@@ -1,14 +1,22 @@
 package com.xue.liang.app.v2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.BuglyStrategy;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.beta.upgrade.UpgradeListener;
+import com.tencent.bugly.proguard.aa;
+import com.xue.liang.app.v2.updateapk.UpgradeActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -34,6 +42,7 @@ public class MianApplication extends MultiDexApplication {
         initOkUtils();
 
         Bugly.init(getApplicationContext(), "e88fe7825f", false);
+
 
     }
 
@@ -64,5 +73,30 @@ public class MianApplication extends MultiDexApplication {
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
+    }
+
+
+    private void initBulyUpdate(){
+            /*在application中初始化时设置监听，监听策略的收取*/
+        Beta.upgradeListener = new UpgradeListener() {
+            @Override
+            public boolean onUpgrade(aa aa, int i, String s) {
+                return false;
+            }
+
+            @Override
+            public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean isSilence) {
+                if (strategy != null) {
+                    Intent i = new Intent();
+                    i.setClass(getApplicationContext(), UpgradeActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(), "无更新", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+
     }
 }

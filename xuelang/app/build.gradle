@@ -12,6 +12,10 @@ android {
             keyPassword '123456'
         }
     }
+    lintOptions {
+        // true--错误发生后停止gradle构建
+        abortOnError false
+    }
 
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion

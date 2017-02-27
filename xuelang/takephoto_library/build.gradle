@@ -3,7 +3,10 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
-
+    lintOptions {
+        // true--错误发生后停止gradle构建
+        abortOnError false
+    }
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25

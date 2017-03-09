@@ -2,10 +2,13 @@ package com.xue.liang.app.v3.activity.login;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hikvision.vmsnetsdk.ServInfo;
+import com.hikvision.vmsnetsdk.VMSNetSDK;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.activity.TestActivity;
 import com.xue.liang.app.v3.activity.main.MainActivity;
@@ -185,4 +188,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         IpAndPortUtils.setUpIpAndPort(getApplicationContext());
 
     }
+
+
+
 }

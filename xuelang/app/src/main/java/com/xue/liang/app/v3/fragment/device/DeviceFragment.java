@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,9 +27,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amap.api.location.AMapLocation;
+import com.hikvision.vmsnetsdk.ServInfo;
+import com.hikvision.vmsnetsdk.VMSNetSDK;
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.RegionAdapter;
+import com.xue.liang.app.v3.application.MainApplication;
 import com.xue.liang.app.v3.base.BaseFragment;
+import com.xue.liang.app.v3.bean.ServerInfoBean;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
 import com.xue.liang.app.v3.bean.login.LoginRespBean;
@@ -35,6 +42,7 @@ import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 import com.xue.liang.app.v3.bean.region.RegionRespBean;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
+import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.constant.CarmIdConstant;
 import com.xue.liang.app.v3.constant.LoginInfoUtils;
 import com.xue.liang.app.v3.constant.UserType;
@@ -63,6 +71,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 
@@ -253,6 +262,18 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     @Override
     public void onPtzCmdSuccess(String msg) {
         showToast("云台控制成功");
+        Handler handler=new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String cameraID = mCurrentCamerId;
+                if(mloginRespBean!=null){
+                    devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
+                }
+            }
+        },2000);
+
+
 
     }
 
@@ -347,38 +368,55 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
-    @OnClick({R.id.btn_ptz_left, R.id.btn_ptz_up, R.id.btn_ptz_right, R.id.btn_ptz_down})
-    public void ptz(View view) {
+
+
+    @OnTouch({R.id.btn_ptz_left, R.id.btn_ptz_up, R.id.btn_ptz_right, R.id.btn_ptz_down})
+    public boolean ptz(View view,MotionEvent event) {
+
+
         switch (view.getId()) {
             case R.id.btn_ptz_left:
-                sendPtz(CarmIdConstant.CARM_ID_LEFT);
+                sendPtz(CarmIdConstant.CARM_ID_LEFT,event);
                 break;
             case R.id.btn_ptz_up:
-                sendPtz(CarmIdConstant.CARM_ID_UP);
+                sendPtz(CarmIdConstant.CARM_ID_UP,event);
                 break;
             case R.id.btn_ptz_right:
-                sendPtz(CarmIdConstant.CARM_ID_RIGHT);
+                sendPtz(CarmIdConstant.CARM_ID_RIGHT,event);
                 break;
             case R.id.btn_ptz_down:
-                sendPtz(CarmIdConstant.CARM_ID_DOWN);
+                sendPtz(CarmIdConstant.CARM_ID_DOWN,event);
                 break;
             default:
                 break;
         }
+        return true;
 
     }
 
-    private void sendPtz(int cmdzl) {
+    private void sendPtz(int cmdzl,MotionEvent event) {
 
 
         if (mloginRespBean != null && !TextUtils.isEmpty(mCurrentCamerId)) {
 
-            String sessionID = mloginRespBean.getAlias_id();
-            String cameraID = mCurrentCamerId;
-            int cmdID = cmdzl;
-            int param1 = 1;//速度
 
-            devicePresenter.startPtzCmd(sessionID, cameraID, cmdID, param1, 0);
+            String cameraID = mCurrentCamerId;
+
+            switch (event.getAction()){
+
+
+                case MotionEvent.ACTION_DOWN:
+                    devicePresenter.startPtzCmd(cmdzl,cameraID,mloginRespBean);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                   // devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
+
+                    break;
+
+            }
+
+
 
         } else {
             showToast("请选择一个摄像头");
@@ -550,6 +588,10 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         aMapLocationHelper.destroyLocation();
+        String cameraID = mCurrentCamerId;
+        if(mloginRespBean!=null){
+            devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
+        }
     }
 
     protected void showUpdateProgressDialog() {
@@ -579,7 +621,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public void onEventMainThread(RegionCamraEvent event) {
         deviceInfo = event.getResponseBean();
 
-        mCurrentCamerId = deviceInfo.getDev_id();
+        mCurrentCamerId = deviceInfo.getCamera_info().getCamera_id();
         String devicename = deviceInfo.getDev_name();
         String url = deviceInfo.getDev_url();
         EventBus.getDefault().post(new UrlEvent(TAG, url));
@@ -699,5 +741,39 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     @Override
     public void onLocationGetFail(AMapLocation loc) {
         Log.e("测试代码", "测试代码onLocationGetFail" + "Latitude=");
+    }
+    ServInfo servInfo;
+
+    private boolean startPtz(String cameraID) {
+
+
+        final int[] cmdIDs = {1, 2, 3, 4, 11, 12, 13, 14, 7, 8, 9, 10};
+        String[] datas =
+                {"云台转上", "云台转下", "云台转左", "云台转右", "云台左上", "云台右上", "云台左下", "云台右下", "镜头拉近", "镜头拉远", "镜头近焦", "镜头远焦"};
+
+        ServerInfoBean serverInfoBean=mloginRespBean.getServer_info();
+        String loginIP = mloginRespBean.getServer_info().getServer_ip(); //云台控制的服务器IP
+        int loginPort = mloginRespBean.getServer_info().getServer_port(); //云台控制的服务器port
+        String userName=serverInfoBean.getLogin_name();//云台控制的用户名
+        String password=serverInfoBean.getLogin_pass();//云台控制的密码
+
+        servInfo = new ServInfo();
+        String  macAddress = DeviceUtil.getMacAddress(MainApplication.getInstance().getApplicationContext());
+        boolean issuccess= VMSNetSDK.getInstance().login( "https://"+loginIP, userName, password, macAddress, servInfo);
+
+        int errorCode = VMSNetSDK.getInstance().getLastErrorCode();
+        String errorDesc = VMSNetSDK.getInstance().getLastErrorDesc();
+
+
+        Log.e("测试代码","测试代码issuccess:"+issuccess+",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
+
+        String sessionId= servInfo.getSessionID();
+
+
+
+
+        boolean testissuccess = VMSNetSDK.getInstance().sendStartPTZCmd(loginIP, loginPort,sessionId,cameraID, 3, 3,600,0+"");
+        Log.e("测试代码","测试代码testissuccess:"+testissuccess+",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
+        return issuccess;
     }
 }

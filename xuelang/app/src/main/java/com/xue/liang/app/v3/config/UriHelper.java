@@ -15,7 +15,7 @@ public class UriHelper {
 
     public static final String KEY_PORT = "V3_PORT";
 
-    public final static String DEFAUT_IP="121.41.32.246";
+    public final static String DEFAUT_IP="182.150.56.73";// 121.41.32.246
 
     public final static int DEFAUT_PORT=9003;
 

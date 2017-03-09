@@ -1,8 +1,16 @@
 package com.xue.liang.app.v3.fragment.device;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import com.hikvision.vmsnetsdk.ServInfo;
 import com.hikvision.vmsnetsdk.VMSNetSDK;
+import com.xue.liang.app.v3.application.MainApplication;
+import com.xue.liang.app.v3.bean.ServerInfoBean;
 import com.xue.liang.app.v3.bean.device.DeviceReqBean;
 import com.xue.liang.app.v3.bean.device.DeviceRespBean;
+import com.xue.liang.app.v3.bean.login.LoginRespBean;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermReq;
 import com.xue.liang.app.v3.bean.postalarm.PostAlermResp;
 import com.xue.liang.app.v3.bean.region.RegionReqBean;
@@ -12,6 +20,7 @@ import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
 import com.xue.liang.app.v3.httputils.retrofit2.service.GetDeviceListService;
 import com.xue.liang.app.v3.httputils.retrofit2.service.GetRegionListService;
 import com.xue.liang.app.v3.httputils.retrofit2.service.PostAlermService;
+import com.xue.liang.app.v3.utils.DeviceUtil;
 
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -28,6 +37,8 @@ public class DevicePresenter implements DeviceContract.Presenter {
     private DeviceContract.View mView;
 
     public Subscription subscrip;
+
+    private  ServInfo mServInfo;
 
     public DevicePresenter(DeviceContract.View view) {
         mView = view;
@@ -52,14 +63,6 @@ public class DevicePresenter implements DeviceContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-//                        try {
-//                            // Your onError handling code
-//                            RetrofitError ex = (RetrofitError) e;
-//                            Response res = ex.getResponse();
-//
-//                        } catch (Exception ex) {
-//                            // Catch the culprit who's causing this whole problem
-//                        }
                         mView.hideLoadingView();
                         String errorinfo = "";
                         if (e != null && e.toString() != null) {
@@ -102,14 +105,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-//                        try {
-//                            // Your onError handling code
-//                            RetrofitError ex = (RetrofitError) e;
-//                            Response res = ex.getResponse();
-//
-//                        } catch (Exception ex) {
-//                            // Catch the culprit who's causing this whole problem
-//                        }
+
                         mView.hideLoadingView();
                         String errorinfo = "";
                         if (e != null && e.toString() != null) {
@@ -133,66 +129,6 @@ public class DevicePresenter implements DeviceContract.Presenter {
                     }
                 });
 
-    }
-
-
-    /**
-     * 开始云台控制
-     */
-    public void startPtzCmd(String sessionID, String cameraID, int cmdID, int param1, int param2) {
-
-        mView.showLoadingView("");
-
-        Observable.just(startPtz(sessionID, cameraID, cmdID, param1, param2)).subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<Boolean>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mView.hideLoadingView();
-
-            }
-
-            @Override
-            public void onNext(Boolean issuccess) {
-                mView.hideLoadingView();
-                if (issuccess) {
-                    mView.onPtzCmdFail("");
-
-                } else {
-                    mView.onPtzCmdSuccess("");
-                }
-
-
-            }
-        });
-
-
-    }
-
-    /**
-     * @param sessionID 登录返回的sessionID
-     * @param cameraID  监控点cameraid
-     * @param cmdID     cmdID  云台控制命令操作码
-     * @param param1    param1  云台控制速度（取值范围为1-10，1代表最慢，10代表最快）或 预置点操作时预置点编号
-     * @param param2    param2  取值0
-     * @return true表示发送成功，false表示发送失败
-     */
-    private boolean startPtz(String sessionID, String cameraID, int cmdID, int param1, int param2) {
-
-        String servAddr = UriHelper.IP;  //camerainfo中的acsIP
-        int port = UriHelper.PORT;       //camerainfo中的acsPort
-
-        String testservAddr ="182.150.56.73";  //camerainfo中的acsIP
-        int testport = 81;       //camerainfo中的acsPort
-        String testsessionID="";
-        String testcameraID="12732084001310000050";
-        boolean issuccess = VMSNetSDK.getInstance().sendStartPTZCmd(testservAddr, testport, testsessionID, testcameraID, cmdID, param1, param2);
-        return issuccess;
     }
 
 
@@ -238,5 +174,149 @@ public class DevicePresenter implements DeviceContract.Presenter {
                         }
                     }
                 });
+    }
+
+
+
+    /**
+     * 开始云台控制
+     */
+    public void startPtzCmd(final int cmdID, final String cameraID, final LoginRespBean mloginRespBean) {
+
+        mView.showLoadingView("");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean issuccess=startPtz(cmdID,cameraID,mloginRespBean);
+                if(issuccess){
+                    sendMsgToMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.onPtzCmdSuccess("");
+                        }
+                    });
+
+                }else {
+                    sendMsgToMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mView.onPtzCmdFail("");
+                        }
+                    });
+
+                }
+                sendMsgToMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.hideLoadingView();
+                    }
+                });
+
+            }
+        }).start();
+
+
+    }
+
+
+
+
+
+
+    private void sendMsgToMainThread(Runnable r){
+        Handler handler=new Handler(Looper.getMainLooper());
+
+     handler.post(r);
+
+    }
+
+
+    /**
+     * @param cameraID  监控点cameraid
+
+     * @return true表示发送成功，false表示发送失败
+     */
+
+
+    private boolean startPtz(int cmdID,String cameraID,LoginRespBean loginRespBean) {
+
+
+        ServerInfoBean serverInfoBean=loginRespBean.getServer_info();
+        String loginIP = loginRespBean.getServer_info().getServer_ip(); //云台控制的服务器IP
+        int loginPort = loginRespBean.getServer_info().getServer_port(); //云台控制的服务器port
+        String userName=serverInfoBean.getLogin_name();//云台控制的用户名
+        String password=serverInfoBean.getLogin_pass();//云台控制的密码
+
+        mServInfo = new ServInfo();
+        String  macAddress = DeviceUtil.getMacAddress(MainApplication.getInstance().getApplicationContext());
+        boolean issuccess= VMSNetSDK.getInstance().login( "https://"+loginIP, userName, password, macAddress, mServInfo);
+
+        int errorCode = VMSNetSDK.getInstance().getLastErrorCode();
+        String errorDesc = VMSNetSDK.getInstance().getLastErrorDesc();
+
+
+
+
+        Log.e("登陆","云台："+"登陆:"+issuccess+",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
+
+        String sessionId= mServInfo.getSessionID();
+
+        if(issuccess){
+            issuccess=VMSNetSDK.getInstance().sendStartPTZCmd(loginIP, loginPort,sessionId,cameraID, cmdID, 3,600,0+"");
+        }
+
+
+
+        Log.e("云台控制","云台："+"云台控制:"+issuccess+",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
+
+
+//        boolean isstopsuccess =
+//                VMSNetSDK.getInstance().sendStopPTZCmd(null,
+//                        0,
+//                        sessionId,
+//                        cameraID,"0");
+//
+//
+//        int stoperrorCode = VMSNetSDK.getInstance().getLastErrorCode();
+//        String stoperrorDesc= VMSNetSDK.getInstance().getLastErrorDesc();
+//        Log.e("停止","云台："+"停止云台控制:"+isstopsuccess+",errorCode:" + stoperrorCode + ",errorDesc:" + stoperrorDesc);
+
+
+
+        return issuccess;
+    }
+
+    public void stopPtzCmd(final String cameraID, final LoginRespBean loginRespBean){
+        new Thread(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+
+                String loginIP = loginRespBean.getServer_info().getServer_ip(); //云台控制的服务器IP
+                int loginPort = loginRespBean.getServer_info().getServer_port(); //云台控制的服务器port
+                String sessionId = "";
+                if(mServInfo!=null){
+                    sessionId = mServInfo.getSessionID();
+                }
+
+                boolean isstopsuccess =
+                        VMSNetSDK.getInstance().sendStopPTZCmd(null,
+                                0,
+                                sessionId,
+                                cameraID,"0");
+
+
+                int stoperrorCode = VMSNetSDK.getInstance().getLastErrorCode();
+                String stoperrorDesc= VMSNetSDK.getInstance().getLastErrorDesc();
+                Log.e("停止","云台："+"停止云台控制:"+isstopsuccess+",errorCode:" + stoperrorCode + ",errorDesc:" + stoperrorDesc);
+
+
+
+            }
+        }).start();
+
     }
 }

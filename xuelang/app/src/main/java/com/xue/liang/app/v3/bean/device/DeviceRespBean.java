@@ -55,6 +55,16 @@ public class DeviceRespBean {
         private String dev_id;
         private boolean ischoose=false;
 
+        private CameraInfo camera_info;
+
+        public CameraInfo getCamera_info() {
+            return camera_info;
+        }
+
+        public void setCamera_info(CameraInfo camera_info) {
+            this.camera_info = camera_info;
+        }
+
         public String getDev_url() {
             return dev_url;
         }
@@ -85,6 +95,27 @@ public class DeviceRespBean {
 
         public void setIschoose(boolean ischoose) {
             this.ischoose = ischoose;
+        }
+    }
+
+    public static class CameraInfo{
+        private String camera_id;
+        private  Integer dev_platform_type;
+
+        public String getCamera_id() {
+            return camera_id;
+        }
+
+        public void setCamera_id(String camera_id) {
+            this.camera_id = camera_id;
+        }
+
+        public Integer getDev_platform_type() {
+            return dev_platform_type;
+        }
+
+        public void setDev_platform_type(Integer dev_platform_type) {
+            this.dev_platform_type = dev_platform_type;
         }
     }
 }

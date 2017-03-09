@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.hik.mcrsdk.MCRSDK;
+import com.hik.mcrsdk.rtsp.RtspClient;
+import com.hikvision.vmsnetsdk.VMSNetSDK;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -38,6 +41,7 @@ public class MainApplication extends MultiDexApplication {
         Bugly.init(getApplicationContext(), "e1b4f29d14", false);
        // CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
         initJpushSdk();
+        initHaiKangYunYaiSdk();
 
     }
 
@@ -61,5 +65,14 @@ public class MainApplication extends MultiDexApplication {
 
     public static MainApplication getInstance() {
         return instance;
+    }
+
+    //初始化海康云台控制SDK
+    private  void initHaiKangYunYaiSdk(){
+        System.loadLibrary("gnustl_shared");
+        MCRSDK.init();
+        RtspClient.initLib();
+        MCRSDK.setPrint(1, null);
+        VMSNetSDK.getInstance().openLog(true);
     }
 }

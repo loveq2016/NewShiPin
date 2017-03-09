@@ -9,8 +9,12 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
@@ -156,8 +160,9 @@ public class MacUtil {
          * @param context 上下文
          * @return MAC地址
          */
-        public static String getMacAddress(Context context) {
-            String macAddress = getMacAddressByWifiInfo(context);
+        public static String getWifiMacAddress(Context context) {
+
+            String   macAddress = getMacAddressByWifiInfo(context);
             if (!"02:00:00:00:00:00".equals(macAddress)) {
                 return macAddress;
             }
@@ -224,7 +229,7 @@ public class MacUtil {
          *
          * @return MAC地址
          */
-        public static String getMacAddressByFile() {
+        private static String getMacAddressByFile() {
             ShellUtils.CommandResult result = ShellUtils.execCmd("getprop wifi.interface", false);
             if (result.result == 0) {
                 String name = result.successMsg;
@@ -342,6 +347,31 @@ public class MacUtil {
             ShellUtils.execCmd("reboot bootloader", true);
         }
 
+
+
+
+    /*
+    * 获取有线mac地址
+    * */
+    public static String getWiredMacAddr() {
+        //通过解析这个文件来获取MAC,不同厂家的芯片有可能不同
+        final String ETH0_MAC_ADDR = "/sys/class/net/eth0/address" ;
+        try {
+            return readLine(ETH0_MAC_ADDR);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "02:00:00:00:00:00";
+        }
+    }
+
+    private static String readLine(String filename) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filename), 256);
+        try {
+            return reader.readLine();
+        } finally {
+            reader.close();
+        }
+    }
 
 
 

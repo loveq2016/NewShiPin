@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
@@ -18,6 +20,7 @@ import com.xue.liang.app.v2.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.v2.http.manager.listenter.LoadingHttpListener;
 
 import com.xue.liang.app.v2.main.MainActivity_;
+import com.xue.liang.app.v2.utils.BusinessCodeUtils;
 import com.xue.liang.app.v2.utils.DeviceUtil;
 import com.xue.liang.app.v2.utils.MacUtil;
 import com.xue.liang.app.v2.utils.PhoneNumCheckUtils;
@@ -33,6 +36,14 @@ public class LoginActivity extends FragmentActivity {
 
     @ViewById(R.id.login_edittext)
     public EditText login_edittext;
+
+    @ViewById(R.id.bt_get_device)
+    public Button bt_get_device;
+
+    @ViewById(R.id.tv_device_infp)
+    public TextView tv_device_infp;
+
+
     private String phoneNum;
     private String mac;
 
@@ -45,6 +56,7 @@ public class LoginActivity extends FragmentActivity {
         DeviceUtil.initConfig(getApplicationContext());
         phoneNum = SharedDB.getStringValue(getApplicationContext(), key, "");
         login_edittext.setText(phoneNum);
+        getDevicieInfo();
     }
 
 
@@ -68,15 +80,11 @@ public class LoginActivity extends FragmentActivity {
 
 
 
-        mac=SharedDB.getStringValue(getApplicationContext(),key_mac,"123");
-        if(mac.equals("123")){
-            if(MacUtil.isPhone(getApplicationContext())){
-                mac= MacUtil.getMacAddress(getApplicationContext());
 
-            }else{
-                mac= MacUtil.getMacAddressByFile();
-            }
-        }
+        mac= BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID);
+        if(TextUtils.isEmpty(mac)){
+            mac= MacUtil.getWifiMacAddress(getApplicationContext());
+         }
 
 
         Config.TEST_MAC=mac;
@@ -97,7 +105,7 @@ public class LoginActivity extends FragmentActivity {
                 if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getRet_code() != null) {
                     if (httpReponse.getData().getRet_code() == 0) {
                         SharedDB.putStringValue(getApplicationContext(), key, phoneNum);
-                        SharedDB.putStringValue(getApplicationContext(), key_mac,mac);
+                        //SharedDB.putStringValue(getApplicationContext(), key_mac,mac);
                         toMainAcitivty();
 
                     } else {
@@ -155,6 +163,16 @@ public class LoginActivity extends FragmentActivity {
         });
         msettingFragmentDialog.show(getSupportFragmentManager(),
                 "dialog");
+    }
+
+    @Click(R.id.bt_get_device)
+    public void getDevicieInfo(){
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("有线MAC地址："+MacUtil.getWiredMacAddr()+"\n");
+        stringBuilder.append("无线MAC地址："+MacUtil.getWifiMacAddress(getApplicationContext())+"\n");
+        stringBuilder.append("业务账号："+BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID));
+        tv_device_infp.setText(stringBuilder.toString());
+
     }
 
 

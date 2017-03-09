@@ -183,7 +183,6 @@ public class DevicePresenter implements DeviceContract.Presenter {
      */
     public void startPtzCmd(final int cmdID, final String cameraID, final LoginRespBean mloginRespBean) {
 
-        mView.showLoadingView("");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -206,12 +205,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
                     });
 
                 }
-                sendMsgToMainThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.hideLoadingView();
-                    }
-                });
+
 
             }
         }).start();
@@ -263,7 +257,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
         String sessionId= mServInfo.getSessionID();
 
         if(issuccess){
-            issuccess=VMSNetSDK.getInstance().sendStartPTZCmd(loginIP, loginPort,sessionId,cameraID, cmdID, 3,600,0+"");
+            issuccess=VMSNetSDK.getInstance().sendStartPTZCmd(loginIP, loginPort,sessionId,cameraID, cmdID, 1,600,0+"");
         }
 
 

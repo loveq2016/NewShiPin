@@ -271,7 +271,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
                     devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
                 }
             }
-        },2000);
+        },1000);
 
 
 

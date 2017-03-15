@@ -174,7 +174,7 @@ public class MacUtil {
             if (!"02:00:00:00:00:00".equals(macAddress)) {
                 return macAddress;
             }
-            return "please open wifi";
+            return "02:00:00:00:00:00";
         }
 
         /**

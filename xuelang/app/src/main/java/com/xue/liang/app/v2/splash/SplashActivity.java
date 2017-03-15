@@ -64,18 +64,22 @@ public class SplashActivity extends FragmentActivity {
 
     public void toPlayerActivity() {
 
-        if (DeviceUtil.isPhone(getApplicationContext())) {
-            //如果是手机那么就跳转到登陆界面
+        Intent intent = new Intent();
+        intent.setClass(this, MainActivity_.class);
+        startActivity(intent);
 
-            Intent intent = new Intent();
-            intent.setClass(this, LoginActivity_.class);
-            startActivity(intent);
-        } else {
-
-            Intent intent = new Intent();
-            intent.setClass(this, MainActivity_.class);
-            startActivity(intent);
-        }
+//        if (DeviceUtil.isPhone(getApplicationContext())) {
+//            //如果是手机那么就跳转到登陆界面
+//
+//            Intent intent = new Intent();
+//            intent.setClass(this, LoginActivity_.class);
+//            startActivity(intent);
+//        } else {
+//
+//            Intent intent = new Intent();
+//            intent.setClass(this, MainActivity_.class);
+//            startActivity(intent);
+//        }
 
     }
 

@@ -53,8 +53,10 @@ import com.xue.liang.app.v2.info.InfoListActivity_;
 import com.xue.liang.app.v2.main.adapter.PlayerAdapter;
 import com.xue.liang.app.v2.player.PlayerFragment;
 import com.xue.liang.app.v2.type.HttpType;
+import com.xue.liang.app.v2.utils.BusinessCodeUtils;
 import com.xue.liang.app.v2.utils.DefaultData;
 import com.xue.liang.app.v2.utils.DeviceUtil;
+import com.xue.liang.app.v2.utils.MacUtil;
 import com.xue.liang.app.v2.utils.ShareKey;
 import com.xue.liang.app.v2.utils.SharedDB;
 import com.xue.liang.app.v2.utils.ToastUtil;
@@ -65,7 +67,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 
@@ -124,6 +128,8 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     private List<DeviceItem> deviceItemList = new ArrayList<DeviceItem>();
 
     private MainPresenter mainPresenter;
+
+    private Map<Integer,Boolean> deviceHttpMAP=new HashMap<>();
 
     @AfterViews
     public void initView() {
@@ -208,44 +214,148 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
             }
         });
-        getDeviceList(getSupportFragmentManager());
+        startGetDeviceList();
 
     }
 
-    public void getDeviceList(FragmentManager fragmentManager) {
-        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<DeviceListResp>() {
-            @Override
-            public void onFailed(String msg) {
-                Toast.makeText(getApplicationContext(), "请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
+    public  class TreeTimeHttpListener  implements HttpListenter<DeviceListResp>{
+        public static final int TYPE_BUSINESS_CODE=0;//业务账号模式
+        public static final int TYPE_WIRED_MAC_ADDR=1;//有线MAC模式
+        public static final int TYPE_WIFI_MAC_ADDRESS=2;//无线MAC地址
+        private int type=TYPE_BUSINESS_CODE;
+
+        TreeTimeHttpListener(int code){
+            type=code;
+        }
+
+
+        @Override
+        public void onFailed(String msg) {
+            String info="";
+            switch (type){
+                case TYPE_BUSINESS_CODE:
+                    info="业务账号模式";
+                    break;
+                case TYPE_WIRED_MAC_ADDR:
+                    info="有线MAC模式";
+                    break;
+                case TYPE_WIFI_MAC_ADDRESS:
+                    info="无线MAC模式";
+                    break;
 
             }
+            Toast.makeText(getApplicationContext(), info+"请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
+        }
 
-            @Override
-            public void onSuccess(HttpReponse<DeviceListResp> httpReponse) {
-
-                if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && httpReponse.getData().getResponse().getArList() != null) {
-                    deviceItemList = httpReponse.getData().getResponse().getArList();
-                    playerAdapter.reshData(deviceItemList);
-                    mphoneNum = httpReponse.getData().getUser_tel();
+        @Override
+        public void onSuccess(HttpReponse<DeviceListResp> httpReponse) {
 
 
-                    String groupname = httpReponse.getData().getResponse().getGroupname();//村名
-                    if (!TextUtils.isEmpty(groupname))
-                        little_title_tv.setText(groupname);
+            if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && httpReponse.getData().getResponse().getArList() != null) {
+                deviceItemList = httpReponse.getData().getResponse().getArList();
+                playerAdapter.reshData(deviceItemList);
+                mphoneNum = httpReponse.getData().getUser_tel();
+
+
+                String groupname = httpReponse.getData().getResponse().getGroupname();//村名
+                if (!TextUtils.isEmpty(groupname))
+                    little_title_tv.setText(groupname);
+            }else{
+                String wiredMac=MacUtil.getWiredMacAddr();//有线MAC地址
+                String wifiMac=MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
+                switch (type){
+                    case TYPE_BUSINESS_CODE:
+                        //当请求模式为TYPE_BUSINESS_CODE
+                        if(deviceHttpMAP.get(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR)){
+
+                            getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR),wiredMac);
+                        }else{
+
+                            getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS),wifiMac);
+                        }
+
+
+                        break;
+                    case TYPE_WIRED_MAC_ADDR:
+                        getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS),wifiMac);
+
+                        break;
+                    case TYPE_WIFI_MAC_ADDRESS:
+                        Toast.makeText(getApplicationContext(), "未能获取列表", Toast.LENGTH_SHORT).show();
+                        break;
+
                 }
-
             }
-        }, fragmentManager);
+
+
+        }
+    }
+
+    public void startGetDeviceList(){
+        String bussinessCode=BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID);//业务ID
+        String wiredMac=MacUtil.getWiredMacAddr();//有线MAC地址
+        String wifiMac=MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
+
+        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_BUSINESS_CODE,!TextUtils.isEmpty(bussinessCode));
+
+        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR,!TextUtils.isEmpty(wiredMac)&&wiredMac.equals("02:00:00:00:00:00"));
+
+
+        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS,!TextUtils.isEmpty(wifiMac)&&wifiMac.equals("02:00:00:00:00:00"));
+
+         if(deviceHttpMAP.get(TreeTimeHttpListener.TYPE_BUSINESS_CODE)){
+             getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_BUSINESS_CODE),bussinessCode);
+         }else{
+
+             if(deviceHttpMAP.get(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR)){
+
+                 getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR),wiredMac);
+             }else{
+
+                 getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS),wifiMac);
+             }
+
+         }
+
+
+
+    }
+
+
+    public void getDeviceList(FragmentManager fragmentManager,HttpListenter listenter,String mac) {
+//        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<DeviceListResp>() {
+//            @Override
+//            public void onFailed(String msg) {
+//                Toast.makeText(getApplicationContext(), "请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(HttpReponse<DeviceListResp> httpReponse) {
+//
+//                if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && httpReponse.getData().getResponse().getArList() != null) {
+//                    deviceItemList = httpReponse.getData().getResponse().getArList();
+//                    playerAdapter.reshData(deviceItemList);
+//                    mphoneNum = httpReponse.getData().getUser_tel();
+//
+//
+//                    String groupname = httpReponse.getData().getResponse().getGroupname();//村名
+//                    if (!TextUtils.isEmpty(groupname))
+//                        little_title_tv.setText(groupname);
+//                }
+//
+//            }
+//        }, fragmentManager);
 
 
         String url = Config.getDeviceListUrl();
-        DeviceListReq deviceListReq = new DeviceListReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, null, null);
+        DeviceListReq deviceListReq = new DeviceListReq(Config.TEST_TYPE, "", mac, null, null);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
         HttpManager.HttpBuilder<DeviceListReq, DeviceListResp> httpBuilder = new HttpManager.HttpBuilder<DeviceListReq, DeviceListResp>();
         httpBuilder.buildRequestValue(deviceListReq)
                 .buildResponseClass(DeviceListResp.class)
                 .buildUrl(url)
-                .buildHttpListenter(httpListenter)
+                .buildHttpListenter(listenter)
                 .build()
                 .dopost("DeviceList");
     }
@@ -303,40 +413,6 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
             sendAlarm(type.value(), getSupportFragmentManager());
         }
 
-//        final ChoiceOnClickListener choiceListener =
-//                new ChoiceOnClickListener();
-//        String[] province = new String[]{"是否拨打6995"};
-//        Dialog alertDialog = new AlertDialog.Builder(this).setTitle("确定报警？")
-//                .setIcon(R.mipmap.ic_launcher).setMultiChoiceItems(province, new boolean[]{true}, choiceListener)
-//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // TODO Auto-generated method stub
-//
-//                        if (choiceListener.getWhich() == 0 && choiceListener.isChecked()) {
-//
-//                            if (DeviceUtil.isPhone(getApplicationContext())) {
-//                                checkCallPermissions();//因为API 23（Android 6.0）需要检测电话权限所以。
-//                               // mainPresenter.sendCall(mphoneNum);
-//                            } else {
-//                               //checkCallPermissions();
-//                              mainPresenter.sendCall(mphoneNum);
-//                            }
-//
-//
-//                        }
-//                        sendAlarm(type.value(), getSupportFragmentManager());
-//                    }
-//                })
-//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // TODO Auto-generated method stub
-//                    }
-//                }).create();
-//        alertDialog.show();
     }
 
 

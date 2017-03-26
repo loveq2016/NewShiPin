@@ -138,7 +138,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         mainPresenter = new MainPresenter(this);
         initFragment();
         initAdapter();
-        getNoticeList();
+        startGetDeviceList();
 
         if (DeviceUtil.isPhone(getApplicationContext())) {
             //2为手机
@@ -214,14 +214,14 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
             }
         });
-        startGetDeviceList();
+
 
     }
 
-    public  class TreeTimeHttpListener  implements HttpListenter<DeviceListResp>{
-        public static final int TYPE_BUSINESS_CODE=0;//业务账号模式
-        public static final int TYPE_WIRED_MAC_ADDR=1;//有线MAC模式
-        public static final int TYPE_WIFI_MAC_ADDRESS=2;//无线MAC地址
+    private   class TreeTimeHttpListener  implements HttpListenter<DeviceListResp>{
+        private static final int TYPE_BUSINESS_CODE=0;//业务账号模式
+        private static final int TYPE_WIRED_MAC_ADDR=1;//有线MAC模式
+        private static final int TYPE_WIFI_MAC_ADDRESS=2;//无线MAC地址
         private int type=TYPE_BUSINESS_CODE;
 
         TreeTimeHttpListener(int code){
@@ -292,7 +292,10 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     }
 
     public void startGetDeviceList(){
+        deviceHttpMAP.clear();
+
         String bussinessCode=BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID);//业务ID
+        //String bussinessCode="138909919795";
         String wiredMac=MacUtil.getWiredMacAddr();//有线MAC地址
         String wifiMac=MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
 
@@ -323,29 +326,6 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
 
     public void getDeviceList(FragmentManager fragmentManager,HttpListenter listenter,String mac) {
-//        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<DeviceListResp>() {
-//            @Override
-//            public void onFailed(String msg) {
-//                Toast.makeText(getApplicationContext(), "请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(HttpReponse<DeviceListResp> httpReponse) {
-//
-//                if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && httpReponse.getData().getResponse().getArList() != null) {
-//                    deviceItemList = httpReponse.getData().getResponse().getArList();
-//                    playerAdapter.reshData(deviceItemList);
-//                    mphoneNum = httpReponse.getData().getUser_tel();
-//
-//
-//                    String groupname = httpReponse.getData().getResponse().getGroupname();//村名
-//                    if (!TextUtils.isEmpty(groupname))
-//                        little_title_tv.setText(groupname);
-//                }
-//
-//            }
-//        }, fragmentManager);
 
 
         String url = Config.getDeviceListUrl();
@@ -473,39 +453,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 "dialog");
     }
 
-    public void getNoticeList() {
-        HttpListenter httpListenter = new HttpListenter<NoticeResp>() {
-            @Override
-            public void onFailed(String msg) {
 
-            }
-
-            @Override
-            public void onSuccess(HttpReponse<NoticeResp> httpReponse) {
-                if (httpReponse != null && httpReponse.getData() != null && httpReponse.getData().getResponse() != null && !httpReponse.getData().getResponse().isEmpty()) {
-                    List<NoticeResp.NoticeItem> noticeItems = httpReponse.getData().getResponse();
-                    if (noticeItems != null && !noticeItems.isEmpty()) {
-                        if (!TextUtils.isEmpty(noticeItems.get(0).getTitle())) {
-                            tv_gundong_info.setText(noticeItems.get(0).getTitle());
-                        }
-
-                    }
-                }
-
-
-            }
-        };
-
-        String url = Config.getNoticeUrl();
-        NoticeReq noticeReq = new NoticeReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC);
-        HttpManager.HttpBuilder<NoticeReq, NoticeResp> httpBuilder = new HttpManager.HttpBuilder<NoticeReq, NoticeResp>();
-        httpBuilder.buildRequestValue(noticeReq)
-                .buildResponseClass(NoticeResp.class)
-                .buildUrl(url)
-                .buildHttpListenter(httpListenter)
-                .build()
-                .dopost("Notice");
-    }
 
     /**
      * 开始跑马灯

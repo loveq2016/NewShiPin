@@ -362,6 +362,9 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     @Click({R.id.btn_fire, R.id.btn_theft, R.id.btn_hurt, R.id.btn_other})
     public void Call110(View view) {
         switch (view.getId()) {
+            case R.id.btn_fresh:
+                startGetDeviceList();
+                break;
             case R.id.btn_fire:
                 alarmDialog(HttpType.FireAlarm);
                 break;

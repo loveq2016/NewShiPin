@@ -23,6 +23,7 @@ import com.xue.liang.app.v3.fragment.easypeopleinfo.EasyPeopleInfoFragment;
 import com.xue.liang.app.v3.fragment.help.HelpFragment;
 import com.xue.liang.app.v3.fragment.help.HelpPictureFragment;
 import com.xue.liang.app.v3.fragment.newinfo.NewInfoFragment;
+import com.xue.liang.app.v3.fragment.ring.RingLoginFragment;
 import com.xue.liang.app.v3.location.AMapLocationHelper;
 import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.SharedDB;
@@ -200,7 +201,7 @@ public class MainActivity extends BaseActivity implements AMapLocationHelper.OnL
 
 
             } else if (which == 5) {
-                fragment = NewInfoFragment.newInstance(mLoginRespBean);
+                fragment = RingLoginFragment.newInstance();
 
             }
             mFragmentMap.put(which, fragment);

@@ -10,6 +10,16 @@ public class LoginReqBean {
 
     private String termi_unique_code;
 
+    private String verify_code;
+
+
+    public String getVerify_code() {
+        return verify_code;
+    }
+
+    public void setVerify_code(String verify_code) {
+        this.verify_code = verify_code;
+    }
 
     public String getTermi_type() {
         return termi_type;

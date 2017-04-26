@@ -5,21 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.xue.liang.app.info.InfoDetailActivity">
+    >
 
     <include
         android:id="@+id/title"
+        layout="@layout/info_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/info_title"></include>
+        android:layout_height="wrap_content"></include>
 
     <TextView
         android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:textSize="24sp"
-        android:textColor="@android:color/white"
         android:lineSpacingExtra="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
 </LinearLayout>

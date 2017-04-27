@@ -126,10 +126,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             info = userInfo.getRet_string();
         }
 
-        //showToast(info);
-
-        userInfo.setUser_type(102);
-        toMainActivity(userInfo);
+        showToast(info);
+//
+//        userInfo.setUser_type(102);
+//        toMainActivity(userInfo);
 
     }
 

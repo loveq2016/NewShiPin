@@ -1,19 +1,21 @@
-package com.xue.liang.app.v3.activity.ring;
+package com.xue.liang.app.v3.fragment.ring;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.R;
 import com.xue.liang.app.v3.adapter.sadapter.RecyclerAdapter;
 import com.xue.liang.app.v3.adapter.sadapter.RecyclerViewHolder;
-import com.xue.liang.app.v3.base.BaseActivity;
+import com.xue.liang.app.v3.base.BaseFragment;
 import com.xue.liang.app.v3.bean.ring.RingBean;
+import com.xue.liang.app.v3.utils.Constant;
 import com.xue.liang.app.v3.utils.RecyclerViewDecoration;
+import com.xue.liang.app.v3.utils.SharedDB;
+import com.xue.liang.app.v3.utils.VoiceUtils;
+import com.xue.liang.app.v3.widget.RingSettingFragmentDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +26,18 @@ import comtom.com.realtimestream.ComtomSpeak;
 import comtom.com.realtimestream.bean.Term;
 import comtom.com.realtimestream.bean.TermGroup;
 import comtom.com.realtimestream.exchangedata.ErrorMessage;
+import comtom.com.realtimestream.listener.OnConnectServerListener;
 import comtom.com.realtimestream.listener.OnLoadTermDataListener;
+import comtom.com.realtimestream.listener.OnSetVolumeListener;
 import comtom.com.realtimestream.listener.OnStartSpeakListener;
 import comtom.com.realtimestream.listener.OnStopSpeakListener;
 
 /**
- * Created by jikun on 17/4/26.
+ * Created by jikun on 17/4/27.
  */
 
-public class RingTermActivity extends BaseActivity implements OnLoadTermDataListener, OnStartSpeakListener, OnStopSpeakListener {
-    @BindView(R.id.tv_title)
-    TextView tv_title;
+public class RingLoginAndTermFragment extends BaseFragment implements OnConnectServerListener, OnLoadTermDataListener, OnStartSpeakListener, OnStopSpeakListener {
+
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -47,39 +50,110 @@ public class RingTermActivity extends BaseActivity implements OnLoadTermDataList
     ComtomSpeak comtomSpeak;
 
 
+    public static RingLoginAndTermFragment newInstance() {
 
+        RingLoginAndTermFragment ringLoginFragment = new RingLoginAndTermFragment();
+
+        return ringLoginFragment;
+    }
 
     private List<RingBean> ringBeanList = new ArrayList<>();
     ArrayList<Term> mSelectTermList = new ArrayList<Term>();
 
     @Override
-    protected void getBundleExtras(Bundle extras) {
+    protected void onFirstUserVisible() {
 
     }
 
     @Override
-    protected int getContentViewLayoutID() {
-        return R.layout.activity_ring_term;
+    protected void onUserVisible() {
+
     }
 
     @Override
-    protected void initViews(Bundle savedInstanceState) {
-        tv_title.setText("村村响");
+    protected void onUserInvisible() {
+
+    }
+
+    private void initSdk() {
+
+
+        comtomSpeak = ComtomSpeak.Instance();
+        comtomSpeak.setVol(56, new OnSetVolumeListener() {
+            @Override
+            public void setVolumeSuccessful(int i) {
+
+            }
+
+            @Override
+            public void setVolumeFailed(ErrorMessage errorMessage) {
+
+            }
+        });
+
+
+    }
+
+    private void connenct() {
+        String username = SharedDB.getStringValue(getContext(), Constant.RING_USERNAME, "admin");
+        String password = SharedDB.getStringValue(getContext(), Constant.RING_PASSWORD, "admin");
+        String ip = SharedDB.getStringValue(getContext(), Constant.RING_IP, "171.216.84.160");
+        int port = SharedDB.getIntValue(getContext(), Constant.RING_PORT, 8000);
+        ComtomSpeak.Instance().init(username, password, ip,
+                Integer.valueOf(port), this);
+    }
+
+    private void getTermList() {
+        ringBeanList.clear();
+        mSelectTermList.clear();
+        adapter.refreshWithNewData(null);
+
+        comtomSpeak.getTermList(this);
+
+    }
+
+    @Override
+    protected void initViews() {
+        setLeftTitleRightView(false, "村村响", true);
         ringBeanList.clear();
         mSelectTermList.clear();
 
         initRecyclerView();
-        comtomSpeak= ComtomSpeak.Instance();
-        comtomSpeak.getTermList(this);
-        showProgressDialog();
+        VoiceUtils.recoveryVoice(getContext());
+        initSdk();
+        connenct();
+        getTermList();
+
 
     }
 
+    @Override
+    public void onClickSetting() {
+        RingSettingFragmentDialog ringSettingFragmentDialog = new RingSettingFragmentDialog();
+        ringSettingFragmentDialog.setOnCofimLister(new RingSettingFragmentDialog.onCofimLister() {
+            @Override
+            public void onSuccess() {
+                comtomSpeak.stopSpeak(null);
+                connenct();
+                getTermList();
+
+            }
+        });
+        ringSettingFragmentDialog.show(getFragmentManager(),
+                RingSettingFragmentDialog.class.getSimpleName());
+    }
+
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.fragment_ring_login_term;
+    }
+
+
     private void initRecyclerView() {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerView.addItemDecoration(new RecyclerViewDecoration(getApplicationContext(), RecyclerViewDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new RecyclerViewDecoration(getContext(), RecyclerViewDecoration.VERTICAL_LIST));
         adapter = new RecyclerAdapter<RingBean>(null, R.layout.adapter_ring_term) {
             @Override
             protected void onBindData(RecyclerViewHolder holder, int position, RingBean item) {
@@ -109,6 +183,7 @@ public class RingTermActivity extends BaseActivity implements OnLoadTermDataList
 
     }
 
+
     @Override
     public void onLoadTermSuccessful(ArrayList<Term> arrayList, ArrayList<TermGroup> arrayList1) {
         dimissProgressDialog();
@@ -131,18 +206,19 @@ public class RingTermActivity extends BaseActivity implements OnLoadTermDataList
         if (null != errorMessage && TextUtils.isEmpty(errorMessage.getErrorMessage())) {
             errorInfo = errorInfo + errorMessage.getErrorMessage();
         }
-        Toast.makeText(getApplicationContext(), errorInfo, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorInfo, Toast.LENGTH_SHORT).show();
 
     }
 
     @OnClick(R.id.bt_speak)
-    public void beginSpeak(){
+    public void beginSpeak() {
         if (!isPlay) {
-            if(mSelectTermList.size()==0){
+            if (mSelectTermList.size() == 0) {
                 showToast("请选中一个说话列表");
                 return;
             }
             comtomSpeak.startSpeak(mSelectTermList, this);
+
         } else {
             comtomSpeak.stopSpeak(this);
         }
@@ -157,7 +233,7 @@ public class RingTermActivity extends BaseActivity implements OnLoadTermDataList
 
     @Override
     public void startSpeakFailed(ErrorMessage errorMessage) {
-        showToast("开启讲话失败"+errorMessage.getErrorMessage());
+        showToast("开启讲话失败" + errorMessage.getErrorMessage());
     }
 
     @Override
@@ -168,6 +244,20 @@ public class RingTermActivity extends BaseActivity implements OnLoadTermDataList
 
     @Override
     public void stopSpeakFailed(ErrorMessage errorMessage) {
-        showToast("停止对讲失败"+errorMessage.getErrorMessage());
+        showToast("停止对讲失败" + errorMessage.getErrorMessage());
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        comtomSpeak.stopSpeak(null);
+    }
+
+    @Override
+    public void connectServerFail() {
+        showToast("连接服务器失败");
+    }
+
+
 }

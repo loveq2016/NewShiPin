@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.xue.liang.app.R;
 
 import butterknife.ButterKnife;
 
@@ -24,6 +27,8 @@ public abstract class BaseFragment extends Fragment {
     private boolean isPrepared;
 
     protected MaterialDialog materialDialog;
+
+    private View mView;
 
     /**
      * when fragment is visible for the first time, here we can do some initialized work or refresh data only once
@@ -73,8 +78,66 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        initTitle(view);
         initViews();
         initPrepare();
+    }
+
+
+    public void setLeftTitleRightView(boolean ishowLeft, String text, boolean ishowRight) {
+        if (null != mView) {
+            Button left = (Button) mView.findViewById(R.id.bt_back);
+            Button rigth = (Button) mView.findViewById(R.id.bt_setting);
+            TextView textView = (TextView) mView.findViewById(R.id.tv_title);
+            if (ishowLeft) {
+
+                left.setVisibility(View.VISIBLE);
+                left.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickBack();
+                    }
+                });
+            } else {
+                left.setVisibility(View.GONE);
+            }
+
+
+            if (ishowRight) {
+
+                rigth.setVisibility(View.VISIBLE);
+                rigth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickSetting();
+                    }
+                });
+            } else {
+                rigth.setVisibility(View.GONE);
+            }
+            if (TextUtils.isEmpty(text)) {
+                textView.setVisibility(View.GONE);
+            } else {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(text);
+            }
+
+        }
+
+
+    }
+
+    private void initTitle(View view) {
+        mView = view;
+    }
+
+    public void onClickBack() {
+        getActivity().finish();
+    }
+
+    public void onClickSetting() {
+
+
     }
 
     @Override

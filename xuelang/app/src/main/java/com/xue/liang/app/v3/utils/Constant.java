@@ -14,4 +14,11 @@ public class Constant {
         public  static  final  String KEY_PHONE_NUMBER="key_phone_number";
     }
 
+
+
+    public static final String RING_USERNAME = "RingUserName";
+    public static final String RING_PASSWORD = "Ring_Password";
+    public static final String RING_IP = "Ring_Ip";
+    public static final String RING_PORT = "Ring_Port";
+
 }

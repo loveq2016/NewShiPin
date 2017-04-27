@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.xue.liang.app.R;
 
 import butterknife.ButterKnife;
 
@@ -153,7 +158,59 @@ public abstract class BaseActivity extends AppCompatActivity {
         showProgressDialog("加载中", "请稍后");
     }
 
-    protected void showProgressDialog(String title,String info) {
+
+    public void setLeftTitleRightView(boolean ishowLeft, String text, boolean ishowRight) {
+        if (null != findViewById(R.id.rl_titleinfo)) {
+            Button left = (Button) findViewById(R.id.bt_back);
+            Button rigth = (Button) findViewById(R.id.bt_setting);
+            TextView textView = (TextView) findViewById(R.id.tv_title);
+            if (ishowLeft) {
+
+                left.setVisibility(View.VISIBLE);
+                left.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickBack();
+                    }
+                });
+            } else {
+                left.setVisibility(View.GONE);
+            }
+
+
+            if (ishowRight) {
+
+                rigth.setVisibility(View.VISIBLE);
+                rigth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickSetting();
+                    }
+                });
+            } else {
+                rigth.setVisibility(View.GONE);
+            }
+            if (TextUtils.isEmpty(text)) {
+                textView.setVisibility(View.GONE);
+            } else {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(text);
+            }
+
+        }
+
+
+    }
+
+    public void onClickSetting() {
+
+    }
+
+    public void onClickBack() {
+        finish();
+    }
+
+    protected void showProgressDialog(String title, String info) {
         if (materialDialog != null && materialDialog.isShowing()) {
             return;
         }

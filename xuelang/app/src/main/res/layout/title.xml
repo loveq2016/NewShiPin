@@ -57,11 +57,13 @@
         <Button
             android:id="@+id/btn_sos"
             android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:visibility="gone"
+            android:layout_height="28dp"
+
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@+id/btn_alarmwarning" />
+            android:layout_toLeftOf="@+id/btn_alarmwarning"
+            android:background="@mipmap/icon_sos"
+            android:text="" />
 
 
         <ImageButton

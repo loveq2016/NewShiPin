@@ -475,7 +475,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                                 updateAlermHelp(getSupportFragmentManager(), "", new ArrayList<String>());
                             }
                         })
-                .setNeutralButton("退出", new DialogInterface.OnClickListener() {
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 

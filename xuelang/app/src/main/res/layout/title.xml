@@ -54,6 +54,15 @@
 
         </RelativeLayout>
 
+        <Button
+            android:id="@+id/btn_sos"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/btn_alarmwarning" />
+
 
         <ImageButton
             android:id="@+id/btn_alarmwarning"
@@ -61,7 +70,7 @@
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-          android:layout_marginRight="6dp"
+            android:layout_marginRight="6dp"
             android:background="@drawable/warning_btn_selector" />
 
 

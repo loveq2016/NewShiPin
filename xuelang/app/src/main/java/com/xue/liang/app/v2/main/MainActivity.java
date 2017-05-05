@@ -3,6 +3,7 @@ package com.xue.liang.app.v2.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,10 +36,12 @@ import com.xue.liang.app.v2.data.reponse.DeviceListResp;
 import com.xue.liang.app.v2.data.reponse.DeviceListResp.DeviceItem;
 import com.xue.liang.app.v2.data.reponse.NoticeResp;
 import com.xue.liang.app.v2.data.reponse.SendAlarmResp;
+import com.xue.liang.app.v2.data.reponse.UpdateAlarmResp;
 import com.xue.liang.app.v2.data.reponse.YiDongAlarmResp;
 import com.xue.liang.app.v2.data.request.DeviceListReq;
 import com.xue.liang.app.v2.data.request.NoticeReq;
 import com.xue.liang.app.v2.data.request.SendAlarmReq;
+import com.xue.liang.app.v2.data.request.UpdateAlarmReq;
 import com.xue.liang.app.v2.dialog.SettingFragmentDialog;
 import com.xue.liang.app.v2.event.UrlEvent;
 
@@ -79,7 +82,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
-    private boolean is6995=false;
+    private boolean is6995 = false;
 
     @ViewById(R.id.title_main)
     protected View title_main;
@@ -119,6 +122,9 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
     @ViewById(R.id.bottom_rl_all)
     RelativeLayout bottom_rl_all;
 
+    @ViewById(R.id.btn_sos)
+    Button btn_sos;
+
     private PlayerAdapter playerAdapter;
 
     private String mdevicieId;
@@ -129,12 +135,13 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     private MainPresenter mainPresenter;
 
-    private Map<Integer,Boolean> deviceHttpMAP=new HashMap<>();
+    private Map<Integer, Boolean> deviceHttpMAP = new HashMap<>();
 
     @AfterViews
     public void initView() {
+        btn_sos.setVisibility(View.VISIBLE);
 
-        is6995= SharedDB.getBooleanValue(getApplicationContext(), ShareKey.IS_6995_KEY, DefaultData.Default_IS_6995_FALSE);
+        is6995 = SharedDB.getBooleanValue(getApplicationContext(), ShareKey.IS_6995_KEY, DefaultData.Default_IS_6995_FALSE);
         mainPresenter = new MainPresenter(this);
         initFragment();
         initAdapter();
@@ -218,33 +225,33 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     }
 
-    private   class TreeTimeHttpListener  implements HttpListenter<DeviceListResp>{
-        private static final int TYPE_BUSINESS_CODE=0;//业务账号模式
-        private static final int TYPE_WIRED_MAC_ADDR=1;//有线MAC模式
-        private static final int TYPE_WIFI_MAC_ADDRESS=2;//无线MAC地址
-        private int type=TYPE_BUSINESS_CODE;
+    private class TreeTimeHttpListener implements HttpListenter<DeviceListResp> {
+        private static final int TYPE_BUSINESS_CODE = 0;//业务账号模式
+        private static final int TYPE_WIRED_MAC_ADDR = 1;//有线MAC模式
+        private static final int TYPE_WIFI_MAC_ADDRESS = 2;//无线MAC地址
+        private int type = TYPE_BUSINESS_CODE;
 
-        TreeTimeHttpListener(int code){
-            type=code;
+        TreeTimeHttpListener(int code) {
+            type = code;
         }
 
 
         @Override
         public void onFailed(String msg) {
-            String info="";
-            switch (type){
+            String info = "";
+            switch (type) {
                 case TYPE_BUSINESS_CODE:
-                    info="业务账号模式";
+                    info = "业务账号模式";
                     break;
                 case TYPE_WIRED_MAC_ADDR:
-                    info="有线MAC模式";
+                    info = "有线MAC模式";
                     break;
                 case TYPE_WIFI_MAC_ADDRESS:
-                    info="无线MAC模式";
+                    info = "无线MAC模式";
                     break;
 
             }
-            Toast.makeText(getApplicationContext(), info+"请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), info + "请求服务器失败:" + msg, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -260,24 +267,24 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 String groupname = httpReponse.getData().getResponse().getGroupname();//村名
                 if (!TextUtils.isEmpty(groupname))
                     little_title_tv.setText(groupname);
-            }else{
-                String wiredMac=MacUtil.getWiredMacAddr();//有线MAC地址
-                String wifiMac=MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
-                switch (type){
+            } else {
+                String wiredMac = MacUtil.getWiredMacAddr();//有线MAC地址
+                String wifiMac = MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
+                switch (type) {
                     case TYPE_BUSINESS_CODE:
                         //当请求模式为TYPE_BUSINESS_CODE
-                        if(deviceHttpMAP.get(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR)){
+                        if (deviceHttpMAP.get(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR)) {
 
-                            getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR),wiredMac);
-                        }else{
+                            getDeviceList(getSupportFragmentManager(), new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR), wiredMac);
+                        } else {
 
-                            getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS),wifiMac);
+                            getDeviceList(getSupportFragmentManager(), new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS), wifiMac);
                         }
 
 
                         break;
                     case TYPE_WIRED_MAC_ADDR:
-                        getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS),wifiMac);
+                        getDeviceList(getSupportFragmentManager(), new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS), wifiMac);
 
                         break;
                     case TYPE_WIFI_MAC_ADDRESS:
@@ -291,41 +298,40 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         }
     }
 
-    public void startGetDeviceList(){
+    public void startGetDeviceList() {
         deviceHttpMAP.clear();
 
-        String bussinessCode=BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID);//业务ID
+        String bussinessCode = BusinessCodeUtils.getValue(getApplicationContext(), BusinessCodeUtils.USER_ID);//业务ID
         //String bussinessCode="138909919795";
-        String wiredMac=MacUtil.getWiredMacAddr();//有线MAC地址
-        String wifiMac=MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
+        String wiredMac = MacUtil.getWiredMacAddr();//有线MAC地址
+        String wifiMac = MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
 
-        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_BUSINESS_CODE,!TextUtils.isEmpty(bussinessCode));
+        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_BUSINESS_CODE, !TextUtils.isEmpty(bussinessCode));
 
-        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR,!TextUtils.isEmpty(wiredMac)&&wiredMac.equals("02:00:00:00:00:00"));
+        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR, !TextUtils.isEmpty(wiredMac) && wiredMac.equals("02:00:00:00:00:00"));
 
 
-        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS,!TextUtils.isEmpty(wifiMac)&&wifiMac.equals("02:00:00:00:00:00"));
+        deviceHttpMAP.put(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS, !TextUtils.isEmpty(wifiMac) && wifiMac.equals("02:00:00:00:00:00"));
 
-         if(deviceHttpMAP.get(TreeTimeHttpListener.TYPE_BUSINESS_CODE)){
-             getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_BUSINESS_CODE),bussinessCode);
-         }else{
+        if (deviceHttpMAP.get(TreeTimeHttpListener.TYPE_BUSINESS_CODE)) {
+            getDeviceList(getSupportFragmentManager(), new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_BUSINESS_CODE), bussinessCode);
+        } else {
 
-             if(deviceHttpMAP.get(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR)){
+            if (deviceHttpMAP.get(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR)) {
 
-                 getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR),wiredMac);
-             }else{
+                getDeviceList(getSupportFragmentManager(), new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIRED_MAC_ADDR), wiredMac);
+            } else {
 
-                 getDeviceList(getSupportFragmentManager(),new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS),wifiMac);
-             }
+                getDeviceList(getSupportFragmentManager(), new TreeTimeHttpListener(TreeTimeHttpListener.TYPE_WIFI_MAC_ADDRESS), wifiMac);
+            }
 
-         }
-
+        }
 
 
     }
 
 
-    public void getDeviceList(FragmentManager fragmentManager,HttpListenter listenter,String mac) {
+    public void getDeviceList(FragmentManager fragmentManager, HttpListenter listenter, String mac) {
 
 
         String url = Config.getDeviceListUrl();
@@ -383,9 +389,9 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
 
     private void alarmDialog(final HttpType type) {
-        if(is6995){
+        if (is6995) {
             showAlermDialog(type);
-        }else{
+        } else {
             if (DeviceUtil.isPhone(getApplicationContext())) {
                 //2为手机
                 checkCallPermissions();//拨打电话
@@ -456,7 +462,29 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 "dialog");
     }
 
+    @Click(R.id.btn_sos)
+    public void doSendSos() {
+        //创建一个AlertDialog对话框
+        //Author : 博客园-依旧淡然
+        Dialog dialog = new AlertDialog.Builder(this)
+                .setTitle("登录提示")
+                .setIcon(R.mipmap.ic_launcher).setMessage("是否SOS求助？").
+                        setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                updateAlermHelp(getSupportFragmentManager(), "", new ArrayList<String>());
+                            }
+                        })
+                .setNeutralButton("退出", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
+                    }
+                }).create();
+
+        dialog.show();
+
+    }
 
     /**
      * 开始跑马灯
@@ -637,10 +665,10 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
                 switch (chooseInt) {
                     case 0:
-                        mainPresenter.sendCall(mphoneNum,1);//语音报警
+                        mainPresenter.sendCall(mphoneNum, 1);//语音报警
                         break;
                     case 1:
-                        mainPresenter.sendCall(mphoneNum,2);//短信报警
+                        mainPresenter.sendCall(mphoneNum, 2);//短信报警
                         break;
                     case 2:
                         if (DeviceUtil.isPhone(getApplicationContext())) {
@@ -648,7 +676,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                             checkCallPermissions();//拨打电话
                         } else {
                             //1为机顶盒
-                            mainPresenter.sendCall(mphoneNum,3);//语音报警
+                            mainPresenter.sendCall(mphoneNum, 3);//语音报警
                         }
 
                         break;
@@ -666,5 +694,45 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         builder.show();
     }
 
+
+    private void updateAlermHelp(FragmentManager fragmentManager, String content, List<String> fileids) {
+
+
+        HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<UpdateAlarmResp>() {
+            @Override
+            public void onFailed(String msg) {
+                ToastUtil.showToast(getApplicationContext(), "报警失败", Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onSuccess(HttpReponse<UpdateAlarmResp> httpReponse) {
+                if (null != httpReponse && null != httpReponse.getData()) {
+                    if (httpReponse.getData().getRet_code() == 0) {
+                        ToastUtil.showToast(getApplicationContext(), "报警成功", Toast.LENGTH_SHORT);
+
+                    } else {
+                        ToastUtil.showToast(getApplicationContext(), "报警失败ret_code=" + httpReponse.getData().getRet_code(), Toast.LENGTH_SHORT);
+                    }
+                } else {
+                    ToastUtil.showToast(getApplicationContext(), "报警失败", Toast.LENGTH_SHORT);
+                }
+
+
+            }
+        }, fragmentManager);
+
+        String url = Config.getUpdateAlarmUrl();
+
+
+        UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, content, fileids);
+        //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
+        HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp>();
+        httpBuilder.buildRequestValue(updateAlarmReq)
+                .buildResponseClass(UpdateAlarmResp.class)
+                .buildUrl(url)
+                .buildHttpListenter(httpListenter)
+                .build()
+                .dopost("UpdateAlarm");
+    }
 
 }

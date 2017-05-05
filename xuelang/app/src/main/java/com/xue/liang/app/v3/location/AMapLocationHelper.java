@@ -128,6 +128,7 @@ public class AMapLocationHelper {
              * 如果AMapLocationClient是在当前Activity实例化的，
              * 在Activity的onDestroy中一定要执行AMapLocationClient的onDestroy
              */
+
             locationClient.stopLocation();
             locationClient.onDestroy();
             locationClient = null;
@@ -149,6 +150,20 @@ public class AMapLocationHelper {
         }
 
 
+    }
+
+    /**
+     * 获取最后一次定位的位置
+     *
+     * @return
+     */
+    public static AMapLocation getLastKnownLocation(Context context) {
+
+        //初始化client
+        AMapLocationClient locationClient = new AMapLocationClient(context);
+
+        AMapLocation location = locationClient.getLastKnownLocation();
+        return location;
     }
 
 

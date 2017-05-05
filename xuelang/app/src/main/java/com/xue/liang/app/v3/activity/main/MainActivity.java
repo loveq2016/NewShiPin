@@ -61,6 +61,9 @@ public class MainActivity extends BaseActivity implements AMapLocationHelper.OnL
     private String title[] = {"视频监控", "便民信息", "报警求助", "新闻公告", "报警处理", "村村响"};
 
 
+    private int time=5*60*1000;//5分钟
+
+
     private int image[] = {R.drawable.icon_camra_check, R.drawable.icon_easy_people_check, R.drawable.icon_alarm_use_check, R.drawable.icon_news_info_check, R.drawable.icon_alarm_use_check, R.drawable.icon_ring_check};
 
     @Override
@@ -139,7 +142,8 @@ public class MainActivity extends BaseActivity implements AMapLocationHelper.OnL
     private void setUpLocation() {
         aMapLocationHelper = new AMapLocationHelper(getApplicationContext());
         aMapLocationHelper.setOnLocationGetListener(this);
-        aMapLocationHelper.startSingleLocate();
+        //aMapLocationHelper.startSingleLocate();
+        aMapLocationHelper.startLocation(time);
     }
 
     @Override

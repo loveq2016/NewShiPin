@@ -2,13 +2,16 @@ package com.xue.liang.app.v3.fragment.help;
 
 import android.util.Log;
 
+import com.amap.api.location.AMapLocation;
 import com.google.gson.Gson;
+import com.xue.liang.app.v3.application.MainApplication;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpReq;
 import com.xue.liang.app.v3.bean.updatealarm.AlarmForHelpResp;
 import com.xue.liang.app.v3.bean.update.UpdateFileResp;
 import com.xue.liang.app.v3.config.UriHelper;
 import com.xue.liang.app.v3.httputils.retrofit2.RetrofitFactory;
 import com.xue.liang.app.v3.httputils.retrofit2.service.UpdateFileAlarmService;
+import com.xue.liang.app.v3.location.AMapLocationHelper;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -51,7 +54,7 @@ public class HelpPresenter implements HelpContract.Presenter {
             File file = new File(path);
             String filename = file.getName();
             postFormBuilder.addFile(FORM_HEADER_NAME, filename, file);
-            postFormBuilder.addHeader("Content-Type","application/octet-stream");
+            postFormBuilder.addHeader("Content-Type", "application/octet-stream");
         }
         postFormBuilder.url(UriHelper.getUpdateFile());
 
@@ -117,6 +120,11 @@ public class HelpPresenter implements HelpContract.Presenter {
     public void doAlarmAfterUpdataFile(AlarmForHelpReq bean) {
 
         String GET_API_URL = UriHelper.getStartUrl();
+        AMapLocation location=AMapLocationHelper.getLastKnownLocation(MainApplication.getContext());
+        bean.setLatitude(location.getLatitude());
+        bean.setLongitude(location.getLongitude());
+
+
 
         mView.showLoadingView("");
         Retrofit retrofit = RetrofitFactory.creatorGsonRetrofit(GET_API_URL);

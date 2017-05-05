@@ -39,7 +39,7 @@ public class MainApplication extends MultiDexApplication {
         instance = this;
         initOkUtils();
         Bugly.init(getApplicationContext(), "e1b4f29d14", false);
-       // CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
+        // CrashReport.initCrashReport(getApplicationContext(), "e1b4f29d14", false);
         initJpushSdk();
         initHaiKangYunYaiSdk();
 
@@ -67,8 +67,12 @@ public class MainApplication extends MultiDexApplication {
         return instance;
     }
 
+    public static Context getContext() {
+        return getInstance().getApplicationContext();
+    }
+
     //初始化海康云台控制SDK
-    private  void initHaiKangYunYaiSdk(){
+    private void initHaiKangYunYaiSdk() {
         System.loadLibrary("gnustl_shared");
         MCRSDK.init();
         RtspClient.initLib();

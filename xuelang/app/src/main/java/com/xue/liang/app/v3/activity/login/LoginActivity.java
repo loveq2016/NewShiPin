@@ -29,7 +29,9 @@ import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.IpAndPortUtils;
 import com.xue.liang.app.v3.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.v3.utils.SharedDB;
+import com.xue.liang.app.v3.widget.OtherShowGirdFragmentDialog;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
+import com.xue.liang.app.v3.widget.ShowGirdFragmentDialog;
 
 import java.util.Set;
 
@@ -281,6 +283,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         IpAndPortUtils.setUpIpAndPort(getApplicationContext());
 
     }
+
+
 
 
 }

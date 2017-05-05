@@ -1,7 +1,6 @@
 package com.xue.liang.app.v3.fragment.player;
 
 
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
@@ -35,22 +34,20 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 
-
-
 public class PlayerFragment extends BaseFragment {
 
 
-    public static final String TAG=PlayerFragment.class.getSimpleName();
+    public static final String TAG = PlayerFragment.class.getSimpleName();
 
     //private String path="rtsp://119.164.59.39:1554/iptv/Tvod/iptv/001/001/ch15050914035980594154.rsc/27191_Uni.sdp";
 
 
-    private String path="http://vod1.fangyan.tv/baf9a54d78113b54.mp4";
+    private String path = "http://vod1.fangyan.tv/baf9a54d78113b54.mp4";
 
     private Uri mUri;
 
 
-    private IjkMediaPlayer mMediaPlayer ;
+    private IjkMediaPlayer mMediaPlayer;
 
     private Context mAppContext;
 
@@ -62,13 +59,14 @@ public class PlayerFragment extends BaseFragment {
 
 
     @BindView(R.id.tv_info)
-    protected  TextView tv_info;
+    protected TextView tv_info;
 
 
     @BindView(R.id.playerView)
     TextureView playerView;
 
-    private StringBuilder infoBuilder=new StringBuilder();
+    private StringBuilder infoBuilder = new StringBuilder();
+
     @Override
     protected void onFirstUserVisible() {
 
@@ -96,7 +94,6 @@ public class PlayerFragment extends BaseFragment {
     }
 
 
-
 //
 //    @OnClick(R.id.play)
 //    public void playUrl(){
@@ -118,14 +115,14 @@ public class PlayerFragment extends BaseFragment {
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         infoBuilder.append("initViews");
-        mAppContext=getContext();
+        mAppContext = getContext();
 
         playerView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-                surface=new Surface(surfaceTexture);
+                surface = new Surface(surfaceTexture);
                 infoBuilder.append("onSurfaceTextureAvailable");
-                Log.e(TAG,TAG+"--onSurfaceTextureAvailable");
+                Log.e(TAG, TAG + "--onSurfaceTextureAvailable");
 //                mUri = Uri.parse(path);
 //                openVideo();
 
@@ -133,12 +130,12 @@ public class PlayerFragment extends BaseFragment {
 
             @Override
             public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-                Log.e(TAG,TAG+"--onSurfaceTextureSizeChanged");
+                Log.e(TAG, TAG + "--onSurfaceTextureSizeChanged");
             }
 
             @Override
             public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-                Log.e(TAG,TAG+"--onSurfaceTextureDestroyed");
+                Log.e(TAG, TAG + "--onSurfaceTextureDestroyed");
                 return false;
             }
 
@@ -152,11 +149,10 @@ public class PlayerFragment extends BaseFragment {
     }
 
 
-
     @TargetApi(Build.VERSION_CODES.M)
     private void openVideo() {
         showLoadingView();
-        if (mUri == null ) {
+        if (mUri == null) {
             // not ready for playback just yet, will try again later
             return;
         }
@@ -169,7 +165,6 @@ public class PlayerFragment extends BaseFragment {
 
         try {
             mMediaPlayer = new IjkMediaPlayer();
-
 
 
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 0);//48 to 0
@@ -236,43 +231,76 @@ public class PlayerFragment extends BaseFragment {
         }
     }
 
-    IMediaPlayer.OnPreparedListener onPreparedListener=new IMediaPlayer.OnPreparedListener() {
+    IMediaPlayer.OnPreparedListener onPreparedListener = new IMediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(IMediaPlayer mp) {
-            Log.e(TAG,TAG+"--onPrepared");
+            Log.e(TAG, TAG + "--onPrepared");
         }
     };
 
-    IMediaPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener=  new IMediaPlayer.OnVideoSizeChangedListener() {
+    IMediaPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener = new IMediaPlayer.OnVideoSizeChangedListener() {
         @Override
         public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sar_num, int sar_den) {
-            Log.e(TAG,TAG+"--onVideoSizeChanged");
+            Log.e(TAG, TAG + "--onVideoSizeChanged");
         }
     };
 
-    IMediaPlayer.OnCompletionListener onCompletionListener=new IMediaPlayer.OnCompletionListener() {
+    IMediaPlayer.OnCompletionListener onCompletionListener = new IMediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(IMediaPlayer mp) {
 
-            Log.e(TAG,TAG+"--onCompletion");
+            Log.e(TAG, TAG + "--onCompletion");
             //showCompetionView("播放完成");
 
 
         }
     };
 
+    /**
+     * -1004    MEDIA_ERROR_IO
+     * <p>
+     * -1007    MEDIA_ERROR_MALFORMED
+     * <p>
+     * 700     MEDIA_INFO_VIDEO_TRACK_LAGGING
+     * <p>
+     * 3        MEDIA_INFO_VIDEO_RENDERING_START
+     * <p>
+     * 1	  MEDIA_INFO_UNKNOWN
+     * <p>
+     * 801        MEDIA_INFO_NOT_SEEKABLE
+     * <p>
+     * 802     MEDIA_INFO_METADATA_UPDATE
+     * <p>
+     * 702     MEDIA_INFO_BUFFERING_END
+     * <p>
+     * 800    MEDIA_INFO_BAD_INTERLEAVING
+     * <p>
+     * -1010   MEDIA_ERROR_UNSUPPORTED
+     * <p>
+     * -110    MEDIA_ERROR_TIMED_OUT
+     * <p>
+     * 100     MEDIA_ERROR_SERVER_DIED
+     * <p>
+     * 200    MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK
+     * <p>
+     * -1007   MEDIA_ERROR_MALFORMED
+     * <p>
+     * -1004   MEDIA_ERROR_IO
+     * <p>
+     * -1000   MEDIA_UNKONOW_ERROR
+     */
 
-    IMediaPlayer.OnErrorListener onErrorListener= new IMediaPlayer.OnErrorListener() {
+    IMediaPlayer.OnErrorListener onErrorListener = new IMediaPlayer.OnErrorListener() {
         @Override
         public boolean onError(IMediaPlayer mp, int what, int extra) {
-            Log.e(TAG,TAG+"--onError:"+what);
-            showErrorView("错误代码:"+what+"");
+            Log.e(TAG, TAG + "--onError:" + what);
+            showErrorView("错误代码:" + what + "");
 
             return false;
         }
     };
 
-    IMediaPlayer.OnInfoListener onInfoListener= new IMediaPlayer.OnInfoListener() {
+    IMediaPlayer.OnInfoListener onInfoListener = new IMediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(IMediaPlayer mp, int what, int extra) {
 
@@ -329,7 +357,7 @@ public class PlayerFragment extends BaseFragment {
         }
     };
 
-    IMediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener= new IMediaPlayer.OnBufferingUpdateListener() {
+    IMediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new IMediaPlayer.OnBufferingUpdateListener() {
         @Override
         public void onBufferingUpdate(IMediaPlayer mp, int percent) {
 
@@ -337,10 +365,10 @@ public class PlayerFragment extends BaseFragment {
         }
     };
 
-    IMediaPlayer.OnSeekCompleteListener onSeekCompleteListener= new IMediaPlayer.OnSeekCompleteListener() {
+    IMediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new IMediaPlayer.OnSeekCompleteListener() {
         @Override
         public void onSeekComplete(IMediaPlayer mp) {
-            Log.e(TAG,TAG+"--onSeekComplete:");
+            Log.e(TAG, TAG + "--onSeekComplete:");
 
         }
     };
@@ -360,36 +388,36 @@ public class PlayerFragment extends BaseFragment {
 
     @Subscribe
     public void onEventMainThread(UrlEvent event) {
-        if(event.getTag().equals(DeviceFragment.TAG)){
-            mUri=Uri.parse(event.getUrl());
+        if (event.getTag().equals(DeviceFragment.TAG)) {
+            mUri = Uri.parse(event.getUrl());
             openVideo();
-        }else if(event.getTag().equals(AlarmProcessDeatialActivity.TAG)){
-            mUri=Uri.parse(event.getUrl());
+        } else if (event.getTag().equals(AlarmProcessDeatialActivity.TAG)) {
+            mUri = Uri.parse(event.getUrl());
             openVideo();
         }
 
     }
 
-    private void showLoadingView(){
-         progress_bar.setVisibility(View.VISIBLE);
+    private void showLoadingView() {
+        progress_bar.setVisibility(View.VISIBLE);
 
-         tv_info.setVisibility(View.GONE);
+        tv_info.setVisibility(View.GONE);
 
     }
 
-    private void showSuccessView(){
+    private void showSuccessView() {
         progress_bar.setVisibility(View.GONE);
 
         tv_info.setVisibility(View.GONE);
     }
 
-    private void showErrorView(String info){
+    private void showErrorView(String info) {
         progress_bar.setVisibility(View.GONE);
         tv_info.setVisibility(View.VISIBLE);
         tv_info.setText(info);
     }
 
-    private void showCompetionView(String info){
+    private void showCompetionView(String info) {
         progress_bar.setVisibility(View.GONE);
         tv_info.setVisibility(View.VISIBLE);
         tv_info.setText(info);

@@ -59,6 +59,7 @@ import com.xue.liang.app.v3.utils.DateUtil;
 import com.xue.liang.app.v3.utils.DeviceUtil;
 import com.xue.liang.app.v3.utils.XPermissionUtils;
 import com.xue.liang.app.v3.widget.SettingFragmentDialog;
+import com.xue.liang.app.v3.widget.ShowGirdFragmentDialog;
 import com.xue.liang.app.v3.widget.UpdateFileFragmentDialog;
 
 import java.io.File;
@@ -262,17 +263,16 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     @Override
     public void onPtzCmdSuccess(String msg) {
         showToast("云台控制成功");
-        Handler handler=new Handler(Looper.getMainLooper());
+        Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 String cameraID = mCurrentCamerId;
-                if(mloginRespBean!=null){
-                    devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
+                if (mloginRespBean != null) {
+                    devicePresenter.stopPtzCmd(cameraID, mloginRespBean);
                 }
             }
-        },1000);
-
+        }, 1000);
 
 
     }
@@ -369,23 +369,22 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     }
 
 
-
     @OnTouch({R.id.btn_ptz_left, R.id.btn_ptz_up, R.id.btn_ptz_right, R.id.btn_ptz_down})
-    public boolean ptz(View view,MotionEvent event) {
+    public boolean ptz(View view, MotionEvent event) {
 
 
         switch (view.getId()) {
             case R.id.btn_ptz_left:
-                sendPtz(CarmIdConstant.CARM_ID_LEFT,event);
+                sendPtz(CarmIdConstant.CARM_ID_LEFT, event);
                 break;
             case R.id.btn_ptz_up:
-                sendPtz(CarmIdConstant.CARM_ID_UP,event);
+                sendPtz(CarmIdConstant.CARM_ID_UP, event);
                 break;
             case R.id.btn_ptz_right:
-                sendPtz(CarmIdConstant.CARM_ID_RIGHT,event);
+                sendPtz(CarmIdConstant.CARM_ID_RIGHT, event);
                 break;
             case R.id.btn_ptz_down:
-                sendPtz(CarmIdConstant.CARM_ID_DOWN,event);
+                sendPtz(CarmIdConstant.CARM_ID_DOWN, event);
                 break;
             default:
                 break;
@@ -394,7 +393,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
-    private void sendPtz(int cmdzl,MotionEvent event) {
+    private void sendPtz(int cmdzl, MotionEvent event) {
 
 
         if (mloginRespBean != null && !TextUtils.isEmpty(mCurrentCamerId)) {
@@ -402,20 +401,19 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
             String cameraID = mCurrentCamerId;
 
-            switch (event.getAction()){
+            switch (event.getAction()) {
 
 
                 case MotionEvent.ACTION_DOWN:
-                    devicePresenter.startPtzCmd(cmdzl,cameraID,mloginRespBean);
+                    devicePresenter.startPtzCmd(cmdzl, cameraID, mloginRespBean);
                     break;
 
                 case MotionEvent.ACTION_UP:
-                   // devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
+                    // devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
 
                     break;
 
             }
-
 
 
         } else {
@@ -540,6 +538,13 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
 
     }
 
+    @OnClick(R.id.bt_show_gird)
+    public void showgird() {
+        ShowGirdFragmentDialog showGirdFragmentDialog = new ShowGirdFragmentDialog();
+        showGirdFragmentDialog.show(getFragmentManager(), "dev");
+
+    }
+
 
     @Override
     public void onUpdateStartFile() {
@@ -589,8 +594,8 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         EventBus.getDefault().unregister(this);
         aMapLocationHelper.destroyLocation();
         String cameraID = mCurrentCamerId;
-        if(mloginRespBean!=null){
-            devicePresenter.stopPtzCmd(cameraID,mloginRespBean);
+        if (mloginRespBean != null) {
+            devicePresenter.stopPtzCmd(cameraID, mloginRespBean);
         }
     }
 
@@ -742,6 +747,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
     public void onLocationGetFail(AMapLocation loc) {
         Log.e("测试代码", "测试代码onLocationGetFail" + "Latitude=");
     }
+
     ServInfo servInfo;
 
     private boolean startPtz(String cameraID) {
@@ -751,29 +757,27 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
         String[] datas =
                 {"云台转上", "云台转下", "云台转左", "云台转右", "云台左上", "云台右上", "云台左下", "云台右下", "镜头拉近", "镜头拉远", "镜头近焦", "镜头远焦"};
 
-        ServerInfoBean serverInfoBean=mloginRespBean.getServer_info();
+        ServerInfoBean serverInfoBean = mloginRespBean.getServer_info();
         String loginIP = mloginRespBean.getServer_info().getServer_ip(); //云台控制的服务器IP
         int loginPort = mloginRespBean.getServer_info().getServer_port(); //云台控制的服务器port
-        String userName=serverInfoBean.getLogin_name();//云台控制的用户名
-        String password=serverInfoBean.getLogin_pass();//云台控制的密码
+        String userName = serverInfoBean.getLogin_name();//云台控制的用户名
+        String password = serverInfoBean.getLogin_pass();//云台控制的密码
 
         servInfo = new ServInfo();
-        String  macAddress = DeviceUtil.getMacAddress(MainApplication.getInstance().getApplicationContext());
-        boolean issuccess= VMSNetSDK.getInstance().login( "https://"+loginIP, userName, password, macAddress, servInfo);
+        String macAddress = DeviceUtil.getMacAddress(MainApplication.getInstance().getApplicationContext());
+        boolean issuccess = VMSNetSDK.getInstance().login("https://" + loginIP, userName, password, macAddress, servInfo);
 
         int errorCode = VMSNetSDK.getInstance().getLastErrorCode();
         String errorDesc = VMSNetSDK.getInstance().getLastErrorDesc();
 
 
-        Log.e("测试代码","测试代码issuccess:"+issuccess+",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
+        Log.e("测试代码", "测试代码issuccess:" + issuccess + ",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
 
-        String sessionId= servInfo.getSessionID();
-
-
+        String sessionId = servInfo.getSessionID();
 
 
-        boolean testissuccess = VMSNetSDK.getInstance().sendStartPTZCmd(loginIP, loginPort,sessionId,cameraID, 3, 3,600,0+"");
-        Log.e("测试代码","测试代码testissuccess:"+testissuccess+",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
+        boolean testissuccess = VMSNetSDK.getInstance().sendStartPTZCmd(loginIP, loginPort, sessionId, cameraID, 3, 3, 600, 0 + "");
+        Log.e("测试代码", "测试代码testissuccess:" + testissuccess + ",errorCode:" + errorCode + ",errorDesc:" + errorDesc);
         return issuccess;
     }
 }

@@ -29,28 +29,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
-
 import com.xue.liang.app.v2.alarm.AlarmActivity2_;
 import com.xue.liang.app.v2.common.Config;
 import com.xue.liang.app.v2.data.reponse.DeviceListResp;
 import com.xue.liang.app.v2.data.reponse.DeviceListResp.DeviceItem;
-import com.xue.liang.app.v2.data.reponse.NoticeResp;
 import com.xue.liang.app.v2.data.reponse.SendAlarmResp;
 import com.xue.liang.app.v2.data.reponse.UpdateAlarmResp;
 import com.xue.liang.app.v2.data.reponse.YiDongAlarmResp;
 import com.xue.liang.app.v2.data.request.DeviceListReq;
-import com.xue.liang.app.v2.data.request.NoticeReq;
 import com.xue.liang.app.v2.data.request.SendAlarmReq;
 import com.xue.liang.app.v2.data.request.UpdateAlarmReq;
 import com.xue.liang.app.v2.dialog.SettingFragmentDialog;
 import com.xue.liang.app.v2.event.UrlEvent;
-
 import com.xue.liang.app.v2.group.GroupActivity_;
 import com.xue.liang.app.v2.http.manager.HttpManager;
 import com.xue.liang.app.v2.http.manager.data.HttpReponse;
 import com.xue.liang.app.v2.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.v2.http.manager.listenter.LoadingHttpListener;
-
 import com.xue.liang.app.v2.info.EasyInfoPeopleActivity_;
 import com.xue.liang.app.v2.info.InfoListActivity_;
 import com.xue.liang.app.v2.main.adapter.PlayerAdapter;
@@ -147,14 +142,9 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         initAdapter();
         startGetDeviceList();
 
-        if (DeviceUtil.isPhone(getApplicationContext())) {
-            //2为手机
+        btn_people_info.setVisibility(View.VISIBLE);
+        btn_alarmwarning.setVisibility(View.VISIBLE);
 
-        } else {
-            //1为机顶盒
-            btn_people_info.setVisibility(View.GONE);
-            btn_alarmwarning.setVisibility(View.GONE);
-        }
 
         startPaomaDENG();
     }
@@ -604,7 +594,6 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         //ToastUtil.showToast(getApplicationContext(), info, Toast.LENGTH_LONG);
         Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
 
-        btn_setting.setText(info);
 
     }
 

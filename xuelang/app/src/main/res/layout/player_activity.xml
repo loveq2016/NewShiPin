@@ -228,12 +228,13 @@
                 <Button
                     android:id="@+id/btn_group"
                     android:layout_width="70dp"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_height="32dp"
 
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/btn_setting"
                     android:layout_gravity="center"
+
                     android:layout_marginLeft="6dp"
                     android:background="@drawable/bt_hurt_selector"
                     android:text="组群"

@@ -59,11 +59,12 @@
             android:layout_width="32dp"
             android:layout_height="28dp"
 
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@+id/btn_alarmwarning"
-            android:background="@mipmap/icon_sos"
-            android:text="" />
+            android:background="@drawable/bt_icon_sos_selector"
+            android:text=""
+            android:visibility="gone" />
 
 
         <ImageButton

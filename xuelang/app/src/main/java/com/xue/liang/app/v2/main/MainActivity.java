@@ -385,14 +385,24 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
         if (is6995) {
             showAlermDialog(type);
         } else {
-            if (DeviceUtil.isPhone(getApplicationContext())) {
-                //2为手机
-                checkCallPermissions();//拨打电话
-            } else {
-                //1为机顶盒
 
-            }
-            sendAlarm(type.value(), getSupportFragmentManager());
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setTitle("是否发起报警");
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sendAlarm(type.value(), getSupportFragmentManager());
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
+
         }
 
     }

@@ -1,6 +1,7 @@
 package com.xue.liang.app.v2.dialog;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
@@ -19,10 +20,12 @@ public class LoadingDialogFragment extends BaseDialogFragment {
         return R.layout.loading_dialog_fragment;
     }
 
+
+
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setCancelable(false);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
     }
 
 

@@ -1,7 +1,7 @@
 package com.xue.liang.app.v2.dialog;
 
 
-import android.support.v4.app.DialogFragment;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Window;
@@ -10,45 +10,47 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
-
+import com.xue.liang.app.v2.base.BaseDialogFragment;
 import com.xue.liang.app.v2.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.v2.utils.ToastUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
+import butterknife.BindView;
+import butterknife.OnClick;
+
 
 /**
  * Created by Administrator on 2016/9/25.
  */
-@EFragment(R.layout.fragment_add_people)
-public class AddGroupDialogFragment extends DialogFragment {
+
+public class AddGroupDialogFragment extends BaseDialogFragment {
 
     private OnAddGroupListener onAddGroupListener;
 
 
-    @ViewById(R.id.et_group_name)
+    @BindView(R.id.et_group_name)
     EditText et_group_name;
 
-    @ViewById(R.id.et_group_phone_num)
+    @BindView(R.id.et_group_phone_num)
     EditText et_group_phone_num;
 
-    @ViewById(R.id.bt_add)
+    @BindView(R.id.bt_add)
     Button bt_add;
 
-    @ViewById(R.id.bt_add)
-    Button bt_cancle;
 
-    @AfterViews
-    public void init() {
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.fragment_add_people;
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         setCancelable(false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
     }
 
-    @Click(R.id.bt_cancle)
+
+    @OnClick(R.id.bt_cancle)
     public void close() {
         if (onAddGroupListener != null) {
             onAddGroupListener.onCancle();
@@ -56,7 +58,7 @@ public class AddGroupDialogFragment extends DialogFragment {
         dismissAllowingStateLoss();
     }
 
-    @Click(R.id.bt_add)
+    @OnClick(R.id.bt_add)
     public void add() {
 
         String name = et_group_name.getText().toString();
@@ -102,7 +104,7 @@ public class AddGroupDialogFragment extends DialogFragment {
         private AddGroupDialogFragment addGroupDialogFragment;
 
         public Builder() {
-            addGroupDialogFragment = new AddGroupDialogFragment_();
+            addGroupDialogFragment = new AddGroupDialogFragment();
         }
 
         public Builder setOnAddGroupListener(OnAddGroupListener l) {

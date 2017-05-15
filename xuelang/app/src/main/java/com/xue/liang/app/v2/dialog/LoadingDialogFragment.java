@@ -1,38 +1,42 @@
 package com.xue.liang.app.v2.dialog;
 
-import android.support.v4.app.DialogFragment;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
 import com.xue.liang.app.v2.R;
+import com.xue.liang.app.v2.base.BaseDialogFragment;
 
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
 
 /**
  * Created by jk on 2016/8/2.
  */
-@EFragment(R.layout.loading_dialog_fragment)
-public class LoadingDialogFragment extends DialogFragment {
 
-    @AfterViews
-    public  void init(){
+public class LoadingDialogFragment extends BaseDialogFragment {
+
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.loading_dialog_fragment;
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         setCancelable(false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-
     }
 
-    public static LoadingDialogFragment showDialog(FragmentManager fragmentManager,String tag){
-        LoadingDialogFragment loadingDialogFragment=new LoadingDialogFragment_();
-        if (fragmentManager != null && !fragmentManager.isDestroyed()){
 
-            loadingDialogFragment.show(fragmentManager,tag);
+    public static LoadingDialogFragment showDialog(FragmentManager fragmentManager, String tag) {
+        LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+        if (fragmentManager != null && !fragmentManager.isDestroyed()) {
+
+            loadingDialogFragment.show(fragmentManager, tag);
         }
 
-        return   loadingDialogFragment;
+        return loadingDialogFragment;
     }
-    public static void dimissDialg(LoadingDialogFragment dialogFragment){
+
+    public static void dimissDialg(LoadingDialogFragment dialogFragment) {
         dialogFragment.dismissAllowingStateLoss();
     }
 }

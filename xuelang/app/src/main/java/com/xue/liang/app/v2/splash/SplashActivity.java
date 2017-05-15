@@ -1,35 +1,22 @@
 package com.xue.liang.app.v2.splash;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+import com.xue.liang.app.v2.R;
+import com.xue.liang.app.v2.base.BaseActivity;
+import com.xue.liang.app.v2.main.MainActivity;
+import com.xue.liang.app.v2.utils.DeviceUtil;
+
 import java.lang.ref.WeakReference;
 
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.FragmentActivity;
-
-import com.xue.liang.app.v2.R;
-
-import com.xue.liang.app.v2.login.LoginActivity_;
-import com.xue.liang.app.v2.main.MainActivity_;
-import com.xue.liang.app.v2.utils.DeviceUtil;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-
-@EActivity(R.layout.activity_splash)
-public class SplashActivity extends FragmentActivity {
+public class SplashActivity extends BaseActivity {
 
     private DelayHandler delayHandler;
 
-
-    @AfterViews
-    protected void initView() {
-        DeviceUtil.initConfig(getApplicationContext());
-        delayHandler = new DelayHandler(this);
-        toDelayTimeActivity();
-
-    }
 
     private void toDelayTimeActivity() {
         delayHandler.sendEmptyMessageDelayed(0, 1);
@@ -44,11 +31,24 @@ public class SplashActivity extends FragmentActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.activity_splash;
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        DeviceUtil.initConfig(getApplicationContext());
+        delayHandler = new DelayHandler(this);
+        toDelayTimeActivity();
+
+    }
+
     private static class DelayHandler extends Handler {
         private WeakReference<SplashActivity> reference;
 
         private DelayHandler(SplashActivity activity) {
-            reference = new WeakReference<SplashActivity>(activity);
+            reference = new WeakReference<>(activity);
         }
 
         @Override
@@ -65,21 +65,9 @@ public class SplashActivity extends FragmentActivity {
     public void toPlayerActivity() {
 
         Intent intent = new Intent();
-        intent.setClass(this, MainActivity_.class);
+        intent.setClass(this, MainActivity.class);
         startActivity(intent);
 
-//        if (DeviceUtil.isPhone(getApplicationContext())) {
-//            //如果是手机那么就跳转到登陆界面
-//
-//            Intent intent = new Intent();
-//            intent.setClass(this, LoginActivity_.class);
-//            startActivity(intent);
-//        } else {
-//
-//            Intent intent = new Intent();
-//            intent.setClass(this, MainActivity_.class);
-//            startActivity(intent);
-//        }
 
     }
 

@@ -1,30 +1,29 @@
 package com.xue.liang.app.v2.group;
 
-import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
 import com.xue.liang.app.v2.adapter.GroupAdapter;
+import com.xue.liang.app.v2.base.BaseActivity;
 import com.xue.liang.app.v2.data.bean.MemberInfo;
 import com.xue.liang.app.v2.data.reponse.YidongGroupMemberResp;
 import com.xue.liang.app.v2.dialog.AddGroupDialogFragment;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/9/25.
  */
-@EActivity(R.layout.activity_group)
-public class GroupActivity extends FragmentActivity implements GroupContract.View<YidongGroupMemberResp> {
 
-    @ViewById(R.id.recyclerView)
+public class GroupActivity extends BaseActivity implements GroupContract.View<YidongGroupMemberResp> {
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     private GroupAdapter groupAdapter;
 
@@ -34,8 +33,14 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
 
     private String mphoneNum;
 
-    @AfterViews
-    public void initView() {
+
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.activity_group;
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         if (getIntent() != null) {
             mphoneNum = getIntent().getStringExtra("phonenum");
         }
@@ -50,12 +55,12 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
     }
 
 
-    @Click(R.id.bt_add_player)
+    @OnClick(R.id.bt_add_player)
     public void addPlayer() {
         new AddGroupDialogFragment.Builder().setOnAddGroupListener(onAddGroupListener).show(getSupportFragmentManager(), "Dialg");
     }
 
-    @Click(R.id.bt_back)
+    @OnClick(R.id.bt_back)
     public void close() {
         finish();
     }
@@ -91,4 +96,6 @@ public class GroupActivity extends FragmentActivity implements GroupContract.Vie
         groupPresenter.getGroupMemberList(mphoneNum);
 
     }
+
+
 }

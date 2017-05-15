@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -29,7 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
-import com.xue.liang.app.v2.alarm.AlarmActivity2_;
+import com.xue.liang.app.v2.alarm.AlarmActivity2;
+import com.xue.liang.app.v2.base.BaseActivity;
 import com.xue.liang.app.v2.common.Config;
 import com.xue.liang.app.v2.data.reponse.DeviceListResp;
 import com.xue.liang.app.v2.data.reponse.DeviceListResp.DeviceItem;
@@ -41,13 +41,13 @@ import com.xue.liang.app.v2.data.request.SendAlarmReq;
 import com.xue.liang.app.v2.data.request.UpdateAlarmReq;
 import com.xue.liang.app.v2.dialog.SettingFragmentDialog;
 import com.xue.liang.app.v2.event.UrlEvent;
-import com.xue.liang.app.v2.group.GroupActivity_;
+import com.xue.liang.app.v2.group.GroupActivity;
 import com.xue.liang.app.v2.http.manager.HttpManager;
 import com.xue.liang.app.v2.http.manager.data.HttpReponse;
 import com.xue.liang.app.v2.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.v2.http.manager.listenter.LoadingHttpListener;
-import com.xue.liang.app.v2.info.EasyInfoPeopleActivity_;
-import com.xue.liang.app.v2.info.InfoListActivity_;
+import com.xue.liang.app.v2.info.EasyInfoPeopleActivity;
+import com.xue.liang.app.v2.info.InfoListActivity;
 import com.xue.liang.app.v2.main.adapter.PlayerAdapter;
 import com.xue.liang.app.v2.player.PlayerFragment;
 import com.xue.liang.app.v2.type.HttpType;
@@ -59,65 +59,61 @@ import com.xue.liang.app.v2.utils.ShareKey;
 import com.xue.liang.app.v2.utils.SharedDB;
 import com.xue.liang.app.v2.utils.ToastUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 
-@EActivity(R.layout.player_activity)
-public class MainActivity extends FragmentActivity implements MainContract.View<YiDongAlarmResp> {
+public class MainActivity extends BaseActivity implements MainContract.View<YiDongAlarmResp> {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     private boolean is6995 = false;
 
-    @ViewById(R.id.title_main)
+    @BindView(R.id.title_main)
     protected View title_main;
 
 
-    @ViewById(R.id.listview)
+    @BindView(R.id.listview)
     ListView listview;
 
 
-    @ViewById(R.id.ll_btn)
+    @BindView(R.id.ll_btn)
     LinearLayout ll_btn;
 
-    @ViewById(R.id.btn_full_sceen_other)
+    @BindView(R.id.btn_full_sceen_other)
     Button btn_full_sceen_other;
 
 
-    @ViewById(R.id.little_title_tv)
+    @BindView(R.id.little_title_tv)
     TextView little_title_tv;
 
 
-    @ViewById(R.id.tv_gundong_info)
+    @BindView(R.id.tv_gundong_info)
     TextView tv_gundong_info;
 
-    @ViewById(R.id.btn_people_info)
+    @BindView(R.id.btn_people_info)
     Button btn_people_info;
 
 
-    @ViewById(R.id.btn_alarmwarning)
+    @BindView(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
 
-    @ViewById(R.id.btn_setting)
+    @BindView(R.id.btn_setting)
     Button btn_setting;
 
-    @ViewById(R.id.bottom_rl_gundong_info)
+    @BindView(R.id.bottom_rl_gundong_info)
     RelativeLayout bottom_rl_gundong_info;
 
-    @ViewById(R.id.bottom_rl_all)
+    @BindView(R.id.bottom_rl_all)
     RelativeLayout bottom_rl_all;
 
-    @ViewById(R.id.btn_sos)
+    @BindView(R.id.btn_sos)
     Button btn_sos;
 
     private PlayerAdapter playerAdapter;
@@ -132,8 +128,13 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     private Map<Integer, Boolean> deviceHttpMAP = new HashMap<>();
 
-    @AfterViews
-    public void initView() {
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.player_activity;
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         btn_sos.setVisibility(View.VISIBLE);
 
         is6995 = SharedDB.getBooleanValue(getApplicationContext(), ShareKey.IS_6995_KEY, DefaultData.Default_IS_6995_FALSE);
@@ -143,21 +144,22 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         startGetDeviceList();
 
         btn_people_info.setVisibility(View.VISIBLE);
-        btn_alarmwarning.setVisibility(View.VISIBLE);
+        btn_alarmwarning.setVisibility(View.INVISIBLE);
 
 
         startPaomaDENG();
+
     }
 
-    @Click(R.id.btn_group)
+    @OnClick(R.id.btn_group)
     public void toGroupActivity() {
         Intent intent = new Intent();
         intent.putExtra("phonenum", mphoneNum);
-        intent.setClass(this, GroupActivity_.class);
+        intent.setClass(this, GroupActivity.class);
         startActivity(intent);
     }
 
-    @Click({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
+    @OnClick({R.id.btn_full_sceen, R.id.btn_full_sceen_other})
     public void setFullScreen() {
         boolean isfull = title_main.getVisibility() == View.VISIBLE ? true : false;
         if (isfull) {
@@ -214,6 +216,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
 
     }
+
 
     private class TreeTimeHttpListener implements HttpListenter<DeviceListResp> {
         private static final int TYPE_BUSINESS_CODE = 0;//业务账号模式
@@ -292,7 +295,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         deviceHttpMAP.clear();
 
         String bussinessCode = BusinessCodeUtils.getValue(getApplicationContext(), BusinessCodeUtils.USER_ID);//业务ID
-        //String bussinessCode="138909919795";
+
         String wiredMac = MacUtil.getWiredMacAddr();//有线MAC地址
         String wifiMac = MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
 
@@ -336,26 +339,26 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 .dopost("DeviceList");
     }
 
-    @Click(R.id.btn_info_notice)
+    @OnClick(R.id.btn_info_notice)
     public void toInfoListActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, InfoListActivity_.class);
+        intent.setClass(this, InfoListActivity.class);
         startActivity(intent);
     }
 
-    @Click(R.id.btn_people_info)
+    @OnClick(R.id.btn_people_info)
     public void toEasyInfoPeopleActivity() {
 
         Bundle bundle = new Bundle();
         bundle.putString("phone", Config.TEST_PHONE_NUMBER);
         Intent intent = new Intent();
-        intent.setClass(this, EasyInfoPeopleActivity_.class);
+        intent.setClass(this, EasyInfoPeopleActivity.class);
         intent.putExtras(bundle);
 
         startActivity(intent);
     }
 
-    @Click({R.id.btn_fire, R.id.btn_theft, R.id.btn_hurt, R.id.btn_other})
+    @OnClick({R.id.btn_fresh, R.id.btn_fire, R.id.btn_theft, R.id.btn_hurt, R.id.btn_other})
     public void Call110(View view) {
         switch (view.getId()) {
             case R.id.btn_fresh:
@@ -432,14 +435,14 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
 
     }
 
-    @Click(R.id.btn_alarmwarning)
+    @OnClick(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, AlarmActivity2_.class);
+        intent.setClass(this, AlarmActivity2.class);
         startActivity(intent);
     }
 
-    @Click(R.id.btn_setting)
+    @OnClick(R.id.btn_setting)
     public void toSettingDialog() {
         SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
         msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
@@ -452,7 +455,7 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
                 "dialog");
     }
 
-    @Click(R.id.btn_sos)
+    @OnClick(R.id.btn_sos)
     public void doSendSos() {
         //创建一个AlertDialog对话框
         //Author : 博客园-依旧淡然
@@ -506,6 +509,17 @@ public class MainActivity extends FragmentActivity implements MainContract.View<
         //用intent启动拨打电话
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
         startActivity(intent);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
 
     }
 

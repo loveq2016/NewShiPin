@@ -2,7 +2,7 @@ package com.xue.liang.app.v2.info;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +12,8 @@ import android.widget.TextView;
 
 import com.xue.liang.app.v2.R;
 
-import com.xue.liang.app.v2.alarm.AlarmActivity2_;
+import com.xue.liang.app.v2.alarm.AlarmActivity2;
+import com.xue.liang.app.v2.base.BaseActivity;
 import com.xue.liang.app.v2.common.Config;
 import com.xue.liang.app.v2.data.reponse.NoticeResp;
 import com.xue.liang.app.v2.data.request.NoticeReq;
@@ -24,19 +25,17 @@ import com.xue.liang.app.v2.http.manager.listenter.LoadingHttpListener;
 import com.xue.liang.app.v2.info.adapter.InfoAdapter;
 import com.xue.liang.app.v2.utils.DeviceUtil;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@EActivity(R.layout.activity_info_list)
-public class InfoListActivity extends FragmentActivity {
+import butterknife.BindView;
+import butterknife.OnClick;
+
+public class InfoListActivity extends BaseActivity {
 
 
-    @ViewById(R.id.listview)
+    @BindView(R.id.listview)
     protected ListView listView;
 
     private InfoAdapter infoAdapter;
@@ -45,37 +44,42 @@ public class InfoListActivity extends FragmentActivity {
     private List<NoticeResp.NoticeItem> noticeItemList = new ArrayList<NoticeResp.NoticeItem>();
 
 
-    @ViewById(R.id.btn_alarmwarning)
+    @BindView(R.id.btn_alarmwarning)
     ImageButton btn_alarmwarning;
 
 
-    @ViewById(R.id.tv_title)
+    @BindView(R.id.tv_title)
     TextView tv_title;
 
-    @Click(R.id.bt_back)
+    @OnClick(R.id.bt_back)
     public void closeActivity() {
         finish();
 
     }
 
 
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.activity_info_list;
+    }
 
-    @AfterViews
-    public void initView() {
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         tv_title.setText("公告通知");
         initaAdapter();
         getNoticeList(getSupportFragmentManager());
 
 
-        if(DeviceUtil.isPhone(getApplicationContext())){
+        if (DeviceUtil.isPhone(getApplicationContext())) {
             //2为手机
 
-        }else {
+        } else {
             //1为机顶盒
 
             btn_alarmwarning.setVisibility(View.GONE);
         }
     }
+
 
     private void initaAdapter() {
         infoAdapter = new InfoAdapter(this, noticeItemList);
@@ -94,7 +98,7 @@ public class InfoListActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putString("guid", guid);
         Intent intent = new Intent();
-        intent.setClass(this, InfoDetailActivity_.class);
+        intent.setClass(this, InfoDetailActivity.class);
         intent.putExtra("bundle", bundle);
         startActivity(intent);
     }
@@ -127,10 +131,10 @@ public class InfoListActivity extends FragmentActivity {
     }
 
 
-    @Click(R.id.btn_alarmwarning)
+    @OnClick(R.id.btn_alarmwarning)
     public void toAlarmActivity() {
         Intent intent = new Intent();
-        intent.setClass(this, AlarmActivity2_.class);
+        intent.setClass(this, AlarmActivity2.class);
 
 
         startActivity(intent);

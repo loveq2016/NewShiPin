@@ -1,7 +1,7 @@
 package com.xue.liang.app.v2.login;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Button;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
+import com.xue.liang.app.v2.base.BaseActivity;
 import com.xue.liang.app.v2.common.Config;
 import com.xue.liang.app.v2.data.reponse.RegisterResp;
 import com.xue.liang.app.v2.data.request.RegisterReq;
@@ -18,29 +19,28 @@ import com.xue.liang.app.v2.http.manager.HttpManager;
 import com.xue.liang.app.v2.http.manager.data.HttpReponse;
 import com.xue.liang.app.v2.http.manager.listenter.HttpListenter;
 import com.xue.liang.app.v2.http.manager.listenter.LoadingHttpListener;
-
-import com.xue.liang.app.v2.main.MainActivity_;
+import com.xue.liang.app.v2.main.MainActivity;
 import com.xue.liang.app.v2.utils.BusinessCodeUtils;
 import com.xue.liang.app.v2.utils.DeviceUtil;
 import com.xue.liang.app.v2.utils.MacUtil;
 import com.xue.liang.app.v2.utils.PhoneNumCheckUtils;
 import com.xue.liang.app.v2.utils.SharedDB;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
-@EActivity(R.layout.activity_login)
-public class LoginActivity extends FragmentActivity {
 
-    @ViewById(R.id.login_edittext)
+import butterknife.BindView;
+import butterknife.OnClick;
+
+
+public class LoginActivity extends BaseActivity {
+
+    @BindView(R.id.login_edittext)
     public EditText login_edittext;
 
-    @ViewById(R.id.bt_get_device)
+    @BindView(R.id.bt_get_device)
     public Button bt_get_device;
 
-    @ViewById(R.id.tv_device_infp)
+    @BindView(R.id.tv_device_infp)
     public TextView tv_device_infp;
 
 
@@ -49,10 +49,15 @@ public class LoginActivity extends FragmentActivity {
 
     private String key = "PHONENUM";
 
-    private String key_mac="MAC_KEY";
+    private String key_mac = "MAC_KEY";
 
-    @AfterViews
-    protected void initView() {
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         DeviceUtil.initConfig(getApplicationContext());
         phoneNum = SharedDB.getStringValue(getApplicationContext(), key, "");
         login_edittext.setText(phoneNum);
@@ -62,12 +67,12 @@ public class LoginActivity extends FragmentActivity {
 
     public void toMainAcitivty() {
         Intent intent = new Intent();
-        intent.setClass(this, MainActivity_.class);
+        intent.setClass(this, MainActivity.class);
         startActivity(intent);
     }
 
 
-    @Click(R.id.login_btn)
+    @OnClick(R.id.login_btn)
     public void doLogin() {
         phoneNum = login_edittext.getText().toString();
 
@@ -79,17 +84,13 @@ public class LoginActivity extends FragmentActivity {
         Config.TEST_PHONE_NUMBER = phoneNum;
 
 
+        mac = BusinessCodeUtils.getValue(getApplicationContext(), BusinessCodeUtils.USER_ID);
+        if (TextUtils.isEmpty(mac)) {
+            mac = MacUtil.getWifiMacAddress(getApplicationContext());
+        }
 
 
-        mac= BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID);
-        if(TextUtils.isEmpty(mac)){
-            mac= MacUtil.getWifiMacAddress(getApplicationContext());
-         }
-
-
-        Config.TEST_MAC=mac;
-
-
+        Config.TEST_MAC = mac;
 
 
         HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<RegisterResp>() {
@@ -144,37 +145,34 @@ public class LoginActivity extends FragmentActivity {
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
     }
 
-    @Click(R.id.btn_setting)
+    @OnClick(R.id.btn_setting)
     public void toSettingDialog() {
         SettingFragmentDialog msettingFragmentDialog = new SettingFragmentDialog();
         msettingFragmentDialog.setOnCofimLister(new SettingFragmentDialog.onCofimLister() {
             @Override
             public void onSuccess() {
-               // finish();
+                // finish();
             }
         });
         msettingFragmentDialog.show(getSupportFragmentManager(),
                 "dialog");
     }
 
-    @Click(R.id.bt_get_device)
-    public void getDevicieInfo(){
-        StringBuilder stringBuilder=new StringBuilder();
-        stringBuilder.append("有线MAC地址："+MacUtil.getWiredMacAddr()+"\n");
-        stringBuilder.append("无线MAC地址："+MacUtil.getWifiMacAddress(getApplicationContext())+"\n");
-        stringBuilder.append("业务账号："+BusinessCodeUtils.getValue(getApplicationContext(),BusinessCodeUtils.USER_ID));
+    @OnClick(R.id.bt_get_device)
+    public void getDevicieInfo() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("有线MAC地址：" + MacUtil.getWiredMacAddr() + "\n");
+        stringBuilder.append("无线MAC地址：" + MacUtil.getWifiMacAddress(getApplicationContext()) + "\n");
+        stringBuilder.append("业务账号：" + BusinessCodeUtils.getValue(getApplicationContext(), BusinessCodeUtils.USER_ID));
         tv_device_infp.setText(stringBuilder.toString());
 
     }
-
 
 
 }

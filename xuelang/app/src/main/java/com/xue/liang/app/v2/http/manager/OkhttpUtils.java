@@ -1,5 +1,7 @@
 package com.xue.liang.app.v2.http.manager;
 
+import com.xue.liang.app.v2.http.LoggerInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -10,15 +12,16 @@ import okhttp3.OkHttpClient;
 public class OkhttpUtils {
     private static OkHttpClient okHttpClient = null;
 
-    private  OkhttpUtils(){
+    private OkhttpUtils() {
 
     }
 
     public static OkHttpClient getOkHttpClientInstance() {
-        if(okHttpClient==null){
-            okHttpClient=  new OkHttpClient.Builder()
+        if (okHttpClient == null) {
+            okHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(5, TimeUnit.SECONDS)
                     .readTimeout(50, TimeUnit.SECONDS)
+                    .addInterceptor(new LoggerInterceptor("xueliangv2", true))
                     .build();
         }
 

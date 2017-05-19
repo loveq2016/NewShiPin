@@ -12,13 +12,20 @@ import android.util.Log;
 
 public class BusinessCodeUtils {
 
-    private static final String TAG=BusinessCodeUtils.class.getSimpleName();
+    private static final String TAG = BusinessCodeUtils.class.getSimpleName();
 
     public static final String USER_ID = "UserID";
     public static final String USER_PASSWORD = "UserPassword";
     public static final String USER_TOKEN = "UserToken";
 
-    public static String getValue(Context context,String key) {
+
+//    public static String getValue(Context context, String key) {
+//        return "138909919795";
+//    }
+
+    public static String getValue(Context context, String key) {
+
+
         String value = "";
         Uri uri = Uri.parse("content://stbconfig/summary");
         try {

@@ -135,7 +135,8 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        btn_sos.setVisibility(View.VISIBLE);
+        btn_sos.setVisibility(View.INVISIBLE);
+        mdevicieId = "";
 
         is6995 = SharedDB.getBooleanValue(getApplicationContext(), ShareKey.IS_6995_KEY, DefaultData.Default_IS_6995_FALSE);
         mainPresenter = new MainPresenter(this);
@@ -255,6 +256,9 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
                 deviceItemList = httpReponse.getData().getResponse().getArList();
                 playerAdapter.reshData(deviceItemList);
                 mphoneNum = httpReponse.getData().getUser_tel();
+                if (type == TYPE_BUSINESS_CODE) {
+                    Config.TEST_PHONE_NUMBER = BusinessCodeUtils.getValue(getApplicationContext(), BusinessCodeUtils.USER_ID);//业务ID
+                }
 
 
                 String groupname = httpReponse.getData().getResponse().getGroupname();//村名
@@ -295,7 +299,6 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
         deviceHttpMAP.clear();
 
         String bussinessCode = BusinessCodeUtils.getValue(getApplicationContext(), BusinessCodeUtils.USER_ID);//业务ID
-
         String wiredMac = MacUtil.getWiredMacAddr();//有线MAC地址
         String wifiMac = MacUtil.getWifiMacAddress(getApplicationContext());//无线MAC地址
 
@@ -382,9 +385,14 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
 
 
     private void alarmDialog(final HttpType type) {
+        if (TextUtils.isEmpty(mdevicieId)) {
+            ToastUtil.showToast(getApplicationContext(), "请选择一个摄像头", Toast.LENGTH_SHORT);
+            return;
+        }
         if (is6995) {
             showAlermDialog(type);
         } else {
+
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setIcon(R.mipmap.ic_launcher);
@@ -414,6 +422,7 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
      */
     private void sendAlarm(int alermType, FragmentManager fragmentManager) {
 
+
         HttpListenter httpListenter = LoadingHttpListener.ensure(new HttpListenter<SendAlarmResp>() {
             @Override
             public void onFailed(String msg) {
@@ -433,7 +442,11 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
 
         String url = Config.getSendAlarmUrl();
         //DeviceListReq deviceListReq=new DeviceListReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC,null,null);
-        SendAlarmReq sendAlarmReq = new SendAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, String.valueOf(alermType), mdevicieId);
+        String reqId = Config.TEST_MAC;
+        if (!TextUtils.isEmpty(Config.TEST_PHONE_NUMBER)) {
+            reqId = Config.TEST_PHONE_NUMBER;
+        }
+        SendAlarmReq sendAlarmReq = new SendAlarmReq(Config.TEST_TYPE, "", reqId, String.valueOf(alermType), mdevicieId);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
         HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp> httpBuilder = new HttpManager.HttpBuilder<SendAlarmReq, SendAlarmResp>();
         httpBuilder.buildRequestValue(sendAlarmReq)
@@ -736,8 +749,12 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
 
         String url = Config.getUpdateAlarmUrl();
 
+        String reqId = Config.TEST_MAC;
+        if (!TextUtils.isEmpty(Config.TEST_PHONE_NUMBER)) {
+            reqId = Config.TEST_PHONE_NUMBER;
+        }
 
-        UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, content, fileids);
+        UpdateAlarmReq updateAlarmReq = new UpdateAlarmReq(Config.TEST_TYPE, reqId, reqId, content, fileids);
         //NoticeDetailReq noticeDetailReq = new NoticeDetailReq(Config.TEST_TYPE, Config.TEST_PHONE_NUMBER, Config.TEST_MAC, id);
         HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp> httpBuilder = new HttpManager.HttpBuilder<UpdateAlarmReq, UpdateAlarmResp>();
         httpBuilder.buildRequestValue(updateAlarmReq)
@@ -748,4 +765,9 @@ public class MainActivity extends BaseActivity implements MainContract.View<YiDo
                 .dopost("UpdateAlarm");
     }
 
+    @Override
+    protected void onDestroy() {
+        mdevicieId = "";
+        super.onDestroy();
+    }
 }

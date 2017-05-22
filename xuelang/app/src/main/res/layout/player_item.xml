@@ -2,21 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_selector"
+
     >
 
     <RelativeLayout
+        android:id="@+id/rl_adapter_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-          android:layout_centerVertical="true" >
+        android:layout_centerVertical="true"
+        android:background="@drawable/list_selector"
+        android:padding="12dp">
 
         <ImageView
             android:id="@+id/play_image_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:background="@mipmap/camera" />
 
@@ -26,11 +28,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:singleLine="true"
-            android:gravity="left|center"
-            android:textSize="14sp"
             android:layout_toRightOf="@+id/play_image_icon"
-            android:text="test" />
+            android:gravity="left|center"
+            android:singleLine="true"
+            android:text="test"
+            android:textSize="14sp" />
     </RelativeLayout>
 
 </RelativeLayout>

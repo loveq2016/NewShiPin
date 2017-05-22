@@ -3,18 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.xue.liang.v2.info.InfoListActivity">
+    android:orientation="vertical">
 
     <include
         android:id="@+id/title"
+        layout="@layout/info_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/info_title"></include>
+        android:layout_height="wrap_content"></include>
 
-    <ListView
-        android:id="@+id/listview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#050d12"></ListView>
+        android:background="#050d12"></android.support.v7.widget.RecyclerView>
 </LinearLayout>

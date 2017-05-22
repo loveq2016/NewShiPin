@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -18,21 +21,16 @@ import butterknife.Unbinder;
  * Created by jikun on 17/3/24.
  */
 
-public abstract class BaseDialogFragment extends DialogFragment {
-    private Unbinder unbinder;
+public abstract class BaseDialogFragment<P extends BasePresenter> extends DialogFragment implements BaseView {
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(this, view);
-
-    }
+    protected P mPresenter;
+    private Unbinder butterKnife;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        init();
-        View view = null;
+        View view;
         if (getContentViewLayoutID() != 0) {
             view = inflater.inflate(getContentViewLayoutID(), container, false);
 
@@ -42,10 +40,23 @@ public abstract class BaseDialogFragment extends DialogFragment {
         return view;
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initDialog();
+        butterKnife = ButterKnife.bind(this, view);
+        mPresenter = createPresenter();
+        initViews(savedInstanceState);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initViews(savedInstanceState);
+        if (isregisterEventBus()) {
+            EventBus.getDefault().register(this);
+        }
+
     }
 
     /**
@@ -60,17 +71,78 @@ public abstract class BaseDialogFragment extends DialogFragment {
      * init all views and add events
      */
     protected abstract void initViews(Bundle savedInstanceState);
+
+
+    protected abstract P createPresenter();
+
+
+    protected abstract boolean isregisterEventBus();
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        if (null != mPresenter) {
+            mPresenter.onDestory();
+        }
+        butterKnife.unbind();
 
     }
 
-    private void init() {
+    /**
+     * 初始化一些Dialog信息
+     */
+    private void initDialog() {
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);// 设置Dialog为无标题模式
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);// 隐藏软键盘
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置Dialog为无标题模式
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));// 设置Dialog背景色为透明
+        Window window = getDialog().getWindow();
+        if (null != window) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);// 隐藏软键盘
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));// 设置Dialog背景色为透明
+        }
     }
+
+
+    /**
+     * @param isCancelable false 返回键和dialog外部点击  dialog都不消失
+     *                     dialog.setCanceledOnTouchOutside(false);
+     *                     dialog弹出后会点击屏幕，dialog不消失；点击物理返回键dialog消失
+     */
+    protected void setCancelableBackAndScreen(boolean isCancelable) {
+
+        setCancelable(isCancelable);
+    }
+
+
+    /**
+     * @param isCancelable fasle返回键 只有点击返回键dialog会消失(点击屏幕不消失)
+     */
+
+    protected void setCancelableBack(boolean isCancelable) {
+
+        getDialog().setCanceledOnTouchOutside(isCancelable); //
+    }
+
+    @Override
+    public void onError() {
+
+    }
+
+    @Override
+    public void toast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void dismissLoading() {
+
+    }
+
 }

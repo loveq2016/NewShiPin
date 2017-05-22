@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
-                android:id="@+id/listview"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
@@ -32,7 +32,7 @@
                 android:padding="6dp"
                 tools:listitem="@layout/player_item">
 
-            </ListView>
+            </android.support.v7.widget.RecyclerView>
 
             <RelativeLayout
                 android:layout_width="0dp"

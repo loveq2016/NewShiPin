@@ -22,9 +22,12 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         applicationId "com.xue.liang.app.v2"
-        multiDexEnabled true
         versionCode 12
         versionName "2.2.4"
+        multiDexEnabled true
+        jackOptions {
+            enabled = true
+        }
     }
 
     sourceSets {
@@ -46,6 +49,10 @@ android {
 
 
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
 }
 
@@ -56,14 +63,26 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     //compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
-    compile 'com.tencent.bugly:crashreport_upgrade:1.2.0'
+    compile 'com.tencent.bugly:crashreport:2.2.0'
 //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
     //compile 'com.tencent.bugly:nativecrashreport:2.2.0' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
-
-    compile 'com.zhy:okhttputils:2.6.2'
-    compile 'com.android.support:multidex:1.0.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.orhanobut:logger:1.15'
+    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'me.yokeyword:fragmentation:0.10.4'
+    compile 'com.android.support:support-annotations:26.0.0-alpha1'
 
     compile project(path: ':ijkplayer-java')
     compile project(path: ':ijkplayer-exo')

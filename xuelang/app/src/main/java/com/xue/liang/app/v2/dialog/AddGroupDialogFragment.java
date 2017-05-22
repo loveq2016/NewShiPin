@@ -11,8 +11,9 @@ import android.widget.Toast;
 
 import com.xue.liang.app.v2.R;
 import com.xue.liang.app.v2.base.BaseDialogFragment;
+import com.xue.liang.app.v2.base.BasePresenter;
 import com.xue.liang.app.v2.utils.PhoneNumCheckUtils;
-import com.xue.liang.app.v2.utils.ToastUtil;
+import com.xue.liang.app.v2.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,6 +50,16 @@ public class AddGroupDialogFragment extends BaseDialogFragment {
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected boolean isregisterEventBus() {
+        return false;
+    }
+
 
     @OnClick(R.id.bt_cancle)
     public void close() {
@@ -65,11 +76,11 @@ public class AddGroupDialogFragment extends BaseDialogFragment {
         String phonenum = et_group_phone_num.getText().toString();
         if (TextUtils.isEmpty(name)) {
 
-            ToastUtil.showToast(getContext(), "账号不能为空", Toast.LENGTH_SHORT);
+            ToastUtils.show("账号不能为空", Toast.LENGTH_SHORT);
             return;
         }
         if (TextUtils.isEmpty(phonenum)) {
-            ToastUtil.showToast(getContext(), "手机号不能为空", Toast.LENGTH_SHORT);
+            ToastUtils.show("手机号不能为空", Toast.LENGTH_SHORT);
             return;
         }
         if (!PhoneNumCheckUtils.isMobileNO(phonenum)) {

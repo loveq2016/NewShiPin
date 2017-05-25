@@ -51,6 +51,9 @@ public class BusinessCodeUtils {
         } catch (Exception e) {
 
         }
+        if (value == null) {
+            value = "";
+        }
         return value;
     }
 }

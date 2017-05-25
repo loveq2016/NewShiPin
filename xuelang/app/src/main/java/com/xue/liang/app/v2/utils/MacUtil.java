@@ -93,15 +93,15 @@ public class MacUtil {
     public static String getWifiMacAddress(Context context) {
 
         String macAddress = getMacAddressByWifiInfo(context);
-        if (!"02:00:00:00:00:00".equals(macAddress)) {
+        if (null != macAddress && !"02:00:00:00:00:00".equals(macAddress)) {
             return macAddress;
         }
         macAddress = getMacAddressByNetworkInterface();
-        if (!"02:00:00:00:00:00".equals(macAddress)) {
+        if (null != macAddress && !"02:00:00:00:00:00".equals(macAddress)) {
             return macAddress;
         }
         macAddress = getMacAddressByFile();
-        if (!"02:00:00:00:00:00".equals(macAddress)) {
+        if (null != macAddress && !"02:00:00:00:00:00".equals(macAddress)) {
             return macAddress;
         }
         return "02:00:00:00:00:00";
@@ -285,7 +285,11 @@ public class MacUtil {
         //通过解析这个文件来获取MAC,不同厂家的芯片有可能不同
         final String ETH0_MAC_ADDR = "/sys/class/net/eth0/address";
         try {
-            return readLine(ETH0_MAC_ADDR);
+            String mac = readLine(ETH0_MAC_ADDR);
+            if (mac == null) {
+                mac = "";
+            }
+            return mac;
         } catch (IOException e) {
             e.printStackTrace();
             return "02:00:00:00:00:00";

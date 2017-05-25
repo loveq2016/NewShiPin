@@ -2,7 +2,6 @@ package com.xue.liang.app.v2.rx;
 
 import com.xue.liang.app.v2.base.Constant;
 import com.xue.liang.app.v2.entity.DeviceEntity;
-import com.xue.liang.app.v2.http.ApiException;
 import com.xue.liang.app.v2.http.HttpResult;
 import com.xue.liang.app.v2.http.RetrofitManager;
 import com.xue.liang.app.v2.utils.ShareprefUtils;
@@ -40,17 +39,4 @@ public class ApiFun1Builder {
     }
 
 
-    public Func1 getSameResultData() {
-        Func1<HttpResult<List<DeviceEntity>>, Observable<HttpResult<List<DeviceEntity>>>> func1 = new Func1<HttpResult<List<DeviceEntity>>, Observable<HttpResult<List<DeviceEntity>>>>() {
-            @Override
-            public Observable<HttpResult<List<DeviceEntity>>> call(HttpResult<List<DeviceEntity>> httpResult) {
-                if (0 == httpResult.getRet_code())
-                    return Observable.just(httpResult);
-                return Observable.error(new ApiException(httpResult.getRet_code() + "", httpResult.getRet_string()));
-
-
-            }
-        };
-        return func1;
-    }
 }

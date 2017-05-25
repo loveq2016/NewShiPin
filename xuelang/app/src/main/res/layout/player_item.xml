@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/adapter_focuse_selector"
 
     >
 
@@ -30,7 +31,7 @@
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@+id/play_image_icon"
             android:gravity="left|center"
-            android:singleLine="true"
+            android:lines="1"
             android:text="test"
             android:textSize="14sp" />
     </RelativeLayout>

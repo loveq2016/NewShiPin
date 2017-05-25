@@ -16,9 +16,9 @@
 
         <LinearLayout
             android:id="@+id/ll_play"
-            android:layout_above="@+id/ll_bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_bottom">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -27,7 +27,7 @@
                 android:layout_margin="6dp"
                 android:layout_weight="1"
                 android:background="@mipmap/list"
-                android:choiceMode="singleChoice"
+                android:descendantFocusability="afterDescendants"
                 android:listSelector="@drawable/bt_selector"
                 android:padding="6dp"
                 tools:listitem="@layout/player_item">
@@ -67,11 +67,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_alignParentBottom="true"
             android:id="@+id/ll_bottom"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/bottom_rl_gundong_info"
@@ -148,6 +148,7 @@
                         android:paddingBottom="6dp"
                         android:paddingLeft="6dp"
                         android:paddingTop="6dp">
+
                         <Button
                             android:id="@+id/btn_fresh"
                             android:layout_width="70dp"
@@ -225,21 +226,22 @@
 
 
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/btn_group"
                     android:layout_width="70dp"
-                    android:visibility="invisible"
                     android:layout_height="32dp"
-
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/btn_setting"
-                    android:layout_gravity="center"
 
+                    android:layout_gravity="center"
                     android:layout_marginLeft="6dp"
+                    android:layout_toLeftOf="@+id/btn_setting"
+
                     android:background="@drawable/bt_hurt_selector"
                     android:text="组群"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
 
 
                 <Button
@@ -247,20 +249,21 @@
                     android:layout_width="70dp"
                     android:layout_height="32dp"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/btn_full_sceen"
                     android:layout_gravity="center"
                     android:layout_marginLeft="6dp"
+                    android:layout_toLeftOf="@+id/btn_full_sceen"
                     android:background="@drawable/bt_hurt_selector"
                     android:text="设置"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
+
                 <Button
                     android:id="@+id/btn_full_sceen"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="6dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="6dp"
                     android:layout_marginRight="6dp"
                     android:background="@drawable/full_screen_selector" />
 

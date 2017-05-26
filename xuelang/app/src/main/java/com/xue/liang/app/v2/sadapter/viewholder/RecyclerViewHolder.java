@@ -156,6 +156,11 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public RecyclerViewHolder requestFocus(int viewId) {
+        mHolderImpl.requestFocus(viewId);
+        return this;
+    }
+
     public RecyclerViewHolder setSelected(int viewId, boolean isSelected) {
         mHolderImpl.setSelected(viewId, isSelected);
         return this;

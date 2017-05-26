@@ -270,7 +270,12 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements IMa
             @Override
             protected void onBindData(RecyclerViewHolder holder, int position, DeviceEntity item) {
                 holder.setText(R.id.play_item_url_tv, item.getDev_name());
-                holder.setSelected(R.id.rl_adapter_bg, item.ischoosed());
+
+                holder.setSelected(R.id.rl_item_group, item.ischoosed());
+                if(item.ischoosed()){
+                    holder.requestFocus(R.id.rl_item_group);
+                }
+               // holder.setFocusable(R.id.rl_item_group, item.ischoosed());
             }
         };
         recyclerView.setAdapter(adapter);

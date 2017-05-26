@@ -127,6 +127,11 @@ public class ViewHolderImpl {
         target.setImageDrawable(drawable);
     }
 
+    public void requestFocus(int viewId) {
+        View target = findViewById(viewId);
+        target.requestFocus();
+    }
+
     public void setImageDrawable(int viewId, Uri uri) {
         ImageView target = findViewById(viewId);
         target.setImageURI(uri);

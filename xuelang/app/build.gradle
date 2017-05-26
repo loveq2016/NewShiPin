@@ -22,8 +22,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         applicationId "com.xue.liang.app.v2"
-        versionCode 12
-        versionName "2.2.4"
+        versionCode 14
+        versionName "2.2.5"
         multiDexEnabled true
         jackOptions {
             enabled = true

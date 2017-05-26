@@ -54,6 +54,10 @@
             android:name=".activity.InfoListActivity"
             android:screenOrientation="landscape"></activity>
 
+        <activity
+            android:name=".activity.InfoDetailActivity"
+            android:screenOrientation="landscape" />
+
     </application>
 
 </manifest>

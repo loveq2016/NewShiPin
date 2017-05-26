@@ -25,6 +25,7 @@ public class InfoDetailPresenter extends BasePresenter<IinfoDetail.IInfoDetailVi
     public void getInfoDetail(String guid) {
 
         Map<String, String> map = new HashMap<>();
+        map.put("guid",guid);
         Subscription subscribe = RetrofitManager.getInstance().getApiService()
                 .getNoticeDetail(map)
                 .compose(RxUtils.apiSameTransformer())

@@ -18,7 +18,8 @@
             android:id="@+id/ll_play"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/ll_bottom">
+            android:layout_above="@+id/ll_bottom"
+            android:background="@android:color/black">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -28,7 +29,7 @@
                 android:layout_weight="1"
                 android:background="@mipmap/list"
                 android:descendantFocusability="afterDescendants"
-                android:listSelector="@drawable/bt_selector"
+
                 android:padding="6dp"
                 tools:listitem="@layout/player_item">
 

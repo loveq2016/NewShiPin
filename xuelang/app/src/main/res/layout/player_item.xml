@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/adapter_focuse_selector"
+    android:focusable="true"
 
     >
 
@@ -11,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:background="@drawable/list_selector"
+        android:duplicateParentState="true"
         android:padding="12dp">
 
         <ImageView
@@ -32,7 +34,8 @@
             android:layout_toRightOf="@+id/play_image_icon"
             android:gravity="left|center"
             android:lines="1"
-            android:text="test"
+            android:text=""
+            android:textColor="@android:color/white"
             android:textSize="14sp" />
     </RelativeLayout>
 

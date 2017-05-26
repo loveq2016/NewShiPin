@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     android:orientation="vertical">
 
     <include
@@ -11,13 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></include>
 
-    <TextView
-        android:id="@+id/text_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:lineSpacingExtra="5dp"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:lineSpacingExtra="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+    </ScrollView>
+
+
 </LinearLayout>

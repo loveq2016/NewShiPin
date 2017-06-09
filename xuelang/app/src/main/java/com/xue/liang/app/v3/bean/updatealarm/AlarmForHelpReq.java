@@ -18,6 +18,9 @@ public class AlarmForHelpReq {
 
     private List<String> filelist;//否 报警上传的 fileID 列表
 
+
+    private String resource_type = "0";// 参数，0 实时视频 1 图文  2 录像 3 sos
+
     private double longitude; //否  精度
 
     private double latitude;//否  维度
@@ -76,5 +79,13 @@ public class AlarmForHelpReq {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public String getResource_type() {
+        return resource_type;
+    }
+
+    public void setResource_type(String resource_type) {
+        this.resource_type = resource_type;
     }
 }

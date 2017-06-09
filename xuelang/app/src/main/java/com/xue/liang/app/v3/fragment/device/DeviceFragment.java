@@ -496,6 +496,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             fileList.add(imageFilePath);
 
             AlarmForHelpReq bean = new AlarmForHelpReq();
+            bean.setResource_type("1");
             bean.setAlarm_text("");
             bean.setTermi_type("2");
             bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
@@ -508,6 +509,7 @@ public class DeviceFragment extends BaseFragment implements DeviceContract.View,
             fileList.add(videoFilePath);
 
             AlarmForHelpReq bean = new AlarmForHelpReq();
+            bean.setResource_type("2");
             bean.setAlarm_text("");
             bean.setTermi_type("2");
             bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());

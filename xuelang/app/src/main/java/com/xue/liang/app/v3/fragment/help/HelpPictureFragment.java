@@ -205,10 +205,7 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
         }
     }
 
-    @Override
-    public LayoutInflater getLayoutInflater(Bundle savedInstanceState) {
-        return super.getLayoutInflater(savedInstanceState);
-    }
+
 
     @OnClick(R.id.bt_now_alarm)
     public void updatefile() {
@@ -220,6 +217,7 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
         }
 
         AlarmForHelpReq bean = new AlarmForHelpReq();
+        bean.setResource_type("1");
         bean.setAlarm_text(text);
         bean.setTermi_type("2");
         bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
@@ -234,6 +232,7 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
         if (!filelist.isEmpty()) {
             helpPresenter.updateFileAndAlarm(filelist, bean);
         } else {
+            bean.setResource_type("3");
             helpPresenter.doAlarmAfterUpdataFile(bean);
         }
 

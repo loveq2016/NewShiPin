@@ -141,6 +141,7 @@ public class HelpCamraVideoFragment extends BaseFragment implements HelpContract
 
             AlarmForHelpReq bean = new AlarmForHelpReq();
             bean.setAlarm_text("");
+            bean.setResource_type("1");
             bean.setTermi_type("2");
             bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
             helpPresenter.updateFileAndAlarm(fileList, bean);
@@ -154,6 +155,7 @@ public class HelpCamraVideoFragment extends BaseFragment implements HelpContract
 
             AlarmForHelpReq bean = new AlarmForHelpReq();
             bean.setAlarm_text("");
+            bean.setResource_type("2");
             bean.setTermi_type("2");
             bean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
             helpPresenter.updateFileAndAlarm(fileList, bean);

@@ -56,8 +56,19 @@ public class ShowGirdFragmentDialog extends BaseDialogFragment {
             @Override
             protected void onBindData(RecyclerViewHolder holder, int position, GirdInfoBean item) {
 
-                holder.setText(R.id.tv_name, item.getUser_name());
-                holder.setText(R.id.tv_phone, item.getUser_phonenum());
+                if (item != null) {
+                    String name = item.getUser_name();
+                    if (name == null) {
+                        name = "";
+                    }
+                    String phone = item.getUser_phonenum();
+                    if (phone == null) {
+                        phone = "";
+                    }
+                    holder.setText(R.id.tv_name, name);
+                    holder.setText(R.id.tv_phone, phone);
+                }
+
 
             }
         };

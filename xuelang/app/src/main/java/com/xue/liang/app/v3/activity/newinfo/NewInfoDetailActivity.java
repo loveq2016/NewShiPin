@@ -43,8 +43,14 @@ public class NewInfoDetailActivity extends BaseActivity implements NewInfoDetail
         newInfoDetailPresenter = new NewInfoDetailPresenter(this);
         NoticeDetailReqBean noticeDetailReqBean = new NoticeDetailReqBean();
         noticeDetailReqBean.setGuid(mGuidId);
-        noticeDetailReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
-        noticeDetailReqBean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+        if (null != LoginInfoUtils.getInstance() && null != LoginInfoUtils.getInstance().getMacAdrress()) {
+            noticeDetailReqBean.setTermi_unique_code(LoginInfoUtils.getInstance().getMacAdrress());
+        }
+
+        if (null != LoginInfoUtils.getInstance().getLoginRespBean() && null != LoginInfoUtils.getInstance().getLoginRespBean().getUser_id()) {
+            noticeDetailReqBean.setUser_id(LoginInfoUtils.getInstance().getLoginRespBean().getUser_id());
+        }
+
         newInfoDetailPresenter.loadData(noticeDetailReqBean);
     }
 

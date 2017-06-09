@@ -68,7 +68,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private String verify_code;
 
 
-    private int  time=60;
+    private int time = 60;
+
     @Override
     protected void getBundleExtras(Bundle extras) {
 
@@ -83,7 +84,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void initViews(Bundle savedInstanceState) {
         readIpAndPortFromShareDb();
         getShareDbNumber();
-        time=60;
+        time = 60;
         loginPresenter = new LoginPresenter(this);
         String tempVersionName = AppUtils.getAppVersionName(getApplicationContext());
         if (!StringUtils.isEmpty(tempVersionName)) {
@@ -91,7 +92,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             tv_app_version.setText("版本号:" + tempVersionName);
         }
     }
-
 
 
     @OnClick(R.id.bt_setting)
@@ -143,9 +143,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void ongetVerifyCodeFail(VerifyCodeRespBean verifyCodeRespBean) {
         showVerifycode(false);
-        if(null!=verifyCodeRespBean&&!TextUtils.isEmpty(verifyCodeRespBean.getRet_string())){
-            String info=verifyCodeRespBean.getRet_string();
-            Toast.makeText(getApplicationContext(),info,Toast.LENGTH_SHORT).show();
+        if (null != verifyCodeRespBean && !TextUtils.isEmpty(verifyCodeRespBean.getRet_string())) {
+            String info = verifyCodeRespBean.getRet_string();
+            Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -158,28 +158,28 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             handler.sendEmptyMessage(0);
         } else {
             bt_get_vercode.setEnabled(true);
-            time=60;
+            time = 60;
         }
 
     }
 
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if(time>0){
-               sendEmptyMessageDelayed(0,1000);
-                time=time-1;
-            }else{
-                time=60;
+            if (time > 0) {
+                sendEmptyMessageDelayed(0, 1000);
+                time = time - 1;
+            } else {
+                time = 60;
                 bt_get_vercode.setText("获取验证码");
                 bt_get_vercode.setEnabled(true);
                 return;
             }
 
-            if(bt_get_vercode!=null){
-                bt_get_vercode.setText(""+time);
+            if (bt_get_vercode != null) {
+                bt_get_vercode.setText("" + time);
             }
         }
     };
@@ -188,7 +188,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        handler=null;
+        handler = null;
     }
 
     @Override
@@ -213,26 +213,26 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     @OnClick(R.id.bt_get_vercode)
-    public void getVerCode(){
+    public void getVerCode() {
         phoneNum = login_edittext.getText().toString();
         if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
             Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
             return;
         }
         macAddress = DeviceUtil.getMacAddress(getApplicationContext());
-        loginPresenter.getVerifyCode(phoneNum,macAddress);
+        loginPresenter.getVerifyCode(phoneNum, macAddress);
     }
 
     @OnClick(R.id.login_btn)
     public void doLogin() {
 
         phoneNum = login_edittext.getText().toString();
-        verify_code=login_password.getText().toString();
+        verify_code = login_password.getText().toString();
         if (!PhoneNumCheckUtils.isMobileNO(phoneNum)) {
             Toast.makeText(getApplicationContext(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(verify_code)){
+        if (TextUtils.isEmpty(verify_code)) {
             Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -242,13 +242,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         macAddress = DeviceUtil.getMacAddress(getApplicationContext());
 
 
-        LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, macAddress,verify_code);
+        LoginReqBean loginReqBean = generateLoginReqBean(type, phoneNum, macAddress, verify_code);
         loginPresenter.loadData(loginReqBean);
 
     }
 
 
-    private LoginReqBean generateLoginReqBean(String termi_type, String reg_tel, String mac,String verify_code) {
+    private LoginReqBean generateLoginReqBean(String termi_type, String reg_tel, String mac, String verify_code) {
         LoginReqBean loginReqBean = new LoginReqBean();
         loginReqBean.setReg_tel(reg_tel);
         loginReqBean.setTermi_type(termi_type);
@@ -274,6 +274,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BundleConstant.BUNDLE_LOGIN_DATA, loginRespBean);
         readyGo(MainActivity.class, bundle);
+        finish();
     }
 
     /**
@@ -283,8 +284,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         IpAndPortUtils.setUpIpAndPort(getApplicationContext());
 
     }
-
-
 
 
 }

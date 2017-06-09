@@ -35,7 +35,6 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
     EditText et_info;
 
 
-
     private List<String> mdata;
 
     private AlarmAdapter alarmAdapter;
@@ -48,6 +47,8 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
     private MaterialDialog updateFileMaterialDialog;
 
     private HelpPresenter helpPresenter;
+
+    private onCallListener callListener;
 
 
     @Override
@@ -161,6 +162,9 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
     public void onAlarmSuccess(AlarmForHelpResp resp) {
 
         Toast.makeText(getActivity(), "报警成功", Toast.LENGTH_SHORT).show();
+        if (null != callListener) {
+            callListener.onSuccess();
+        }
     }
 
     @Override
@@ -206,7 +210,6 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
     }
 
 
-
     @OnClick(R.id.bt_now_alarm)
     public void updatefile() {
 
@@ -236,5 +239,26 @@ public class HelpPictureFragment extends BaseTakePhotoFragment implements HelpCo
             helpPresenter.doAlarmAfterUpdataFile(bean);
         }
 
+    }
+
+    public interface onCallListener {
+        void onSuccess();
+    }
+
+    public onCallListener getCallListener() {
+        return callListener;
+    }
+
+    public void setCallListener(onCallListener callListener) {
+        this.callListener = callListener;
+    }
+
+    public static HelpPictureFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        HelpPictureFragment fragment = new HelpPictureFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }

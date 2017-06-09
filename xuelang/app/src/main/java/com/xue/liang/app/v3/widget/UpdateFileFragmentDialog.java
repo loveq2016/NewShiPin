@@ -57,7 +57,14 @@ public class UpdateFileFragmentDialog extends DialogFragment {
     }
 
     private void initFragment() {
-        Fragment fragment = Fragment.instantiate(getContext(), HelpPictureFragment.class.getName());
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_containers, fragment).commit();
+        HelpPictureFragment helpPictureFragment = HelpPictureFragment.newInstance();
+        helpPictureFragment.setCallListener(new HelpPictureFragment.onCallListener() {
+            @Override
+            public void onSuccess() {
+                dismissAllowingStateLoss();
+            }
+        });
+
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_containers, helpPictureFragment).commit();
     }
 }

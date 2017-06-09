@@ -43,15 +43,15 @@ public class MainPresenterImpl extends BasePresenter<IMain.MianView> implements 
 
     private Map<String, String> getAlarmRequestInfo(String mac, String type, String userId, DeviceEntity entity) {
         Map<String, String> map = new HashMap<>();
-        map.put("termi_type", "0");
+        map.put("termi_type", "1");
         map.put("stb_id", mac);
-        map.put("stb_type", "0");
+        map.put("stb_type", "1");
         map.put("alerm_level", "0");
-        map.put("alerm_type", "0");
+        map.put("alerm_type", type);
         map.put("cam_dev_uid", entity.getDev_id());
         map.put("cam_dev_name", entity.getDev_name());
         map.put("cam_url", entity.getDev_url());
-        map.put("user_id", userId);
+       // map.put("user_id", userId);
 
         map.put("update_time", DateUtil.getCurrentTime());
 

@@ -6,7 +6,7 @@ package com.xue.liang.app.v2.base;
 
 public class Constant {
 
-    public static final String DEFAULT_IP = "117.173.19.185";
+    public static final String DEFAULT_IP = "112.54.93.210";//117.173.19.185
 
     public static final String DEFAULT_PORT = "9003";
 

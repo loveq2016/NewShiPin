@@ -28,7 +28,7 @@ public class InfoListPresenter extends BasePresenter<IinfoList.IInfoListView> im
 
         Map<String, String> map = new HashMap<>();
         map.put("termi_type", "0");
-        map.put("user_id", userid);
+        //map.put("user_id", userid);
         map.put("termi_unique_code", termi_unique_code);
         map.put("strat_index", "0");
         map.put("count", "50");
